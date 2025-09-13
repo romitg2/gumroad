@@ -494,10 +494,11 @@ const CollaboratorForm = () => {
             </a>
           </header>
           {!isEditing ? (
-            <fieldset>
+            <fieldset className={cx({ danger: collaboratorEmail.error })}>
               <legend>
                 <label htmlFor="email">Email</label>
               </legend>
+
               <div className="input">
                 <input
                   id="email"
