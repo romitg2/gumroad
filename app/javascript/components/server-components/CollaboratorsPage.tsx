@@ -315,6 +315,7 @@ const CollaboratorForm = () => {
   const [isConfirmed, setIsConfirmed] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
   const formData = cast<CollaboratorFormData>(useLoaderData());
+  const emailInputRef = React.useRef<HTMLInputElement>(null);
   const isEditing = "id" in formData;
 
   const hasEnabledUnpublishedOrIneligibleProducts =
@@ -407,6 +408,7 @@ const CollaboratorForm = () => {
       );
       if (emailError) {
         showAlert(emailError, "error");
+        emailInputRef.current?.focus();
         return;
       }
     }
@@ -501,6 +503,7 @@ const CollaboratorForm = () => {
 
               <div className="input">
                 <input
+                  ref={emailInputRef}
                   id="email"
                   type="email"
                   value={collaboratorEmail.value}
