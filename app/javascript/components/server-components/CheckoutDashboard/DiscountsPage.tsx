@@ -1108,6 +1108,7 @@ const Form = ({
                     {(props) => (
                       <input
                         id={`${uid}minimumQuantity`}
+                        inputMode="decimal"
                         placeholder="0"
                         aria-invalid={minimumQuantity.error}
                         {...props}

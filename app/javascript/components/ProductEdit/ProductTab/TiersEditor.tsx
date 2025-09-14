@@ -230,7 +230,15 @@ const TierEditor = ({
               onChange={(value) => updateTier({ max_purchase_count: value })}
               value={tier.max_purchase_count}
             >
-              {(inputProps) => <input id={`${uid}-max-purchase-count`} type="number" placeholder="∞" {...inputProps} />}
+              {(inputProps) => (
+                <input
+                  id={`${uid}-max-purchase-count`}
+                  type="number"
+                  inputMode="numeric"
+                  placeholder="∞"
+                  {...inputProps}
+                />
+              )}
             </NumberInput>
           </fieldset>
           <fieldset

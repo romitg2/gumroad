@@ -43,7 +43,7 @@ export const InstallmentPlanEditor = ({
           <NumberInput value={numberOfInstallments} onChange={(value) => onNumberOfInstallmentsChange(value || 0)}>
             {(props) => (
               <div className="input">
-                <input {...props} type="number" min={2} aria-label="Number of installments" />
+                <input {...props} type="number" inputMode="numeric" min={2} aria-label="Number of installments" />
                 <label>
                   <span>equal monthly payments</span>
                 </label>

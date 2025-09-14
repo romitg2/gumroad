@@ -187,7 +187,13 @@ const DurationEditor = ({
                 value={duration.max_purchase_count}
               >
                 {(inputProps) => (
-                  <input id={`${uid}-max-purchase-count`} type="number" placeholder="∞" {...inputProps} />
+                  <input
+                    id={`${uid}-max-purchase-count`}
+                    type="number"
+                    inputMode="numeric"
+                    placeholder="∞"
+                    {...inputProps}
+                  />
                 )}
               </NumberInput>
             </fieldset>

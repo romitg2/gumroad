@@ -1953,7 +1953,7 @@ const SeatSection = ({ seats: currentSeats, onSave }: { seats: number; onSave: (
       {isEditing ? (
         <fieldset>
           <NumberInput value={seats} onChange={(seats) => setSeats(seats ?? 0)}>
-            {(props) => <input type="number" {...props} min={1} aria-label="Seats" />}
+            {(props) => <input type="number" inputMode="numeric" {...props} min={1} aria-label="Seats" />}
           </NumberInput>
           <div
             style={{

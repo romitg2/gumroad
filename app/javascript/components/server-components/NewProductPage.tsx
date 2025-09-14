@@ -375,6 +375,7 @@ const NewProductPage = ({
                     ref={priceInputRef}
                     id={`price-${formUID}`}
                     type="text"
+                    inputMode="decimal"
                     maxLength={10}
                     placeholder="Price your product"
                     value={price}

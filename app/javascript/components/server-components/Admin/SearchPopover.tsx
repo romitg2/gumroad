@@ -96,6 +96,7 @@ export const SearchPopover = ({ card_types }: Props) => {
               name="last_4"
               placeholder="Last 4 (7890)"
               type="number"
+              inputMode="numeric"
               defaultValue={searchParams.get("last_4") || ""}
             />
           </div>
@@ -114,6 +115,7 @@ export const SearchPopover = ({ card_types }: Props) => {
               name="price"
               placeholder="Price (9.99)"
               type="number"
+              inputMode="decimal"
               step="0.01"
               defaultValue={searchParams.get("price") || ""}
             />
