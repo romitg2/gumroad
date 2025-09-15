@@ -62,10 +62,27 @@ const ProductsCarousel = ({ products, title }: { products: CardProduct[]; title:
           ref={itemsRef}
           style={{ scrollSnapType: dragStart != null ? "none" : undefined }}
           onScroll={handleScroll}
-          onMouseDown={(e) => setDragStart(e.clientX)}
-          onMouseMove={(e) => {
+          onPointerDown={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            // Capture the pointer so we continue to receive events even when mouse moves outside during dragging
+            e.currentTarget.setPointerCapture(e.pointerId);
+            setDragStart(e.clientX);
+          }}
+          onPointerMove={(e) => {
             if (dragStart == null || !itemsRef.current) return;
+            e.preventDefault();
+            e.stopPropagation();
             itemsRef.current.scrollLeft -= e.movementX;
+          }}
+          onPointerUp={(e) => {
+            if (dragStart != null && Math.abs(e.clientX - dragStart) > 30) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }}
+          onPointerCancel={() => {
+            setDragStart(null);
           }}
           onClick={(e) => {
             if (dragStart != null && Math.abs(e.clientX - dragStart) > 30) e.preventDefault();

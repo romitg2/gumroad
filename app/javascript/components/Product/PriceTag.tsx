@@ -63,7 +63,7 @@ export const PriceTag = ({
       itemType="https://schema.org/Offer"
       style={{ display: "flex", alignItems: "center" }}
     >
-      <div className={`has-tooltip ${tooltipPosition} cursor-pointer`}>
+      <div className={`has-tooltip ${tooltipPosition}`} aria-describedby={tooltipUid}>
         <div
           className="price"
           itemProp="price"
