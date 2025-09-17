@@ -41,7 +41,15 @@ const sortTitles = {
 const ProductsCarousel = ({ products, title }: { products: CardProduct[]; title: string }) => {
   const [active, setActive] = React.useState(0);
   const { itemsRef, handleScroll } = useScrollableCarousel(active, setActive);
-  const [dragStart, setDragStart] = React.useState<number | null>(null);
+  const [isMouseDown, setIsMouseDown] = React.useState(false);
+  const [startX, setStartX] = React.useState(0);
+  const [scrollLeft, setScrollLeft] = React.useState(0);
+  const [isDragging, setIsDragging] = React.useState(false);
+
+  const resetDrag = () => {
+    setIsMouseDown(false);
+    setIsDragging(false);
+  };
 
   return (
     <section className="carousel-section">
@@ -61,38 +69,36 @@ const ProductsCarousel = ({ products, title }: { products: CardProduct[]; title:
         <div
           className="items"
           ref={itemsRef}
-          style={{ scrollSnapType: dragStart != null ? "none" : undefined }}
+          style={{
+            scrollSnapType: isMouseDown ? "none" : "x mandatory",
+            scrollBehavior: isMouseDown ? "auto" : "smooth",
+            cursor: isMouseDown ? "grabbing" : "grab",
+            userSelect: "none",
+          }}
           onScroll={handleScroll}
-          onPointerDown={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            // Capture the pointer so we continue to receive events even when mouse moves outside during dragging
-            e.currentTarget.setPointerCapture(e.pointerId);
-            setDragStart(e.clientX);
+          onMouseDown={(e) => {
+            if (!itemsRef.current) return;
+            setIsMouseDown(true);
+            setStartX(e.pageX - itemsRef.current.offsetLeft);
+            setScrollLeft(itemsRef.current.scrollLeft);
+            setIsDragging(false);
           }}
-          onPointerMove={(e) => {
-            if (dragStart == null || !itemsRef.current) return;
-            e.preventDefault();
-            e.stopPropagation();
-            itemsRef.current.scrollLeft -= e.movementX;
-          }}
-          onPointerUp={(e) => {
-            if (dragStart != null && Math.abs(e.clientX - dragStart) > 30) {
+          onMouseMove={(e) => {
+            if (!isMouseDown || !itemsRef.current) return;
+            const dragDistance = e.pageX - itemsRef.current.offsetLeft - startX;
+
+            // Only start dragging if we've moved more than 5 pixels, so it don't interfer with clicking on the cards
+            if (Math.abs(dragDistance) > 5 && !isDragging) setIsDragging(true);
+
+            if (isDragging) {
               e.preventDefault();
-              e.stopPropagation();
+              itemsRef.current.scrollLeft = scrollLeft - dragDistance;
             }
           }}
-          onPointerCancel={() => {
-            setDragStart(null);
-          }}
-          onClick={(e) => {
-            if (dragStart != null && Math.abs(e.clientX - dragStart) > 30) e.preventDefault();
-            setDragStart(null);
-          }}
-          onMouseOut={() => setDragStart(null)}
+          onMouseUp={resetDrag}
+          onMouseLeave={resetDrag}
         >
           {products.map((product, idx) => (
-            // Only the first 3 cards are visible, so we can set eager loading for them
             <HorizontalCard key={product.id} product={product} big eager={idx < 3} />
           ))}
         </div>
