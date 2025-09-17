@@ -41,6 +41,7 @@ import { asyncVoid } from "$app/utils/promise";
 import { assertResponseError } from "$app/utils/request";
 import { buildStaticRouter, GlobalProps, register } from "$app/utils/serverComponentUtil";
 import { isUrlValid } from "$app/utils/url";
+import { isValidEmail } from "$app/utils/email";
 
 import { AffiliateSignupForm, ProductRow } from "$app/components/AffiliatesDashboard/AffiliateSignupForm";
 import { Button } from "$app/components/Button";
@@ -671,10 +672,11 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
   const navigate = useNavigate();
   const navigation = useNavigation();
   const { affiliateId } = useParams();
-  const [errors, setErrors] = React.useState<Map<string, boolean>>(new Map());
+  const [errors, setErrors] = React.useState<Map<string, string>>(new Map());
   const [affiliateState, setAffiliateState] = React.useState<AffiliateRequestPayload>(affiliate);
 
   const uid = React.useId();
+  const emailInputRef = React.useRef<HTMLInputElement>(null);
   const canSave = affiliateId
     ? loggedInUser?.policies.direct_affiliate.update
     : loggedInUser?.policies.direct_affiliate.create;
@@ -700,22 +702,40 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
   };
 
   const handleSubmit = asyncVoid(async () => {
-    const errors = new Map<string, boolean>();
+    const errors = new Map<string, string>();
     const { email, fee_percent, products, apply_to_all_products, destination_url } = affiliateState;
 
-    if (email.length === 0) errors.set("email", true);
-    if (apply_to_all_products && (!fee_percent || fee_percent < 1 || fee_percent > 90)) errors.set("feePercent", true);
+    if (email.length === 0) {
+      errors.set("email", "Email is required");
+    } else if (!isValidEmail(email)) {
+      errors.set("email", "Please enter a valid email address");
+    }
+
+    if (apply_to_all_products && (!fee_percent || fee_percent < 1 || fee_percent > 90)) {
+      errors.set("feePercent", "Commission must be between 1% and 90%");
+    }
+
     if (
       !apply_to_all_products &&
       products.some(
         (product) => product.enabled && (!product.fee_percent || product.fee_percent < 1 || product.fee_percent > 90),
       )
     ) {
-      errors.set("products", true);
+      errors.set("products", "All enabled products must have commission between 1% and 90%");
     }
-    if (destination_url && destination_url !== "" && !isUrlValid(destination_url)) errors.set("destinationUrl", true);
+
+    if (destination_url && destination_url !== "" && !isUrlValid(destination_url)) {
+      errors.set("destinationUrl", "Please enter a valid URL");
+    }
+
     setErrors(errors);
-    if (errors.size > 0) return;
+
+    if (errors.size > 0) {
+      const firstError = Array.from(errors.values())[0];
+      showAlert(firstError || "Please fix the errors above", "error");
+      if (errors.has("email") && emailInputRef.current) emailInputRef.current.focus();
+      return;
+    }
 
     if (!apply_to_all_products && products.every((product) => !product.enabled)) {
       showAlert("Please enable at least one product.", "error");
@@ -767,13 +787,22 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
               <label htmlFor={`${uid}email`}>Email</label>
             </legend>
             <input
+              ref={emailInputRef}
               type="email"
               id={`${uid}email`}
               placeholder="Email of a Gumroad creator"
               value={affiliateState.email}
               disabled={!!affiliateId || navigation.state !== "idle"}
-              onChange={(evt) => setAffiliateState({ ...affiliateState, email: evt.target.value })}
+              onChange={(evt) => {
+                setAffiliateState({ ...affiliateState, email: evt.target.value });
+                if (errors.has("email")) {
+                  const newErrors = new Map(errors);
+                  newErrors.delete("email");
+                  setErrors(newErrors);
+                }
+              }}
               aria-invalid={errors.has("email")}
+              autoFocus={!affiliateId}
             />
           </fieldset>
           <table>
@@ -830,6 +859,7 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
                             autoComplete="off"
                             placeholder="Commission"
                             disabled={navigation.state === "submitting" || !affiliateState.apply_to_all_products}
+                            aria-invalid={errors.has("feePercent")}
                             {...inputProps}
                           />
                           <div className="pill">%</div>
@@ -846,6 +876,7 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
                       placeholder="https://link.com"
                       onChange={(evt) => setAffiliateState({ ...affiliateState, destination_url: evt.target.value })}
                       disabled={navigation.state !== "idle" || !affiliateState.apply_to_all_products}
+                      aria-invalid={errors.has("destinationUrl")}
                     />
                   </fieldset>
                 </td>
