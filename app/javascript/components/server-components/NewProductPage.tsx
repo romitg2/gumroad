@@ -205,11 +205,11 @@ const NewProductPage = ({
         window.location.href = redirectTo;
       } else {
         showAlert(responseData.error_message, "error");
-        setIsSubmitting(false);
       }
     } catch (e) {
       assertResponseError(e);
       showAlert("Something went wrong.", "error");
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -410,6 +410,15 @@ const NewProductPage = ({
               </fieldset>
             </section>
           </form>
+          <Button
+            className="float-right"
+            color="accent"
+            type="submit"
+            form={`new-product-form-${formUID}`}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Adding..." : "Next: Customize"}
+          </Button>
         </div>
       </div>
     </>
