@@ -410,15 +410,6 @@ const NewProductPage = ({
               </fieldset>
             </section>
           </form>
-          <Button
-            className="float-right"
-            color="accent"
-            type="submit"
-            form={`new-product-form-${formUID}`}
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Adding..." : "Next: Customize"}
-          </Button>
         </div>
       </div>
     </>
