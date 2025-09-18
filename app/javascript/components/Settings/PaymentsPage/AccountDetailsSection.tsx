@@ -271,6 +271,7 @@ const AccountDetailsSection = ({
                   required
                   onChange={(evt) => updateComplianceInfo({ business_street_address_kanji: evt.target.value })}
                 />
+                <small>We require a valid physical US address. We cannot accept a P.O. Box as a valid address.</small>
               </fieldset>
               <fieldset className={cx({ danger: errorFieldNames.has("business_street_address_kana") })}>
                 <legend>
@@ -347,6 +348,7 @@ const AccountDetailsSection = ({
                     </option>
                   ))}
                 </select>
+                <small>We require a valid physical US address. We cannot accept a P.O. Box as a valid address.</small>
               </fieldset>
             ) : complianceInfo.business_country === "CA" ? (
               <fieldset className={cx({ danger: errorFieldNames.has("business_state") })}>
@@ -514,6 +516,7 @@ const AccountDetailsSection = ({
                 })
               }
             />
+            <small>Include your full phone number, starting with a "+" and your country code.</small>
           </fieldset>
           {user.country_supports_native_payouts || complianceInfo.business_country === "AE" ? (
             <fieldset className={cx({ danger: errorFieldNames.has("business_tax_id") })}>
@@ -1088,6 +1091,7 @@ const AccountDetailsSection = ({
             updateComplianceInfo({ phone: formatPhoneNumber(evt.target.value, complianceInfo.country) })
           }
         />
+        <small>Include your full phone number, starting with a "+" and your country code.</small>
       </fieldset>
       <fieldset>
         <legend>

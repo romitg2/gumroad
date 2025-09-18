@@ -584,11 +584,6 @@ const PaymentsPage = (props: Props) => {
       (complianceInfo.country === "US" && isStreetAddressPOBox(complianceInfo.street_address))
     ) {
       markFieldInvalid("street_address");
-      if (complianceInfo.street_address) {
-        setErrorMessage({
-          message: "We require a valid physical US address. We cannot accept a P.O. Box as a valid address.",
-        });
-      }
     }
     if (!complianceInfo.city) {
       markFieldInvalid("city");
@@ -601,7 +596,6 @@ const PaymentsPage = (props: Props) => {
     }
     if (!validatePhoneNumber(complianceInfo.phone, complianceInfo.country)) {
       markFieldInvalid("phone");
-      setErrorMessage({ message: 'Please enter your full phone number, starting with a "+" and your country code.' });
     }
     if (complianceInfo.dob_day === 0) {
       markFieldInvalid("dob_day");
@@ -653,11 +647,6 @@ const PaymentsPage = (props: Props) => {
         (complianceInfo.business_country === "US" && isStreetAddressPOBox(complianceInfo.business_street_address))
       ) {
         markFieldInvalid("business_street_address");
-        if (complianceInfo.business_street_address) {
-          setErrorMessage({
-            message: "We require a valid physical US address. We cannot accept a P.O. Box as a valid address.",
-          });
-        }
       }
       if (!complianceInfo.business_city) {
         markFieldInvalid("business_city");
@@ -674,7 +663,6 @@ const PaymentsPage = (props: Props) => {
       }
       if (!validatePhoneNumber(complianceInfo.business_phone, complianceInfo.business_country)) {
         markFieldInvalid("business_phone");
-        setErrorMessage({ message: 'Please enter your full phone number, starting with a "+" and your country code.' });
       }
       if (
         (props.user.country_supports_native_payouts || complianceInfo.business_country === "AE") &&
@@ -898,14 +886,6 @@ const PaymentsPage = (props: Props) => {
             are_au_backtaxes_paid={props.aus_backtax_details.are_au_backtaxes_paid}
             au_backtaxes_paid_date={props.aus_backtax_details.au_backtaxes_paid_date}
           />
-        ) : null}
-
-        {errorMessage?.code === "stripe_error" ? (
-          <div className="mb-12 px-8">
-            <div role="status" className="danger">
-              <div>Your account could not be updated due to an error with Stripe.</div>
-            </div>
-          </div>
         ) : null}
 
         <section className="!p-4 md:!p-8">
