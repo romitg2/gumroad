@@ -795,6 +795,7 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
               placeholder="Email of a Gumroad creator"
               value={affiliateState.email}
               disabled={!!affiliateId || navigation.state !== "idle"}
+              aria-invalid={errors.has("email")}
               onChange={(evt) => {
                 setAffiliateState({ ...affiliateState, email: evt.target.value });
                 if (errors.has("email")) {
