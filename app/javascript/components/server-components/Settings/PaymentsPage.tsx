@@ -888,6 +888,14 @@ const PaymentsPage = (props: Props) => {
           />
         ) : null}
 
+        {errorMessage?.code === "stripe_error" ? (
+          <div className="mb-12 px-8">
+            <div role="status" className="danger">
+              <div>Your account could not be updated due to an error with Stripe.</div>
+            </div>
+          </div>
+        ) : null}
+
         <section className="!p-4 md:!p-8">
           <header>
             <h2>Payout schedule</h2>
