@@ -42,7 +42,6 @@ import { assertResponseError } from "$app/utils/request";
 import { buildStaticRouter, GlobalProps, register } from "$app/utils/serverComponentUtil";
 import { isUrlValid } from "$app/utils/url";
 import { isValidEmail } from "$app/utils/email";
-
 import { AffiliateSignupForm, ProductRow } from "$app/components/AffiliatesDashboard/AffiliateSignupForm";
 import { Button } from "$app/components/Button";
 import { CopyToClipboard } from "$app/components/CopyToClipboard";
@@ -731,9 +730,12 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
     setErrors(errors);
 
     if (errors.size > 0) {
-      const firstError = Array.from(errors.values())[0];
-      showAlert(firstError || "Please fix the errors above", "error");
-      if (errors.has("email") && emailInputRef.current) emailInputRef.current.focus();
+      const [firstErrorType, firstErrorMessage] = Array.from(errors.entries())[0] || [
+        "error",
+        "please fill all required fields",
+      ];
+      firstErrorMessage && showAlert(firstErrorMessage, "error");
+      if (firstErrorType === "email" && emailInputRef.current) emailInputRef.current.focus();
       return;
     }
 
@@ -894,6 +896,7 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
                       ),
                     })
                   }
+                  inert={affiliateState.apply_to_all_products}
                 />
               ))}
             </tbody>
