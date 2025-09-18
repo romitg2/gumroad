@@ -174,6 +174,50 @@ describe "Product creation", type: :system, js: true do
     end
   end
 
+  context "user can create multiple products in one session" do
+    it "creates multiple products" do
+      visit new_product_path
+      fill_in("Name", with: "My First product")
+      choose("Digital product")
+      fill_in("Price", with: 1)
+      click_on("Next: Customize")
+
+      expect(page).to have_title("My First product")
+      expect(page).to have_text("Add details")
+      product = seller.links.last
+      expect(product.native_type).to eq("digital")
+      expect(product.is_physical).to be(false)
+      expect(product.is_recurring_billing).to be(false)
+      expect(product.is_in_preorder_state).to be(false)
+      expect(product.subscription_duration).to be_nil
+      expect(product.custom_attributes).to eq([])
+      expect(product.should_include_last_post).to be_falsey
+
+      page.go_back
+
+      fill_in("Name", with: "My Second product")
+      choose("Digital product")
+      fill_in("Price", with: 1)
+      click_on("Next: Customize")
+
+      expect(page).to have_title("My Second product")
+      expect(page).to have_text("Add details")
+      product = seller.links.last
+      expect(product.native_type).to eq("digital")
+      expect(product.is_physical).to be(false)
+      expect(product.is_recurring_billing).to be(false)
+      expect(product.is_in_preorder_state).to be(false)
+      expect(product.subscription_duration).to be_nil
+      expect(product.custom_attributes).to eq([])
+      expect(product.should_include_last_post).to be_falsey
+
+      # Verify both products appear on the products list
+      visit products_path
+      expect(page).to have_content("My First product")
+      expect(page).to have_content("My Second product")
+    end
+  end
+
   context "seller is not eligible for service products" do
     it "does not allow the creation of a coffee product" do
       visit new_product_path
