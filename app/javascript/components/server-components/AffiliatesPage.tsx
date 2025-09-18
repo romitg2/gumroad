@@ -700,16 +700,6 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
     }
   };
 
-  const resetErrors = (errorType: string[] | string) => {
-    const newErrors = new Map(errors);
-    if (Array.isArray(errorType)) {
-      errorType.forEach((error) => newErrors.delete(error));
-    } else {
-      newErrors.delete(errorType);
-    }
-    setErrors(newErrors);
-  };
-
   const handleSubmit = asyncVoid(async () => {
     const errors = new Map<string, string>();
     const { email, fee_percent, products, apply_to_all_products, destination_url } = affiliateState;
@@ -807,7 +797,11 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
               disabled={!!affiliateId || navigation.state !== "idle"}
               onChange={(evt) => {
                 setAffiliateState({ ...affiliateState, email: evt.target.value });
-                resetErrors("email");
+                if (errors.has("email")) {
+                  const newErrors = new Map(errors);
+                  newErrors.delete("email");
+                  setErrors(newErrors);
+                }
               }}
               autoFocus={!affiliateId}
             />
@@ -835,7 +829,6 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
                     checked={affiliateState.apply_to_all_products}
                     onChange={(evt) => {
                       toggleAllProducts(evt.target.checked);
-                      resetErrors(["feePercent", "products", "destinationUrl"]);
                     }}
                     aria-label="Enable all products"
                   />
@@ -855,7 +848,6 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
                             fee_percent: value,
                           })),
                         });
-                        resetErrors("feePercent");
                       }}
                       value={affiliateState.fee_percent}
                     >
@@ -886,7 +878,6 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
                       placeholder="https://link.com"
                       onChange={(evt) => {
                         setAffiliateState({ ...affiliateState, destination_url: evt.target.value });
-                        resetErrors("destinationUrl");
                       }}
                       disabled={navigation.state !== "idle" || !affiliateState.apply_to_all_products}
                     />
@@ -905,9 +896,7 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
                         affiliateProduct.id === product.id ? { ...affiliateProduct, ...value } : affiliateProduct,
                       ),
                     });
-                    resetErrors("products");
                   }}
-                  inert={affiliateState.apply_to_all_products}
                 />
               ))}
             </tbody>
