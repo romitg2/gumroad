@@ -1,8 +1,6 @@
 import cx from "classnames";
 import * as React from "react";
-
 import { SavedCreditCard } from "$app/parsers/card";
-
 import { Button } from "$app/components/Button";
 import { FormFieldName, User } from "$app/components/server-components/Settings/PaymentsPage";
 
@@ -716,6 +714,7 @@ const BankAccountSection = ({
   showNewBankAccount,
   setShowNewBankAccount,
   errorFieldNames,
+  formFieldRefs,
 }: {
   bankAccountDetails: BankAccountDetails;
   bankAccount: Partial<BankAccount> | null;
@@ -727,6 +726,7 @@ const BankAccountSection = ({
   showNewBankAccount: boolean;
   setShowNewBankAccount: (showNewBankAccount: boolean) => void;
   errorFieldNames: Set<FormFieldName>;
+  formFieldRefs: React.MutableRefObject<Partial<Record<FormFieldName, HTMLInputElement | HTMLSelectElement | null>>>;
 }) => {
   const uid = React.useId();
 
@@ -919,6 +919,10 @@ const BankAccountSection = ({
     }
   }, []);
 
+  const refFor = (name: FormFieldName) => (el: HTMLInputElement | null) => {
+    formFieldRefs.current[name] = el;
+  };
+
   return (
     <>
       <div className="whitespace-pre-line">{feeInfoText}</div>
@@ -929,6 +933,7 @@ const BankAccountSection = ({
           </legend>
           <input
             id={`${uid}-account-holder-full-name`}
+            ref={refFor("account_holder_full_name")}
             placeholder="Full name of account holder"
             value={bankAccount?.account_holder_full_name || ""}
             disabled={isFormDisabled}
@@ -949,6 +954,7 @@ const BankAccountSection = ({
                     <input
                       type="text"
                       id={`${uid}-transit-number`}
+                      ref={refFor("transit_number")}
                       placeholder="12345"
                       maxLength={5}
                       required
@@ -964,6 +970,7 @@ const BankAccountSection = ({
                     <input
                       type="text"
                       id={`${uid}-institution-number`}
+                      ref={refFor("institution_number")}
                       placeholder="000"
                       maxLength={3}
                       required
@@ -981,6 +988,7 @@ const BankAccountSection = ({
                   <input
                     type="text"
                     id={`${uid}-bsb-number`}
+                    ref={refFor("bsb_number")}
                     placeholder="123456"
                     maxLength={6}
                     required
@@ -997,6 +1005,7 @@ const BankAccountSection = ({
                   <input
                     type="text"
                     id={`${uid}-sort-code`}
+                    ref={refFor("sort_code")}
                     placeholder="12-34-56"
                     maxLength={8}
                     required
@@ -1013,6 +1022,7 @@ const BankAccountSection = ({
                   <input
                     type="text"
                     id={`${uid}-ifsc`}
+                    ref={refFor("ifsc")}
                     placeholder="ICIC0123456"
                     maxLength={11}
                     required
@@ -1030,6 +1040,7 @@ const BankAccountSection = ({
                     <input
                       type="text"
                       id={`${uid}-clearing-code`}
+                      ref={refFor("clearing_code")}
                       placeholder="123"
                       maxLength={3}
                       required
@@ -1045,6 +1056,7 @@ const BankAccountSection = ({
                     <input
                       type="text"
                       id={`${uid}-branch-code`}
+                      ref={refFor("branch_code")}
                       placeholder="456"
                       maxLength={3}
                       required
@@ -1063,6 +1075,7 @@ const BankAccountSection = ({
                     <input
                       type="text"
                       id={`${uid}-bank-code`}
+                      ref={refFor("bank_code")}
                       placeholder="1234"
                       maxLength={4}
                       required
@@ -1640,6 +1653,7 @@ const BankAccountSection = ({
                   <input
                     type="text"
                     id={`${uid}-routing-number`}
+                    ref={refFor("routing_number")}
                     placeholder="121000497"
                     maxLength={9}
                     required
@@ -2333,6 +2347,7 @@ const BankAccountSection = ({
                     <input
                       type="text"
                       id={`${uid}-account-number`}
+                      ref={refFor("account_number")}
                       placeholder={`${user.country_code || ""}1234567890`}
                       required
                       disabled={isFormDisabled}
@@ -2347,6 +2362,7 @@ const BankAccountSection = ({
                     <input
                       type="text"
                       id={`${uid}-confirm-account-number`}
+                      ref={refFor("account_number_confirmation")}
                       placeholder={`${user.country_code || ""}1234567890`}
                       required
                       disabled={isFormDisabled}

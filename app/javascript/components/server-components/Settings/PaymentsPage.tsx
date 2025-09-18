@@ -217,6 +217,8 @@ const PaymentsPage = (props: Props) => {
   const markFieldInvalid = (fieldName: FormFieldName) => setErrorFieldNames(new Set(errorFieldNames.add(fieldName)));
   const [isUpdateCountryConfirmed, setIsUpdateCountryConfirmed] = React.useState(false);
 
+  const formFieldRefs = React.useRef<Partial<Record<FormFieldName, HTMLInputElement | HTMLSelectElement | null>>>({});
+
   const [selectedPayoutMethod, setSelectedPayoutMethod] = React.useState<PayoutMethod>(
     props.stripe_connect.has_connected_stripe
       ? "stripe"
@@ -269,10 +271,6 @@ const PaymentsPage = (props: Props) => {
   const [paypalEmailAddress, setPaypalEmailAddress] = React.useState(props.paypal_address);
   const [debitCard, setDebitCard] = React.useState<PayoutDebitCardData | null>(null);
   const [showNewBankAccount, setShowNewBankAccount] = React.useState(!props.bank_account_details.account_number_visual);
-
-  React.useEffect(() => {
-    if (errorMessage) formRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [errorMessage]);
 
   const isStreetAddressPOBox = (input: string) => {
     const countryCode: CountryCode = cast(props.user.country_code);
@@ -705,7 +703,40 @@ const PaymentsPage = (props: Props) => {
   };
 
   const handleSave = asyncVoid(async () => {
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      const firstErrorName = Array.from(errorFieldNames)[0];
+      const firstErrorFieldRef = firstErrorName ? formFieldRefs.current[firstErrorName] : null;
+      if (firstErrorFieldRef) {
+        firstErrorFieldRef.focus({ preventScroll: true });
+        firstErrorFieldRef.scrollIntoView({ behavior: "smooth", block: "center" });
+
+        showAlert("please fill all the required field, and make sure they are valid", "error");
+      }
+      return;
+    }
+
+    {
+      errorMessage ? (
+        <div className="mb-12 px-8">
+          <h1>here</h1>
+          <div role="status" className="danger">
+            {errorMessage.code === "stripe_error" ? (
+              <div>Your account could not be updated due to an error with Stripe.</div>
+            ) : (
+              errorMessage.message
+            )}
+          </div>
+        </div>
+      ) : null;
+    }
+
+    if (errorMessage) {
+      if (errorMessage.code === "stripe_error") {
+        showAlert("Your account could not be updated due to an error with Stripe.", "error");
+      } else {
+        showAlert("please fill all the required field", "error");
+      }
+    }
 
     setIsSaving(true);
     setErrorMessage(null);
@@ -883,18 +914,6 @@ const PaymentsPage = (props: Props) => {
             au_backtaxes_paid_date={props.aus_backtax_details.au_backtaxes_paid_date}
           />
         ) : null}
-
-        {errorMessage ? (
-          <div className="mb-12 px-8">
-            <div role="status" className="danger">
-              {errorMessage.code === "stripe_error" ? (
-                <div>Your account could not be updated due to an error with Stripe.</div>
-              ) : (
-                errorMessage.message
-              )}
-            </div>
-          </div>
-        ) : null}
         <section className="!p-4 md:!p-8">
           <header>
             <h2>Payout schedule</h2>
@@ -1064,6 +1083,7 @@ const PaymentsPage = (props: Props) => {
                 showNewBankAccount={showNewBankAccount}
                 setShowNewBankAccount={setShowNewBankAccount}
                 errorFieldNames={errorFieldNames}
+                formFieldRefs={formFieldRefs}
               />
             ) : selectedPayoutMethod === "card" ? (
               <DebitCardSection
@@ -1101,6 +1121,7 @@ const PaymentsPage = (props: Props) => {
                 states={props.states}
                 errorFieldNames={errorFieldNames}
                 payoutMethod={selectedPayoutMethod}
+                formFieldRefs={formFieldRefs}
               />
             ) : (
               <StripeConnectSection

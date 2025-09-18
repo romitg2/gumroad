@@ -25,6 +25,7 @@ const AccountDetailsSection = ({
   states,
   errorFieldNames,
   payoutMethod,
+  formFieldRefs,
 }: {
   user: User;
   complianceInfo: ComplianceInfo;
@@ -46,6 +47,7 @@ const AccountDetailsSection = ({
   };
   errorFieldNames: Set<FormFieldName>;
   payoutMethod: PayoutMethod;
+  formFieldRefs: React.MutableRefObject<Partial<Record<FormFieldName, HTMLInputElement | HTMLSelectElement | null>>>;
 }) => {
   const uid = React.useId();
 
@@ -56,6 +58,10 @@ const AccountDetailsSection = ({
     } catch {
       return phoneNumber;
     }
+  };
+
+  const refFor = (name: FormFieldName) => (el: HTMLInputElement | HTMLSelectElement | null) => {
+    formFieldRefs.current[name] = el;
   };
 
   return (
@@ -116,6 +122,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-business-legal-name`}
+                ref={refFor("business_name")}
                 placeholder="Acme"
                 required={complianceInfo.is_business}
                 value={complianceInfo.business_name || ""}
@@ -203,6 +210,7 @@ const AccountDetailsSection = ({
                 </legend>
                 <input
                   id={`${uid}-business-name-kanji`}
+                  ref={refFor("business_name_kanji")}
                   type="text"
                   placeholder="Legal Business Name (Kanji)"
                   value={complianceInfo.business_name_kanji || ""}
@@ -218,6 +226,7 @@ const AccountDetailsSection = ({
                 </legend>
                 <input
                   id={`${uid}-business-name-kana`}
+                  ref={refFor("business_name_kana")}
                   type="text"
                   placeholder="Business Name (Kana)"
                   value={complianceInfo.business_name_kana || ""}
@@ -237,6 +246,7 @@ const AccountDetailsSection = ({
                 </legend>
                 <input
                   id={`${uid}-business-building-number`}
+                  ref={refFor("business_building_number")}
                   type="text"
                   placeholder="1-1"
                   value={complianceInfo.business_building_number || ""}
@@ -252,6 +262,7 @@ const AccountDetailsSection = ({
                 </legend>
                 <input
                   id={`${uid}-business-street-address-kanji`}
+                  ref={refFor("business_street_address_kanji")}
                   type="text"
                   placeholder="Business Street Address (Kanji)"
                   value={complianceInfo.business_street_address_kanji || ""}
@@ -267,6 +278,7 @@ const AccountDetailsSection = ({
                 </legend>
                 <input
                   id={`${uid}-business-street-address-kana`}
+                  ref={refFor("business_street_address_kana")}
                   type="text"
                   placeholder="Business Street Address (Kana)"
                   value={complianceInfo.business_street_address_kana || ""}
@@ -284,6 +296,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-business-street-address`}
+                ref={refFor("business_street_address")}
                 placeholder="123 smith street"
                 value={complianceInfo.business_street_address || ""}
                 disabled={isFormDisabled}
@@ -305,6 +318,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-business-city`}
+                ref={refFor("business_city")}
                 placeholder="Springfield"
                 value={complianceInfo.business_city || ""}
                 disabled={isFormDisabled}
@@ -319,6 +333,7 @@ const AccountDetailsSection = ({
                 </legend>
                 <select
                   id={`${uid}-business-state`}
+                  ref={refFor("business_state")}
                   required={complianceInfo.is_business}
                   disabled={isFormDisabled}
                   aria-invalid={errorFieldNames.has("business_state")}
@@ -340,6 +355,7 @@ const AccountDetailsSection = ({
                 </legend>
                 <select
                   id={`${uid}-business-province`}
+                  ref={refFor("business_state")}
                   required={complianceInfo.is_business}
                   disabled={isFormDisabled}
                   aria-invalid={errorFieldNames.has("business_state")}
@@ -361,6 +377,7 @@ const AccountDetailsSection = ({
                 </legend>
                 <select
                   id={`${uid}-business-state`}
+                  ref={refFor("business_state")}
                   required={complianceInfo.is_business}
                   disabled={isFormDisabled}
                   aria-invalid={errorFieldNames.has("business_state")}
@@ -382,6 +399,7 @@ const AccountDetailsSection = ({
                 </legend>
                 <select
                   id={`${uid}-business-state`}
+                  ref={refFor("business_state")}
                   required={complianceInfo.is_business}
                   disabled={isFormDisabled}
                   aria-invalid={errorFieldNames.has("business_state")}
@@ -403,6 +421,7 @@ const AccountDetailsSection = ({
                 </legend>
                 <select
                   id={`${uid}-business-state`}
+                  ref={refFor("business_state")}
                   required={complianceInfo.is_business}
                   disabled={isFormDisabled}
                   aria-invalid={errorFieldNames.has("business_state")}
@@ -424,6 +443,7 @@ const AccountDetailsSection = ({
                 </legend>
                 <select
                   id={`${uid}-business-county`}
+                  ref={refFor("business_state")}
                   required={complianceInfo.is_business}
                   disabled={isFormDisabled}
                   aria-invalid={errorFieldNames.has("business_state")}
@@ -447,6 +467,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-business-zip-code`}
+                ref={refFor("business_zip_code")}
                 placeholder="12345"
                 required={complianceInfo.is_business}
                 value={complianceInfo.business_zip_code || ""}
@@ -480,6 +501,7 @@ const AccountDetailsSection = ({
             </legend>
             <input
               id={`${uid}-business-phone-number`}
+              ref={refFor("business_phone")}
               type="tel"
               placeholder="555-555-5555"
               required={complianceInfo.is_business}
@@ -505,6 +527,7 @@ const AccountDetailsSection = ({
                   </legend>
                   <input
                     id={`${uid}-business-tax-id`}
+                    ref={refFor("business_tax_id")}
                     type="text"
                     placeholder={user.business_tax_id_entered ? "Hidden for security" : "12-3456789"}
                     required={complianceInfo.is_business}
@@ -520,6 +543,7 @@ const AccountDetailsSection = ({
                   </legend>
                   <input
                     id={`${uid}-business-tax-id`}
+                    ref={refFor("business_tax_id")}
                     type="text"
                     placeholder={user.business_tax_id_entered ? "Hidden for security" : "123456789"}
                     required={complianceInfo.is_business}
@@ -535,6 +559,7 @@ const AccountDetailsSection = ({
                   </legend>
                   <input
                     id={`${uid}-business-tax-id`}
+                    ref={refFor("business_tax_id")}
                     type="text"
                     placeholder={user.business_tax_id_entered ? "Hidden for security" : "12 123 456 789"}
                     required={complianceInfo.is_business}
@@ -550,6 +575,7 @@ const AccountDetailsSection = ({
                   </legend>
                   <input
                     id={`${uid}-business-tax-id`}
+                    ref={refFor("business_tax_id")}
                     type="text"
                     placeholder={user.business_tax_id_entered ? "Hidden for security" : "12345678"}
                     required={complianceInfo.is_business}
@@ -565,6 +591,7 @@ const AccountDetailsSection = ({
                   </legend>
                   <input
                     id={`${uid}-business-tax-id`}
+                    ref={refFor("business_tax_id")}
                     type="text"
                     placeholder={user.business_tax_id_entered ? "Hidden for security" : "12345678"}
                     required={complianceInfo.is_business}
@@ -580,6 +607,7 @@ const AccountDetailsSection = ({
                   </legend>
                   <input
                     id={`${uid}-business-tax-id`}
+                    ref={refFor("business_tax_id")}
                     type="text"
                     placeholder={user.business_tax_id_entered ? "Hidden for security" : "12345678"}
                     required={complianceInfo.is_business}
@@ -595,6 +623,7 @@ const AccountDetailsSection = ({
                   </legend>
                   <input
                     id={`${uid}-business-tax-id`}
+                    ref={refFor("business_tax_id")}
                     type="text"
                     placeholder={user.business_tax_id_entered ? "Hidden for security" : "12345678"}
                     required={complianceInfo.is_business}
@@ -642,6 +671,7 @@ const AccountDetailsSection = ({
             </legend>
             <input
               id={`${uid}-creator-first-name`}
+              ref={refFor("first_name")}
               type="text"
               placeholder="First name"
               value={complianceInfo.first_name || ""}
@@ -658,6 +688,7 @@ const AccountDetailsSection = ({
             </legend>
             <input
               id={`${uid}-creator-last-name`}
+              ref={refFor("last_name")}
               type="text"
               placeholder="Last name"
               value={complianceInfo.last_name || ""}
@@ -675,6 +706,7 @@ const AccountDetailsSection = ({
             </legend>
             <input
               id={`${uid}-creator-job-title`}
+              ref={refFor("job_title")}
               type="text"
               placeholder="CEO"
               value={complianceInfo.job_title || ""}
@@ -694,6 +726,7 @@ const AccountDetailsSection = ({
                 </legend>
                 <input
                   id={`${uid}-creator-first-name-kanji`}
+                  ref={refFor("first_name_kanji")}
                   type="text"
                   placeholder="First name (Kanji)"
                   value={complianceInfo.first_name_kanji || ""}
@@ -709,6 +742,7 @@ const AccountDetailsSection = ({
                 </legend>
                 <input
                   id={`${uid}-creator-last-name-kanji`}
+                  ref={refFor("last_name_kanji")}
                   type="text"
                   placeholder="Last name (Kanji)"
                   value={complianceInfo.last_name_kanji || ""}
@@ -726,6 +760,7 @@ const AccountDetailsSection = ({
                 </legend>
                 <input
                   id={`${uid}-creator-first-name-kana`}
+                  ref={refFor("first_name_kana")}
                   type="text"
                   placeholder="First name (Kana)"
                   value={complianceInfo.first_name_kana || ""}
@@ -741,6 +776,7 @@ const AccountDetailsSection = ({
                 </legend>
                 <input
                   id={`${uid}-creator-last-name-kana`}
+                  ref={refFor("last_name_kana")}
                   type="text"
                   placeholder="Last name (Kana)"
                   value={complianceInfo.last_name_kana || ""}
@@ -761,6 +797,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-creator-building-number`}
+                ref={refFor("building_number")}
                 type="text"
                 placeholder="1-1"
                 value={complianceInfo.building_number || ""}
@@ -776,6 +813,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-creator-street-address-kanji`}
+                ref={refFor("street_address_kanji")}
                 type="text"
                 placeholder="Street Address (Kanji)"
                 value={complianceInfo.street_address_kanji || ""}
@@ -791,6 +829,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-creator-street-address-kana`}
+                ref={refFor("street_address_kana")}
                 type="text"
                 placeholder="Street Address (Kana)"
                 value={complianceInfo.street_address_kana || ""}
@@ -808,6 +847,7 @@ const AccountDetailsSection = ({
             </legend>
             <input
               id={`${uid}-creator-street-address`}
+              ref={refFor("street_address")}
               type="text"
               placeholder="Street address"
               required
@@ -826,6 +866,7 @@ const AccountDetailsSection = ({
           </legend>
           <input
             id={`${uid}-creator-city`}
+            ref={refFor("city")}
             type="text"
             placeholder="City"
             value={complianceInfo.city || ""}
@@ -842,6 +883,7 @@ const AccountDetailsSection = ({
             </legend>
             <select
               id={`${uid}-creator-state`}
+              ref={refFor("state")}
               required
               disabled={isFormDisabled}
               aria-invalid={errorFieldNames.has("state")}
@@ -863,6 +905,7 @@ const AccountDetailsSection = ({
             </legend>
             <select
               id={`${uid}-creator-province`}
+              ref={refFor("state")}
               required
               disabled={isFormDisabled}
               aria-invalid={errorFieldNames.has("state")}
@@ -884,6 +927,7 @@ const AccountDetailsSection = ({
             </legend>
             <select
               id={`${uid}-creator-state`}
+              ref={refFor("state")}
               required
               disabled={isFormDisabled}
               aria-invalid={errorFieldNames.has("state")}
@@ -905,6 +949,7 @@ const AccountDetailsSection = ({
             </legend>
             <select
               id={`${uid}-creator-state`}
+              ref={refFor("state")}
               required
               disabled={isFormDisabled}
               aria-invalid={errorFieldNames.has("state")}
@@ -926,6 +971,7 @@ const AccountDetailsSection = ({
             </legend>
             <select
               id={`${uid}-creator-province`}
+              ref={refFor("state")}
               required
               disabled={isFormDisabled}
               aria-invalid={errorFieldNames.has("state")}
@@ -947,6 +993,7 @@ const AccountDetailsSection = ({
             </legend>
             <select
               id={`${uid}-creator-county`}
+              ref={refFor("state")}
               required
               disabled={isFormDisabled}
               aria-invalid={errorFieldNames.has("state")}
@@ -968,6 +1015,7 @@ const AccountDetailsSection = ({
             </legend>
             <select
               id={`${uid}-creator-state`}
+              ref={refFor("state")}
               required
               disabled={isFormDisabled}
               aria-invalid={errorFieldNames.has("state")}
@@ -991,6 +1039,7 @@ const AccountDetailsSection = ({
           </legend>
           <input
             id={`${uid}-creator-zip-code`}
+            ref={refFor("zip_code")}
             type="text"
             placeholder={complianceInfo.country === "US" ? "ZIP code" : "Postal code"}
             value={complianceInfo.zip_code || ""}
@@ -1028,6 +1077,7 @@ const AccountDetailsSection = ({
         </legend>
         <input
           id={`${uid}-creator-phone`}
+          ref={refFor("phone")}
           type="tel"
           placeholder="Phone number"
           value={complianceInfo.phone || ""}
@@ -1048,6 +1098,7 @@ const AccountDetailsSection = ({
           <fieldset className={cx({ danger: errorFieldNames.has("dob_month") })}>
             <select
               id={`${uid}-creator-dob-month`}
+              ref={refFor("dob_month")}
               disabled={isFormDisabled}
               required
               aria-label="Month"
@@ -1069,6 +1120,7 @@ const AccountDetailsSection = ({
           >
             <select
               id={`${uid}-creator-dob-day`}
+              ref={refFor("dob_day")}
               disabled={isFormDisabled}
               required
               aria-label="Day"
@@ -1087,6 +1139,7 @@ const AccountDetailsSection = ({
           <fieldset className={cx({ danger: errorFieldNames.has("dob_year") })}>
             <select
               id={`${uid}-creator-dob-year`}
+              ref={refFor("dob_year")}
               disabled={isFormDisabled}
               required
               aria-label="Year"
@@ -1115,6 +1168,7 @@ const AccountDetailsSection = ({
           <div>
             <select
               id={`${uid}-nationality`}
+              ref={refFor("nationality")}
               disabled={isFormDisabled}
               aria-invalid={errorFieldNames.has("nationality")}
               value={complianceInfo.nationality || "Nationality"}
@@ -1143,6 +1197,7 @@ const AccountDetailsSection = ({
                 </legend>
                 <input
                   id={`${uid}-social-security-number-full`}
+                  ref={refFor("individual_tax_id")}
                   type="text"
                   minLength={9}
                   maxLength={11}
@@ -1160,6 +1215,7 @@ const AccountDetailsSection = ({
                 </legend>
                 <input
                   id={`${uid}-social-security-number`}
+                  ref={refFor("individual_tax_id")}
                   type="text"
                   minLength={4}
                   maxLength={4}
@@ -1178,6 +1234,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-social-insurance-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={9}
                 maxLength={9}
@@ -1195,6 +1252,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-colombia-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={13}
                 maxLength={13}
@@ -1212,6 +1270,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-uruguay-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={11}
                 maxLength={11}
@@ -1229,6 +1288,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-hong-kong-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={8}
                 maxLength={9}
@@ -1246,6 +1306,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-singapore-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={9}
                 maxLength={9}
@@ -1263,6 +1324,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-uae-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={15}
                 maxLength={15}
@@ -1280,6 +1342,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-mexico-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={13}
                 maxLength={13}
@@ -1297,6 +1360,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-kazakhstan-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={9}
                 maxLength={12}
@@ -1314,6 +1378,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-argentina-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={13}
                 maxLength={13}
@@ -1331,6 +1396,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-peru-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={10}
                 maxLength={10}
@@ -1348,6 +1414,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-snic`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={13}
                 maxLength={13}
@@ -1365,6 +1432,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-costa-rica-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={9}
                 maxLength={12}
@@ -1382,6 +1450,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-chile-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={8}
                 maxLength={9}
@@ -1399,6 +1468,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-dominican-republic-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={13}
                 maxLength={13}
@@ -1416,6 +1486,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-bolivia-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={8}
                 maxLength={8}
@@ -1433,6 +1504,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-paraguay-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={7}
                 maxLength={7}
@@ -1450,6 +1522,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-bangladesh-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={1}
                 maxLength={20}
@@ -1467,6 +1540,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-mozambique-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={9}
                 maxLength={9}
@@ -1484,6 +1558,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-guatemala-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={8}
                 maxLength={12}
@@ -1501,6 +1576,7 @@ const AccountDetailsSection = ({
               </legend>
               <input
                 id={`${uid}-brazil-id-number`}
+                ref={refFor("individual_tax_id")}
                 type="text"
                 minLength={11}
                 maxLength={14}
