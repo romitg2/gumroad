@@ -715,21 +715,6 @@ const PaymentsPage = (props: Props) => {
       return;
     }
 
-    {
-      errorMessage ? (
-        <div className="mb-12 px-8">
-          <h1>here</h1>
-          <div role="status" className="danger">
-            {errorMessage.code === "stripe_error" ? (
-              <div>Your account could not be updated due to an error with Stripe.</div>
-            ) : (
-              errorMessage.message
-            )}
-          </div>
-        </div>
-      ) : null;
-    }
-
     if (errorMessage) {
       if (errorMessage.code === "stripe_error") {
         showAlert("Your account could not be updated due to an error with Stripe.", "error");
@@ -914,6 +899,15 @@ const PaymentsPage = (props: Props) => {
             au_backtaxes_paid_date={props.aus_backtax_details.au_backtaxes_paid_date}
           />
         ) : null}
+
+        {errorMessage?.code === "stripe_error" ? (
+          <div className="mb-12 px-8">
+            <div role="status" className="danger">
+              <div>Your account could not be updated due to an error with Stripe.</div>
+            </div>
+          </div>
+        ) : null}
+
         <section className="!p-4 md:!p-8">
           <header>
             <h2>Payout schedule</h2>
