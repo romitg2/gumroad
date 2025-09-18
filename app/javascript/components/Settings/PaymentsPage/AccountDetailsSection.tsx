@@ -271,7 +271,6 @@ const AccountDetailsSection = ({
                   required
                   onChange={(evt) => updateComplianceInfo({ business_street_address_kanji: evt.target.value })}
                 />
-                <small>We require a valid physical US address. We cannot accept a P.O. Box as a valid address.</small>
               </fieldset>
               <fieldset className={cx({ danger: errorFieldNames.has("business_street_address_kana") })}>
                 <legend>
@@ -859,6 +858,7 @@ const AccountDetailsSection = ({
               aria-invalid={errorFieldNames.has("street_address")}
               onChange={(evt) => updateComplianceInfo({ street_address: evt.target.value })}
             />
+            <small>We require a valid physical US address. We cannot accept a P.O. Box as a valid address.</small>
           </fieldset>
         )}
       </section>
