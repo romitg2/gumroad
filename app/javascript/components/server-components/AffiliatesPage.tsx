@@ -700,6 +700,16 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
     }
   };
 
+  const resetErrors = (errorType: string[] | string) => {
+    const newErrors = new Map(errors);
+    if (Array.isArray(errorType)) {
+      errorType.forEach((error) => newErrors.delete(error));
+    } else {
+      newErrors.delete(errorType);
+    }
+    setErrors(newErrors);
+  };
+
   const handleSubmit = asyncVoid(async () => {
     const errors = new Map<string, string>();
     const { email, fee_percent, products, apply_to_all_products, destination_url } = affiliateState;
@@ -797,13 +807,8 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
               disabled={!!affiliateId || navigation.state !== "idle"}
               onChange={(evt) => {
                 setAffiliateState({ ...affiliateState, email: evt.target.value });
-                if (errors.has("email")) {
-                  const newErrors = new Map(errors);
-                  newErrors.delete("email");
-                  setErrors(newErrors);
-                }
+                resetErrors("email");
               }}
-              aria-invalid={errors.has("email")}
               autoFocus={!affiliateId}
             />
           </fieldset>
@@ -828,7 +833,10 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
                     type="checkbox"
                     role="switch"
                     checked={affiliateState.apply_to_all_products}
-                    onChange={(evt) => toggleAllProducts(evt.target.checked)}
+                    onChange={(evt) => {
+                      toggleAllProducts(evt.target.checked);
+                      resetErrors(["feePercent", "products", "destinationUrl"]);
+                    }}
                     aria-label="Enable all products"
                   />
                 </td>
@@ -838,7 +846,7 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
                 <td data-label="Commission">
                   <fieldset className={cx({ danger: errors.has("feePercent") })}>
                     <NumberInput
-                      onChange={(value) =>
+                      onChange={(value) => {
                         setAffiliateState({
                           ...affiliateState,
                           fee_percent: value,
@@ -846,8 +854,9 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
                             ...product,
                             fee_percent: value,
                           })),
-                        })
-                      }
+                        });
+                        resetErrors("feePercent");
+                      }}
                       value={affiliateState.fee_percent}
                     >
                       {(inputProps) => (
@@ -861,7 +870,6 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
                             autoComplete="off"
                             placeholder="Commission"
                             disabled={navigation.state === "submitting" || !affiliateState.apply_to_all_products}
-                            aria-invalid={errors.has("feePercent")}
                             {...inputProps}
                           />
                           <div className="pill">%</div>
@@ -876,9 +884,11 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
                       type="url"
                       value={affiliateState.destination_url || ""}
                       placeholder="https://link.com"
-                      onChange={(evt) => setAffiliateState({ ...affiliateState, destination_url: evt.target.value })}
+                      onChange={(evt) => {
+                        setAffiliateState({ ...affiliateState, destination_url: evt.target.value });
+                        resetErrors("destinationUrl");
+                      }}
                       disabled={navigation.state !== "idle" || !affiliateState.apply_to_all_products}
-                      aria-invalid={errors.has("destinationUrl")}
                     />
                   </fieldset>
                 </td>
@@ -888,14 +898,15 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
                   key={product.id}
                   product={product}
                   disabled={!canSave}
-                  onChange={(value) =>
+                  onChange={(value) => {
                     setAffiliateState({
                       ...affiliateState,
                       products: affiliateState.products.map((affiliateProduct) =>
                         affiliateProduct.id === product.id ? { ...affiliateProduct, ...value } : affiliateProduct,
                       ),
-                    })
-                  }
+                    });
+                    resetErrors("products");
+                  }}
                   inert={affiliateState.apply_to_all_products}
                 />
               ))}
