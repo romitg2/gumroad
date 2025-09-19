@@ -35,9 +35,7 @@ export const DateInput = ({
   const input = (
     <input
       ref={ref}
-      style={{
-        WebkitAppearance: "none",
-      }}
+      className="appearance-none"
       type={withTime ? "datetime-local" : "date"}
       {...rest}
       defaultValue={formatDate(value)}
