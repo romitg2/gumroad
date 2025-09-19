@@ -547,7 +547,7 @@ describe("Payments Settings Scenario", type: :system, js: true) do
         fill_in "Street address", with: "P.O. Box 123, Smith street"
         expect do
           click_on "Update settings"
-          expect(page).to have_status(text: "We require a valid physical US address. We cannot accept a P.O. Box as a valid address.")
+          expect(page).to have_selector("small", text: "We require a valid physical US address. We cannot accept a P.O. Box as a valid address.")
         end.to_not change { @user.alive_user_compliance_info.reload.street_address }
         fill_in "Street address", with: "123, Smith street"
         expect do
@@ -567,7 +567,9 @@ describe("Payments Settings Scenario", type: :system, js: true) do
         fill_in "Business Tax ID (EIN, or SSN for sole proprietors)", with: "123456789"
         expect do
           click_on "Update settings"
-          expect(page).to have_status(text: "We require a valid physical US address. We cannot accept a P.O. Box as a valid address.")
+          # here check that the address field is red (errored out)
+          expect(page).to have_field("Address", class: "danger")
+          expect(page).to have_selector("small", text: "We require a valid physical US address. We cannot accept a P.O. Box as a valid address.", visible: true)
         end.to_not change { @user.alive_user_compliance_info.reload.business_street_address }
         find_field("Address", match: :first).set("123 North street")
         expect do
@@ -578,7 +580,7 @@ describe("Payments Settings Scenario", type: :system, js: true) do
         fill_in "Street address", with: "po box 123 smith street"
         expect do
           click_on "Update settings"
-          expect(page).to have_status(text: "We require a valid physical US address. We cannot accept a P.O. Box as a valid address.")
+          expect(page).to have_selector("small", text: "We require a valid physical US address. We cannot accept a P.O. Box as a valid address.")
         end.to_not change { @user.alive_user_compliance_info.reload.street_address }
       end
     end
