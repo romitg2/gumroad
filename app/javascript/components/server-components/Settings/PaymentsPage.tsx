@@ -703,12 +703,18 @@ const PaymentsPage = (props: Props) => {
       return;
     }
 
-    if (errorMessage) {
-      if (errorMessage.code === "stripe_error") {
-        showAlert("Your account could not be updated due to an error with Stripe.", "error");
-      } else {
-        showAlert("please fill all the required field", "error");
-      }
+    {
+      errorMessage ? (
+        <div className="mb-12 px-8">
+          <div role="status" className="danger">
+            {errorMessage.code === "stripe_error" ? (
+              <div>Your account could not be updated due to an error with Stripe.</div>
+            ) : (
+              errorMessage.message
+            )}
+          </div>
+        </div>
+      ) : null;
     }
 
     setIsSaving(true);
