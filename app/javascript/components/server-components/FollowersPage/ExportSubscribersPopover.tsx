@@ -35,6 +35,19 @@ export const ExportSubscribersPopover = ({ closePopover }: { closePopover: () =>
   };
 
   const noOptionSelected = !followers && !customers && !affiliates;
+  const allSelected = followers && customers && affiliates;
+
+  const handleSelectAll = () => {
+    if (allSelected) {
+      setFollowers(false);
+      setCustomers(false);
+      setAffiliates(false);
+    } else {
+      setFollowers(true);
+      setCustomers(true);
+      setAffiliates(true);
+    }
+  };
 
   return (
     <div>
@@ -42,6 +55,10 @@ export const ExportSubscribersPopover = ({ closePopover }: { closePopover: () =>
       <p className="mb-4">This will download a CSV file with one row per subscriber.</p>
 
       <div className="mb-4 flex flex-col gap-2">
+        <label className="font-medium">
+          <input type="checkbox" checked={allSelected} onChange={handleSelectAll} />
+          All Subscribers
+        </label>
         <label>
           <input
             type="checkbox"
