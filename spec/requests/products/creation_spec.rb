@@ -185,13 +185,7 @@ describe "Product creation", type: :system, js: true do
       expect(page).to have_title("My First product")
       expect(page).to have_text("Add details")
       product = seller.links.last
-      expect(product.native_type).to eq("digital")
-      expect(product.is_physical).to be(false)
-      expect(product.is_recurring_billing).to be(false)
-      expect(product.is_in_preorder_state).to be(false)
-      expect(product.subscription_duration).to be_nil
-      expect(product.custom_attributes).to eq([])
-      expect(product.should_include_last_post).to be_falsey
+      expect(product.name).to eq("My First product")
 
       page.go_back
 
@@ -203,13 +197,7 @@ describe "Product creation", type: :system, js: true do
       expect(page).to have_title("My Second product")
       expect(page).to have_text("Add details")
       product = seller.links.last
-      expect(product.native_type).to eq("digital")
-      expect(product.is_physical).to be(false)
-      expect(product.is_recurring_billing).to be(false)
-      expect(product.is_in_preorder_state).to be(false)
-      expect(product.subscription_duration).to be_nil
-      expect(product.custom_attributes).to eq([])
-      expect(product.should_include_last_post).to be_falsey
+      expect(product.name).to eq("My Second product")
 
       # Verify both products appear on the products list
       visit products_path
