@@ -703,20 +703,6 @@ const PaymentsPage = (props: Props) => {
       return;
     }
 
-    {
-      errorMessage ? (
-        <div className="mb-12 px-8">
-          <div role="status" className="danger">
-            {errorMessage.code === "stripe_error" ? (
-              <div>Your account could not be updated due to an error with Stripe.</div>
-            ) : (
-              errorMessage.message
-            )}
-          </div>
-        </div>
-      ) : null;
-    }
-
     setIsSaving(true);
     setErrorMessage(null);
 
@@ -894,10 +880,14 @@ const PaymentsPage = (props: Props) => {
           />
         ) : null}
 
-        {errorMessage?.code === "stripe_error" ? (
+        {errorMessage ? (
           <div className="mb-12 px-8">
             <div role="status" className="danger">
-              <div>Your account could not be updated due to an error with Stripe.</div>
+              {errorMessage.code === "stripe_error" ? (
+                <div>Your account could not be updated due to an error with Stripe.</div>
+              ) : (
+                errorMessage.message
+              )}
             </div>
           </div>
         ) : null}
