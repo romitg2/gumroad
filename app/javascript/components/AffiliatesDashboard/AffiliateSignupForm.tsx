@@ -241,6 +241,7 @@ export const ProductRow = ({ product, disabled, onChange }: ProductRowProps) => 
               <div className={cx("input", { disabled: disabled || !product.enabled })}>
                 <input
                   type="text"
+                  inputMode="decimal"
                   autoComplete="off"
                   placeholder="Commission"
                   disabled={disabled || !product.enabled}

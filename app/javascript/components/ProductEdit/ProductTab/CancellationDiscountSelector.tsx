@@ -54,7 +54,7 @@ export const CancellationDiscountSelector = () => {
           <fieldset>
             <label htmlFor="billing-cycles">Duration in billing cycles</label>
             <NumberInput value={durationInBillingCycles} onChange={setDurationInBillingCycles}>
-              {(props) => <input id="billing-cycles" type="text" autoComplete="off" placeholder="∞" {...props} />}
+              {(props) => <input id="billing-cycles" type="text" inputMode="numeric" autoComplete="off" placeholder="∞" {...props} />}
             </NumberInput>
           </fieldset>
         </section>
