@@ -8,6 +8,7 @@ import { AbortError, assertResponseError } from "$app/utils/request";
 
 import { Icon } from "$app/components/Icons";
 import { NumberInput } from "$app/components/NumberInput";
+import { Button } from "$app/components/Button";
 import { showAlert } from "$app/components/server-components/Alert";
 import { useDebouncedCallback } from "$app/components/useDebouncedCallback";
 import { useOnChange } from "$app/components/useOnChange";
@@ -138,11 +139,7 @@ const FilterCheckboxes = ({
           />
         </label>
       ))}
-      {filters.length > 5 && !showingAll ? (
-        <button className="link" onClick={() => setShowingAll(true)}>
-          Load more...
-        </button>
-      ) : null}
+      {filters.length > 5 && !showingAll ? <Button onClick={() => setShowingAll(true)}>Load more...</Button> : null}
     </>
   );
 };
@@ -360,9 +357,7 @@ export const CardGrid = ({
           {pagination === "button" &&
           !((state.results?.total ?? 0) < (state.offset ?? 1) + (state.results?.products.length ?? 0)) ? (
             <div className="mt-8 w-full text-center">
-              <button className="button" onClick={() => dispatchAction({ type: "load-more" })}>
-                Load more
-              </button>
+              <Button onClick={() => dispatchAction({ type: "load-more" })}>Load more...</Button>
             </div>
           ) : null}
         </div>
