@@ -139,7 +139,11 @@ const FilterCheckboxes = ({
           />
         </label>
       ))}
-      {filters.length > 5 && !showingAll ? <Button onClick={() => setShowingAll(true)}>Load more...</Button> : null}
+      {filters.length > 5 && !showingAll ? (
+        <div className="flex w-full justify-center text-center">
+          <Button onClick={() => setShowingAll(true)}>Load more...</Button>
+        </div>
+      ) : null}
     </>
   );
 };
@@ -356,7 +360,7 @@ export const CardGrid = ({
           </div>
           {pagination === "button" &&
           !((state.results?.total ?? 0) < (state.offset ?? 1) + (state.results?.products.length ?? 0)) ? (
-            <div className="mt-8 w-full text-center">
+            <div className="mt-8 flex w-full justify-center text-center">
               <Button onClick={() => dispatchAction({ type: "load-more" })}>Load more...</Button>
             </div>
           ) : null}
