@@ -90,6 +90,15 @@ const AddTeamMembersSection = ({
 
   const updateTeamInvitation = (update: Partial<TeamInvitation>) =>
     setTeamInvitation((prevTeamInvitation) => ({ ...prevTeamInvitation, ...update }));
+
+  const clearError = (errorKey: string) => {
+    if (errors.has(errorKey)) {
+      const newErrors = new Map(errors);
+      newErrors.delete(errorKey);
+      setErrors(newErrors);
+    }
+  };
+
   const [loading, setLoading] = React.useState(false);
 
   const onSubmit = asyncVoid(async () => {
@@ -150,10 +159,7 @@ const AddTeamMembersSection = ({
             value={teamInvitation.email}
             onChange={(evt) => {
               updateTeamInvitation({ email: evt.target.value });
-              if (errors.has("email")) {
-                errors.delete("email");
-                setErrors(errors);
-              }
+              clearError("email");
             }}
           />
         </fieldset>
@@ -173,10 +179,7 @@ const AddTeamMembersSection = ({
             onChange={(evt) => {
               if (evt !== null) {
                 updateTeamInvitation({ role: evt.id });
-                if (errors.has("role")) {
-                  errors.delete("role");
-                  setErrors(errors);
-                }
+                clearError("role");
               }
             }}
           />
