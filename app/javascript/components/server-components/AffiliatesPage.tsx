@@ -765,6 +765,15 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
     }
   }, [affiliateState.products]);
 
+  const handleEmailChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setAffiliateState({ ...affiliateState, email: evt.target.value });
+    if (errors.has("email")) {
+      const newErrors = new Map(errors);
+      newErrors.delete("email");
+      setErrors(newErrors);
+    }
+  };
+
   return (
     <Layout
       title={title}
@@ -796,14 +805,7 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
               value={affiliateState.email}
               disabled={!!affiliateId || navigation.state !== "idle"}
               aria-invalid={errors.has("email")}
-              onChange={(evt) => {
-                setAffiliateState({ ...affiliateState, email: evt.target.value });
-                if (errors.has("email")) {
-                  const newErrors = new Map(errors);
-                  newErrors.delete("email");
-                  setErrors(newErrors);
-                }
-              }}
+              onChange={handleEmailChange}
               autoFocus={!affiliateId}
             />
           </fieldset>
