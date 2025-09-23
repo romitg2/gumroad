@@ -700,9 +700,9 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
     }
   };
 
-  const handleSubmit = asyncVoid(async () => {
-    const errors = new Map<string, string>();
+  const getValidationErrors = () => {
     const { email, fee_percent, products, apply_to_all_products, destination_url } = affiliateState;
+    const errors = new Map<string, string>();
 
     if (email.length === 0) {
       errors.set("email", "Email is required");
@@ -716,9 +716,7 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
 
     if (
       !apply_to_all_products &&
-      products.some(
-        (product) => product.enabled && (!product.fee_percent || product.fee_percent < 1 || product.fee_percent > 90),
-      )
+      products.some((product) => product.enabled && (!product.fee_percent || product.fee_percent < 1 || product.fee_percent > 90))
     ) {
       errors.set("products", "All enabled products must have commission between 1% and 90%");
     }
@@ -727,15 +725,25 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
       errors.set("destinationUrl", "Please enter a valid URL");
     }
 
+    return errors;
+  };
+
+  const handleValidationErrors = (errors: Map<string, string>) => {
     setErrors(errors);
 
     if (errors.size > 0) {
-      const [firstErrorType, firstErrorMessage] = Array.from(errors.entries())[0] || [
-        "error",
-        "please fill all required fields",
-      ];
-      firstErrorMessage && showAlert(firstErrorMessage, "error");
+      const [firstErrorType, firstErrorMessage] = Array.from(errors.entries())[0] || ["error", "Please fill all required fields"];
+      if (firstErrorMessage) showAlert(firstErrorMessage, "error");
       if (firstErrorType === "email" && emailInputRef.current) emailInputRef.current.focus();
+    }
+  };
+
+  const handleSubmit = asyncVoid(async () => {
+    const { apply_to_all_products, products } = affiliateState;
+    const errors = getValidationErrors();
+
+    if (errors.size > 0) {
+      handleValidationErrors(errors);
       return;
     }
 
