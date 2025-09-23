@@ -479,7 +479,9 @@ const LibraryPage = ({ results, creators, bundles, reviews_page_enabled, followi
                       ))}
                       <div className="centered" style={{ alignSelf: "center" }}>
                         {creators.length > 5 && !showingAllCreators ? (
-                          <Button onClick={() => setShowingAllCreators(true)}>Load more...</Button>
+                          <button className="link" onClick={() => setShowingAllCreators(true)}>
+                            Show more
+                          </button>
                         ) : null}
                       </div>
                     </fieldset>
