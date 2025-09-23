@@ -1,4 +1,6 @@
+import { cx } from "class-variance-authority";
 import * as React from "react";
+import { GroupBase, SelectInstance } from "react-select";
 import { cast, createCast } from "ts-safe-cast";
 
 import {
@@ -14,11 +16,11 @@ import {
   updateMember,
 } from "$app/data/settings/team";
 import { SettingPage } from "$app/parsers/settings";
+import { isValidEmail } from "$app/utils/email";
 import { asyncVoid } from "$app/utils/promise";
 import { assertResponseError } from "$app/utils/request";
 import { register } from "$app/utils/serverComponentUtil";
 
-import { isValidEmail } from "$app/utils/email";
 import { Button } from "$app/components/Button";
 import { useCurrentSeller } from "$app/components/CurrentSeller";
 import { Icon } from "$app/components/Icons";
@@ -28,8 +30,6 @@ import { Option, Select } from "$app/components/Select";
 import { showAlert } from "$app/components/server-components/Alert";
 import { Layout as SettingsLayout } from "$app/components/Settings/Layout";
 import { WithTooltip } from "$app/components/WithTooltip";
-import { cx } from "class-variance-authority";
-import { GroupBase, SelectInstance } from "react-select";
 
 const ROLE_TITLES: Record<Role, string> = {
   owner: "Owner",
