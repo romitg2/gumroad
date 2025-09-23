@@ -95,7 +95,10 @@ export const SearchPopover = ({ card_types }: Props) => {
             <input
               name="last_4"
               placeholder="Last 4 (7890)"
-              type="number"
+              type="text"
+              pattern="[0-9]{4}"
+              maxLength={4}
+              autoComplete="cc-number"
               inputMode="numeric"
               defaultValue={searchParams.get("last_4") || ""}
             />
