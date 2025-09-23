@@ -37,16 +37,10 @@ export const ExportSubscribersPopover = ({ closePopover }: { closePopover: () =>
   const noOptionSelected = !followers && !customers && !affiliates;
   const allSelected = followers && customers && affiliates;
 
-  const handleSelectAll = () => {
-    if (allSelected) {
-      setFollowers(false);
-      setCustomers(false);
-      setAffiliates(false);
-    } else {
-      setFollowers(true);
-      setCustomers(true);
-      setAffiliates(true);
-    }
+  const selectAll = () => {
+    setFollowers(!allSelected);
+    setCustomers(!allSelected);
+    setAffiliates(!allSelected);
   };
 
   return (
@@ -56,7 +50,7 @@ export const ExportSubscribersPopover = ({ closePopover }: { closePopover: () =>
 
       <div className="mb-4 flex flex-col gap-2">
         <label className="font-medium">
-          <input type="checkbox" checked={allSelected} onChange={handleSelectAll} />
+          <input type="checkbox" checked={allSelected} onChange={selectAll} />
           All Subscribers
         </label>
         <label>
