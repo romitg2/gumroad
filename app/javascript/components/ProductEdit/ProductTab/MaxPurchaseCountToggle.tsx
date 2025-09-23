@@ -34,7 +34,7 @@ export const MaxPurchaseCountToggle = ({
           <label htmlFor={`${uid}-max-purchase-count`}>Maximum number of purchases</label>
           <WithTooltip tip="Total sales">
             <NumberInput value={count} onChange={setCount}>
-              {(props) => <input inputMode="numeric" id={`${uid}-max-purchase-count`} placeholder="∞" {...props} />}
+              {(props) => <input id={`${uid}-max-purchase-count`} placeholder="∞" {...props} />}
             </NumberInput>
           </WithTooltip>
         </fieldset>

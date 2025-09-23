@@ -463,7 +463,6 @@ const MainPage = (props: Props) => {
                           <input
                             id={`${uid}-ppp-discount-percentage`}
                             type="text"
-                            inputMode="decimal"
                             placeholder="60"
                             disabled={props.is_form_disabled}
                             aria-label="Percentage"

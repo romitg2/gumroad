@@ -79,7 +79,6 @@ export const DiscountInput = ({
               {(props) => (
                 <input
                   type="text"
-                  inputMode="decimal"
                   placeholder="0"
                   disabled={discount.type !== "percent"}
                   aria-label="Percentage"

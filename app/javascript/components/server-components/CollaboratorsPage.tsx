@@ -547,7 +547,6 @@ const CollaboratorForm = () => {
                           <div className={cx("input", { disabled: !applyToAllProducts })}>
                             <input
                               type="text"
-                              inputMode="decimal"
                               disabled={!applyToAllProducts}
                               placeholder={`${defaultPercentCommission.value || DEFAULT_PERCENT_COMMISSION}`}
                               aria-label="Percentage"

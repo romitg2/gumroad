@@ -758,7 +758,6 @@ export const ConfigurationSelector = React.forwardRef<
             {(props) => (
               <input
                 type="number"
-                inputMode="decimal"
                 id={quantityInputUID}
                 {...props}
                 min={1}

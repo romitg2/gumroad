@@ -60,7 +60,7 @@ export const CallLimitationsEditor = ({
         <NumberInput value={minimumNotice.value} onChange={(value) => setMinimumNotice({ ...minimumNotice, value })}>
           {(props) => (
             <div className="input" ref={inputRef}>
-              <input id={`${uid}-notice-period`} inputMode="numeric" placeholder="15" {...props} />
+              <input id={`${uid}-notice-period`} placeholder="15" {...props} />
               <label className="pill select">
                 <span>{minimumNotice.unit}</span>
                 <TypeSafeOptionSelect

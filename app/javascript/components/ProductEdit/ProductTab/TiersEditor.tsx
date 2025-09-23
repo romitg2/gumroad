@@ -234,7 +234,6 @@ const TierEditor = ({
                 <input
                   id={`${uid}-max-purchase-count`}
                   type="number"
-                  inputMode="numeric"
                   placeholder="∞"
                   {...inputProps}
                 />
