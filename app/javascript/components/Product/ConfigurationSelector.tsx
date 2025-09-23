@@ -755,15 +755,7 @@ export const ConfigurationSelector = React.forwardRef<
             <label htmlFor={quantityInputUID}>{product.is_multiseat_license ? "Seats" : "Quantity"}</label>
           </legend>
           <NumberInput onChange={(quantity) => update({ quantity: quantity ?? 0 })} value={selection.quantity}>
-            {(props) => (
-              <input
-                type="number"
-                id={quantityInputUID}
-                {...props}
-                min={1}
-                max={maxQuantity ?? undefined}
-              />
-            )}
+            {(props) => <input type="number" id={quantityInputUID} {...props} min={1} max={maxQuantity ?? undefined} />}
           </NumberInput>
         </fieldset>
       ) : null}
