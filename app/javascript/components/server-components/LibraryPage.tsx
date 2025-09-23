@@ -477,7 +477,7 @@ const LibraryPage = ({ results, creators, bundles, reviews_page_enabled, followi
                           />
                         </label>
                       ))}
-                      <div className="centered" style={{ alignSelf: "center" }}>
+                      <div>
                         {creators.length > 5 && !showingAllCreators ? (
                           <button className="link" onClick={() => setShowingAllCreators(true)}>
                             Show more
