@@ -8,7 +8,6 @@ import { AbortError, assertResponseError } from "$app/utils/request";
 
 import { Icon } from "$app/components/Icons";
 import { NumberInput } from "$app/components/NumberInput";
-import { Button } from "$app/components/Button";
 import { showAlert } from "$app/components/server-components/Alert";
 import { useDebouncedCallback } from "$app/components/useDebouncedCallback";
 import { useOnChange } from "$app/components/useOnChange";
@@ -141,7 +140,9 @@ const FilterCheckboxes = ({
       ))}
       {filters.length > 5 && !showingAll ? (
         <div className="flex w-full justify-center text-center">
-          <Button onClick={() => setShowingAll(true)}>Load more...</Button>
+          <button className="link" onClick={() => setShowingAll(true)}>
+            Show more
+          </button>
         </div>
       ) : null}
     </>
@@ -361,7 +362,9 @@ export const CardGrid = ({
           {pagination === "button" &&
           !((state.results?.total ?? 0) < (state.offset ?? 1) + (state.results?.products.length ?? 0)) ? (
             <div className="mt-8 flex w-full justify-center text-center">
-              <Button onClick={() => dispatchAction({ type: "load-more" })}>Load more</Button>
+              <button className="link" onClick={() => dispatchAction({ type: "load-more" })}>
+                Load more
+              </button>
             </div>
           ) : null}
         </div>
