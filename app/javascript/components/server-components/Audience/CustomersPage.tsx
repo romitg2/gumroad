@@ -288,7 +288,7 @@ const CustomersPage = ({
                 <div>
                   <ProductSelect
                     products={products.filter(
-                      (product) => !excludedItems.find((excludedItem) => product.id == excludedItem.id),
+                      (product) => !excludedItems.find((excludedItem) => product.id === excludedItem.id),
                     )}
                     label="Customers who bought"
                     items={includedItems}
@@ -298,7 +298,7 @@ const CustomersPage = ({
                 <div>
                   <ProductSelect
                     products={products.filter(
-                      (product) => !includedItems.find((includedItem) => product.id == includedItem.id),
+                      (product) => !includedItems.find((includedItem) => product.id === includedItem.id),
                     )}
                     label="Customers who have not bought"
                     items={excludedItems}
