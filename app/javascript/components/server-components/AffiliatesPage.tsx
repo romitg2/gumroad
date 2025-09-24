@@ -37,11 +37,12 @@ import {
 } from "$app/data/affiliates";
 import { assertDefined } from "$app/utils/assert";
 import { formatPriceCentsWithCurrencySymbol } from "$app/utils/currency";
+import { isValidEmail } from "$app/utils/email";
 import { asyncVoid } from "$app/utils/promise";
 import { assertResponseError } from "$app/utils/request";
 import { buildStaticRouter, GlobalProps, register } from "$app/utils/serverComponentUtil";
 import { isUrlValid } from "$app/utils/url";
-import { isValidEmail } from "$app/utils/email";
+
 import { AffiliateSignupForm, ProductRow } from "$app/components/AffiliatesDashboard/AffiliateSignupForm";
 import { Button } from "$app/components/Button";
 import { CopyToClipboard } from "$app/components/CopyToClipboard";
@@ -716,7 +717,9 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
 
     if (
       !apply_to_all_products &&
-      products.some((product) => product.enabled && (!product.fee_percent || product.fee_percent < 1 || product.fee_percent > 90))
+      products.some(
+        (product) => product.enabled && (!product.fee_percent || product.fee_percent < 1 || product.fee_percent > 90),
+      )
     ) {
       errors.set("products", "All enabled products must have commission between 1% and 90%");
     }
@@ -732,7 +735,10 @@ const Form = ({ title, headerLabel, submitLabel }: FormProps) => {
     setErrors(errors);
 
     if (errors.size > 0) {
-      const [firstErrorType, firstErrorMessage] = Array.from(errors.entries())[0] || ["error", "Please fill all required fields"];
+      const [firstErrorType, firstErrorMessage] = Array.from(errors.entries())[0] || [
+        "error",
+        "Please fill all required fields",
+      ];
       if (firstErrorMessage) showAlert(firstErrorMessage, "error");
       if (firstErrorType === "email" && emailInputRef.current) emailInputRef.current.focus();
     }
