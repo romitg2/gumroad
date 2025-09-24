@@ -315,7 +315,6 @@ const LibraryPage = ({ results, creators, bundles, reviews_page_enabled, followi
     }
   });
 
-
   const clearFilters = () => {
     setEnteredQuery("");
     dispatch({ type: "update-search", search: { query: "", creators: [], bundles: [], showArchivedOnly: false } });
