@@ -315,6 +315,11 @@ const LibraryPage = ({ results, creators, bundles, reviews_page_enabled, followi
     }
   });
 
+  const clearFilters = () => {
+    setEnteredQuery("");
+    dispatch({ type: "update-search", search: { query: "", creators: [], bundles: [], showArchivedOnly: false } });
+  };
+
   return (
     <Layout
       selectedTab="purchases"
@@ -372,10 +377,15 @@ const LibraryPage = ({ results, creators, bundles, reviews_page_enabled, followi
           {!showArchivedNotice && (hasParams || archivedCount > 0 || state.results.length > 9) ? (
             <div className="stack">
               <header>
-                <div>
-                  {filteredResults.length
-                    ? `Showing 1-${Math.min(filteredResults.length, resultsLimit)} of ${filteredResults.length} products`
-                    : "No products found"}
+                <div className="flex items-center justify-between">
+                  <div>Filters</div>
+                  {hasParams ? (
+                    <div className="text-right">
+                      <button className="link" onClick={clearFilters}>
+                        Clear
+                      </button>
+                    </div>
+                  ) : null}
                 </div>
                 {isDesktop ? null : (
                   <button className="link" onClick={() => setMobileFiltersExpanded(!mobileFiltersExpanded)}>
