@@ -208,6 +208,7 @@ describe "Sales page", type: :system, js: true do
         uncheck "Show active customers only"
         expect(page).to have_button("3")
       end
+
       it "prevents selecting the same product in both bought and not bought filters" do
         login_as seller
         visit customers_path
