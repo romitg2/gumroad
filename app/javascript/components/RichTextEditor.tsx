@@ -11,21 +11,21 @@ import cx from "classnames";
 import partition from "lodash/partition";
 import * as React from "react";
 
+import { getReviews, Review as ReviewType } from "$app/data/product_reviews";
 import { assertDefined } from "$app/utils/assert";
 
 import { InputtedDiscount } from "$app/components/CheckoutDashboard/DiscountInput";
 import { Icon } from "$app/components/Icons";
+import { PaginationProps } from "$app/components/Pagination";
 import { Popover, Props as PopoverProps } from "$app/components/Popover";
 import { TestimonialSelectModal } from "$app/components/TestimonialSelectModal";
-import { getReviews, Review as ReviewType } from "$app/data/product_reviews";
-import { PaginationProps } from "$app/components/Pagination";
-import { useRunOnce } from "$app/components/useRunOnce";
 import { CodeBlock } from "$app/components/TiptapExtensions/CodeBlock";
 import { Image, uploadImages } from "$app/components/TiptapExtensions/Image";
 import { Link, Button as TiptapButton } from "$app/components/TiptapExtensions/Link";
 import { ReviewCard } from "$app/components/TiptapExtensions/ReviewCard";
 import { UpsellCard } from "$app/components/TiptapExtensions/UpsellCard";
 import { Product, ProductOption, UpsellSelectModal } from "$app/components/UpsellSelectModal";
+import { useRunOnce } from "$app/components/useRunOnce";
 import { WithTooltip } from "$app/components/WithTooltip";
 
 import { Raw } from "./TiptapExtensions/MediaEmbed";
@@ -318,7 +318,10 @@ export const RichTextEditorToolbar = ({
 
   const [isUpsellModalOpen, setIsUpsellModalOpen] = React.useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = React.useState(false);
-  const [reviewsData, setReviewsData] = React.useState<{ reviews: ReviewType[]; pagination: PaginationProps | null }>({ reviews: [], pagination: null });
+  const [reviewsData, setReviewsData] = React.useState<{ reviews: ReviewType[]; pagination: PaginationProps | null }>({
+    reviews: [],
+    pagination: null,
+  });
 
   const handleUpsellInsert = (product: Product, variant: ProductOption | null, discount: InputtedDiscount | null) => {
     editor
@@ -359,11 +362,13 @@ export const RichTextEditorToolbar = ({
 
   useRunOnce(() => {
     if (productId) {
-      void getReviews(productId, 1).then((data) => {
-        setReviewsData({ reviews: data.reviews, pagination: data.pagination });
-      }).catch(() => {
-        setReviewsData({ reviews: [], pagination: null });
-      });
+      void getReviews(productId, 1)
+        .then((data) => {
+          setReviewsData({ reviews: data.reviews, pagination: data.pagination });
+        })
+        .catch(() => {
+          setReviewsData({ reviews: [], pagination: null });
+        });
     }
   });
 

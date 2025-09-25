@@ -58,7 +58,6 @@ export const TestimonialSelectModal = ({
     }
   });
 
-
   const handleLoadMore = () => {
     if (state.pagination) {
       void loadReviews(state.pagination.page + 1);
