@@ -15,19 +15,23 @@ export const TestimonialSelectModal = ({
   onClose,
   onInsert,
   productId,
+  reviews,
+  pagination,
 }: {
   isOpen: boolean;
   onClose: () => void;
   onInsert: (reviewIds: string[]) => void;
   productId: string;
+  reviews?: ReviewType[];
+  pagination?: PaginationProps | null;
 }) => {
   const [selectedReviewIds, setSelectedReviewIds] = React.useState<string[]>([]);
   const [state, setState] = React.useState<{
     reviews: ReviewType[];
     pagination: PaginationProps | null;
   }>({
-    reviews: [],
-    pagination: null,
+    reviews: reviews || [],
+    pagination: pagination || null,
   });
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -37,7 +41,7 @@ export const TestimonialSelectModal = ({
       const data = await getReviews(productId, page);
 
       setState((prevState) => ({
-        reviews: [...prevState.reviews, ...data.reviews],
+        reviews: page === 1 ? data.reviews : [...prevState.reviews, ...data.reviews],
         pagination: data.pagination,
       }));
     } catch (error) {
@@ -49,8 +53,11 @@ export const TestimonialSelectModal = ({
   };
 
   useRunOnce(() => {
-    void loadReviews(1);
+    if (!reviews && productId) {
+      void loadReviews(1);
+    }
   });
+
 
   const handleLoadMore = () => {
     if (state.pagination) {

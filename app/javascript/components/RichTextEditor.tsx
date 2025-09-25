@@ -17,6 +17,9 @@ import { InputtedDiscount } from "$app/components/CheckoutDashboard/DiscountInpu
 import { Icon } from "$app/components/Icons";
 import { Popover, Props as PopoverProps } from "$app/components/Popover";
 import { TestimonialSelectModal } from "$app/components/TestimonialSelectModal";
+import { getReviews, Review as ReviewType } from "$app/data/product_reviews";
+import { PaginationProps } from "$app/components/Pagination";
+import { useRunOnce } from "$app/components/useRunOnce";
 import { CodeBlock } from "$app/components/TiptapExtensions/CodeBlock";
 import { Image, uploadImages } from "$app/components/TiptapExtensions/Image";
 import { Link, Button as TiptapButton } from "$app/components/TiptapExtensions/Link";
@@ -315,6 +318,7 @@ export const RichTextEditorToolbar = ({
 
   const [isUpsellModalOpen, setIsUpsellModalOpen] = React.useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = React.useState(false);
+  const [reviewsData, setReviewsData] = React.useState<{ reviews: ReviewType[]; pagination: PaginationProps | null }>({ reviews: [], pagination: null });
 
   const handleUpsellInsert = (product: Product, variant: ProductOption | null, discount: InputtedDiscount | null) => {
     editor
@@ -352,6 +356,16 @@ export const RichTextEditorToolbar = ({
     editor.on("transaction", handleTransaction);
     return () => void editor.off("transaction", handleTransaction);
   }, [editor]);
+
+  useRunOnce(() => {
+    if (productId) {
+      void getReviews(productId, 1).then((data) => {
+        setReviewsData({ reviews: data.reviews, pagination: data.pagination });
+      }).catch(() => {
+        setReviewsData({ reviews: [], pagination: null });
+      });
+    }
+  });
 
   const textFormatOptions: { name: string; icon: IconName; type: string; attrs?: object }[] = [
     { name: "Text", icon: "fonts", type: "paragraph" },
@@ -489,7 +503,7 @@ export const RichTextEditorToolbar = ({
                         <Icon name="cart-plus" />
                         <span>Upsell</span>
                       </div>
-                      {productId ? (
+                      {productId && reviewsData.reviews.length > 0 ? (
                         <div role="menuitem" onClick={() => setIsReviewModalOpen(true)}>
                           <Icon name="solid-star" />
                           <span>Reviews</span>
@@ -524,12 +538,14 @@ export const RichTextEditorToolbar = ({
         onClose={() => setIsUpsellModalOpen(false)}
         onInsert={handleUpsellInsert}
       />
-      {productId ? (
+      {productId && reviewsData.reviews.length > 0 ? (
         <TestimonialSelectModal
           isOpen={isReviewModalOpen}
           onClose={() => setIsReviewModalOpen(false)}
           onInsert={handleReviewInsert}
           productId={productId}
+          reviews={reviewsData.reviews}
+          pagination={reviewsData.pagination}
         />
       ) : null}
     </ToolbarTooltipContext.Provider>
