@@ -337,6 +337,39 @@ describe("Library Scenario", type: :system, js: true) do
       expect(page).to have_product_card(@c.link)
     end
 
+    it "clears all filters with the Clear button" do
+      create(:purchase, purchaser: @user, is_archived: true)
+
+      visit "/library"
+
+      # Apply different filter
+      find_and_click("label", text: @creator.name)
+      expect(find_field(@creator.name, visible: false).checked?).to eq(true)
+
+      search_field = find_field("Search products")
+      search_field.fill_in with: "Product ZZZ"
+      search_field.native.send_keys(:enter)
+
+      check "Show archived only"
+
+      # clicking Clear should reset all filters
+      click_on "Clear"
+
+      expect(find_field("Search products").value).to eq("")
+      expect(find_field("All Creators", visible: false).checked?).to eq(true)
+      expect(page).to have_unchecked_field("Show archived only")
+      expect(page.current_path).to eq(library_path)
+    end
+
+    it "shows placeholder when no products match filters" do
+      visit "/library"
+      search_field = find_field("Search products")
+      search_field.fill_in with: "definitely-no-match-term"
+      search_field.native.send_keys(:enter)
+
+      expect(page).to have_text("No products found")
+    end
+
     it "allows the purchaser to filter products by creator" do
       @another_creator = create(:user, username: nil, name: "Another user")
       create(:product, user: @another_creator, name: "Another Creator's Product C")
