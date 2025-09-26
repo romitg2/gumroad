@@ -499,6 +499,27 @@ describe("Product Edit Rich Text Editor", type: :system, js: true) do
     end
   end
 
+  describe "Reviews insertion" do
+    it "hides Reviews button when product has no reviews" do
+      visit("/products/#{@product.unique_permalink}/edit")
+
+      select_disclosure "Insert" do
+        expect(page).not_to have_text("Reviews")
+      end
+    end
+
+    it "shows Reviews button when product has reviews" do
+      @product.update!(price_cents: 0)
+      create(:free_purchase, :with_review, link: @product)
+
+      visit("/products/#{@product.unique_permalink}/edit")
+
+      select_disclosure "Insert" do
+        expect(page).to have_text("Reviews")
+      end
+    end
+  end
+
   describe "public files in the product description" do
     before do
       Feature.activate_user(:audio_previews, @product.user)
