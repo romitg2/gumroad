@@ -515,7 +515,7 @@ const AccountDetailsSection = ({
                 })
               }
             />
-            <small>Include your full phone number, starting with a "+" and your country code.</small>
+            <small>Enter your full phone number, starting with a "+" and your country code.</small>
           </fieldset>
           {user.country_supports_native_payouts || complianceInfo.business_country === "AE" ? (
             <fieldset className={cx({ danger: errorFieldNames.has("business_tax_id") })}>

@@ -1053,7 +1053,7 @@ describe("Payments Settings Scenario", type: :system, js: true) do
         click_on("Update settings")
         expect(page).to_not have_alert(text: "Thanks! You're all set.")
         expect(find_field("Phone number")["aria-invalid"]).to eq "true"
-        expect(page).to have_selector("small", text: "Include your full phone number, starting with a \"+\" and your country code.", visible: true)
+        expect(page).to have_selector("small", text: "Enter your full phone number, starting with a \"+\" and your country code.", visible: true)
 
         fill_in("Phone number", with: "5022541982")
         click_on("Update settings")
