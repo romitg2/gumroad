@@ -1091,7 +1091,7 @@ const AccountDetailsSection = ({
             updateComplianceInfo({ phone: formatPhoneNumber(evt.target.value, complianceInfo.country) })
           }
         />
-        <small>Include your full phone number, starting with a "+" and your country code.</small>
+        <small>Enter your full phone number, starting with a "+" and your country code.</small>
       </fieldset>
       <fieldset>
         <legend>
