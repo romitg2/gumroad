@@ -532,22 +532,29 @@ const LibraryPage = ({ results, creators, bundles, reviews_page_enabled, followi
               ) : null}
             </div>
           ) : null}
-          <div className="product-card__column product-card__grid product-card-grid">
-            {filteredResults.slice(0, resultsLimit).map((result) => (
-              <Card
-                key={result.purchase.id}
-                result={result}
-                onArchive={() =>
-                  dispatch({
-                    type: "set-archived",
-                    purchaseId: result.purchase.id,
-                    isArchived: !result.purchase.is_archived,
-                  })
-                }
-                onDelete={(confirm = true) => (confirm ? setDeleting(result) : deletePurchase(result))}
-              />
-            ))}
-          </div>
+          {filteredResults.length === 0 ? (
+            <div className="placeholder">
+              <Icon name="archive-fill" />
+              No products found
+            </div>
+          ) : (
+            <div className="product-card__column product-card__grid product-card-grid">
+              {filteredResults.slice(0, resultsLimit).map((result) => (
+                <Card
+                  key={result.purchase.id}
+                  result={result}
+                  onArchive={() =>
+                    dispatch({
+                      type: "set-archived",
+                      purchaseId: result.purchase.id,
+                      isArchived: !result.purchase.is_archived,
+                    })
+                  }
+                  onDelete={(confirm = true) => (confirm ? setDeleting(result) : deletePurchase(result))}
+                />
+              ))}
+            </div>
+          )}
         </div>
         <DeleteProductModal
           deleting={deleting}
