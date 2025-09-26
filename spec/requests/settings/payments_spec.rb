@@ -567,9 +567,9 @@ describe("Payments Settings Scenario", type: :system, js: true) do
         fill_in "Business Tax ID (EIN, or SSN for sole proprietors)", with: "123456789"
         expect do
           click_on "Update settings"
-          # here check that the address field is red (errored out)
-          expect(page).to have_field("Address", class: "danger")
           expect(page).to have_selector("small", text: "We require a valid physical US address. We cannot accept a P.O. Box as a valid address.", visible: true)
+          address_field = find_field("Address", match: :first)
+          expect(address_field["aria-invalid"]).to eq("true")
         end.to_not change { @user.alive_user_compliance_info.reload.business_street_address }
         find_field("Address", match: :first).set("123 North street")
         expect do
@@ -940,7 +940,7 @@ describe("Payments Settings Scenario", type: :system, js: true) do
         click_on("Update settings")
         expect(page).to_not have_alert(text: "Thanks! You're all set.")
         expect(find_field("Phone number")["aria-invalid"]).to eq "true"
-        expect(page).to have_selector("small", text: "Please enter your full phone number, starting with a \"+\" and your country code.", visible: true)
+        expect(page).to have_selector("small", text: "Include your full phone number, starting with a \"+\" and your country code.", visible: true)
 
         fill_in("Phone number", with: "5022541982")
         click_on("Update settings")

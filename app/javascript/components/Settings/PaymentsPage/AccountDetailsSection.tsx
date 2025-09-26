@@ -303,6 +303,7 @@ const AccountDetailsSection = ({
                 aria-invalid={errorFieldNames.has("business_street_address")}
                 onChange={(evt) => updateComplianceInfo({ business_street_address: evt.target.value })}
               />
+              <small>We require a valid physical US address. We cannot accept a P.O. Box as a valid address.</small>
             </fieldset>
           )}
           <div
@@ -347,7 +348,6 @@ const AccountDetailsSection = ({
                     </option>
                   ))}
                 </select>
-                <small>We require a valid physical US address. We cannot accept a P.O. Box as a valid address.</small>
               </fieldset>
             ) : complianceInfo.business_country === "CA" ? (
               <fieldset className={cx({ danger: errorFieldNames.has("business_state") })}>
