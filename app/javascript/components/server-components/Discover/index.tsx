@@ -41,7 +41,9 @@ const sortTitles = {
 const ProductsCarousel = ({ products, title }: { products: CardProduct[]; title: string }) => {
   const [active, setActive] = React.useState(0);
   const { itemsRef, handleScroll } = useScrollableCarousel(active, setActive);
-  const [dragStart, setDragStart] = React.useState<number | null>(null);
+  const [isDragging, setIsDragging] = React.useState(false);
+  const dragStartRef = React.useRef<number | null>(null);
+  const scrollStartRef = React.useRef<number | null>(null);
 
   return (
     <section className="carousel-section">
@@ -57,22 +59,51 @@ const ProductsCarousel = ({ products, title }: { products: CardProduct[]; title:
           </button>
         </div>
       </header>
-      <div className="carousel">
+      <div className="carousel cursor-pointer">
         <div
           className="items"
           ref={itemsRef}
-          style={{ scrollSnapType: dragStart != null ? "none" : undefined }}
+          style={{
+            scrollSnapType: isDragging ? "none" : undefined,
+            userSelect: isDragging ? "none" : undefined,
+          }}
           onScroll={handleScroll}
-          onMouseDown={(e) => setDragStart(e.clientX)}
+          onMouseDown={(e) => {
+            dragStartRef.current = e.clientX;
+            scrollStartRef.current = itemsRef.current?.scrollLeft ?? 0;
+            setIsDragging(true);
+          }}
           onMouseMove={(e) => {
-            if (dragStart == null || !itemsRef.current) return;
-            itemsRef.current.scrollLeft -= e.movementX;
+            if (!isDragging || !itemsRef.current || dragStartRef.current === null) return;
+            const deltaX = e.clientX - dragStartRef.current;
+            itemsRef.current.scrollLeft -= deltaX;
+            dragStartRef.current = e.clientX;
+          }}
+          onMouseUp={() => {
+            setIsDragging(false);
+            dragStartRef.current = null;
+            setTimeout(() => {
+              scrollStartRef.current = null;
+            }, 0);
+          }}
+          onMouseLeave={() => {
+            setIsDragging(false);
+            dragStartRef.current = null;
+            setTimeout(() => {
+              scrollStartRef.current = null;
+            }, 0);
           }}
           onClick={(e) => {
-            if (dragStart != null && Math.abs(e.clientX - dragStart) > 30) e.preventDefault();
-            setDragStart(null);
+            if (
+              scrollStartRef.current !== null &&
+              itemsRef.current &&
+              Math.abs(itemsRef.current.scrollLeft - scrollStartRef.current) > 5
+            ) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+            scrollStartRef.current = null;
           }}
-          onMouseOut={() => setDragStart(null)}
         >
           {products.map((product, idx) => (
             // Only the first 3 cards are visible, so we can set eager loading for them
