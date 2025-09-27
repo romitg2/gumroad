@@ -46,7 +46,7 @@ const ProductsCarousel = ({ products, title }: { products: CardProduct[]; title:
   const scrollStartRef = React.useRef<number | null>(null);
 
   return (
-    <section className="carousel-section">
+    <section className="carousel-section cursor-pointer">
       <header>
         <h2>{title}</h2>
         <div className="actions">
@@ -59,7 +59,7 @@ const ProductsCarousel = ({ products, title }: { products: CardProduct[]; title:
           </button>
         </div>
       </header>
-      <div className="carousel cursor-pointer">
+      <div className="carousel">
         <div
           className="items"
           ref={itemsRef}
