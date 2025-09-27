@@ -43,7 +43,7 @@ const ProductsCarousel = ({ products, title }: { products: CardProduct[]; title:
   const { itemsRef, handleScroll } = useScrollableCarousel(active, setActive);
   const [isDragging, setIsDragging] = React.useState(false);
   const dragStartRef = React.useRef<number | null>(null);
-  const scrollStartRef = React.useRef<number | null>(null);
+  const initialMouseRef = React.useRef<number | null>(null);
 
   return (
     <section className="carousel-section cursor-pointer">
@@ -70,7 +70,7 @@ const ProductsCarousel = ({ products, title }: { products: CardProduct[]; title:
           onScroll={handleScroll}
           onMouseDown={(e) => {
             dragStartRef.current = e.clientX;
-            scrollStartRef.current = itemsRef.current?.scrollLeft ?? 0;
+            initialMouseRef.current = e.clientX;
             setIsDragging(true);
           }}
           onMouseMove={(e) => {
@@ -83,26 +83,21 @@ const ProductsCarousel = ({ products, title }: { products: CardProduct[]; title:
             setIsDragging(false);
             dragStartRef.current = null;
             setTimeout(() => {
-              scrollStartRef.current = null;
+              initialMouseRef.current = null;
             }, 0);
           }}
           onMouseLeave={() => {
             setIsDragging(false);
             dragStartRef.current = null;
             setTimeout(() => {
-              scrollStartRef.current = null;
+              initialMouseRef.current = null;
             }, 0);
           }}
           onClick={(e) => {
-            if (
-              scrollStartRef.current !== null &&
-              itemsRef.current &&
-              Math.abs(itemsRef.current.scrollLeft - scrollStartRef.current) > 5
-            ) {
+            if (initialMouseRef.current !== null && Math.abs(e.clientX - initialMouseRef.current) > 5) {
               e.preventDefault();
               e.stopPropagation();
             }
-            scrollStartRef.current = null;
           }}
         >
           {products.map((product, idx) => (
