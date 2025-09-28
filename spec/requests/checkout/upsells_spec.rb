@@ -187,6 +187,7 @@ describe("Checkout upsells page", type: :system, js: true) do
 
       select_combo_box_option search: "Product 1", from: "Apply to this product"
       select_combo_box_option search: "Untitled 1", from: "Version to offer for Untitled 2"
+      scroll_to(find("[aria-label='Preview']"))
       in_preview do
         within_modal "Enhance your learning experience" do
           expect(page).to have_radio_button("Untitled 1", text: "$10")
@@ -197,6 +198,7 @@ describe("Checkout upsells page", type: :system, js: true) do
         click_on "Clear value"
       end
       select_combo_box_option search: "Untitled 2", from: "Version to offer for Untitled 1"
+      scroll_to(find("[aria-label='Preview']"))
       in_preview do
         within_modal "Enhance your learning experience" do
           expect(page).to have_radio_button("Untitled 2", text: "$15")
