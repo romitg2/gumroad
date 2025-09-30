@@ -1,5 +1,18 @@
 <% content_for :meta do %>
   <link href="<%= @product.long_url %>" rel="canonical">
+  <% if @product.isbn.present? && @product.native_type.in?([Link::NATIVE_TYPE_EBOOK, Link::NATIVE_TYPE_DIGITAL]) %>
+    <script type="application/ld+json">
+      <%= {
+            "@context" => "https://schema.org/",
+            "@type" => "Book",
+            "name" => @product.name,
+            "description" => ActionController::Base.helpers.strip_tags(@product.html_safe_description).squish,
+            "isbn" => @product.isbn,
+            "bookFormat" => "https://schema.org/EBook",
+            "url" => @product.long_url,
+          }.to_json.html_safe %>
+    </script>
+  <% end %>
 <% end %>
 
 <%= render("layouts/custom_styles/style") %>

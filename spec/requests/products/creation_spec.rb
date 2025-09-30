@@ -75,6 +75,7 @@ describe "Product creation", type: :system, js: true do
       expect(product.is_physical).to be(false)
       expect(product.is_recurring_billing).to be(false)
       expect(product.is_in_preorder_state).to be(false)
+      expect(product.isbn).to be_nil
       expect(product.subscription_duration).to be_nil
       expect(product.custom_attributes).to eq([{ "name" => "Pages", "value" => "" }])
       expect(product.should_include_last_post).to be_falsey
