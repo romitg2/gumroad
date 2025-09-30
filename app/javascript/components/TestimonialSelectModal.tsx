@@ -8,7 +8,6 @@ import { Modal } from "$app/components/Modal";
 import { PaginationProps } from "$app/components/Pagination";
 import { Review } from "$app/components/Review";
 import { showAlert } from "$app/components/server-components/Alert";
-import { useRunOnce } from "$app/components/useRunOnce";
 
 export const TestimonialSelectModal = ({
   isOpen,
@@ -51,12 +50,6 @@ export const TestimonialSelectModal = ({
       setIsLoading(false);
     }
   };
-
-  useRunOnce(() => {
-    if (!reviews && productId) {
-      void loadReviews(1);
-    }
-  });
 
   const handleLoadMore = () => {
     if (state.pagination) {
