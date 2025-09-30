@@ -89,6 +89,7 @@ export type Product = {
   name: string;
   description: string;
   custom_permalink: string | null;
+  isbn: string | null;
   price_cents: number;
   suggested_price_cents: number | null;
   customizable_price: boolean;

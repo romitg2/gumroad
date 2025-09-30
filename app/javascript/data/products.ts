@@ -86,6 +86,7 @@ type CreateProductDataBase = {
   release_at_time: string;
   ai_prompt: string | null;
   number_of_content_pages: number | null;
+  isbn?: string | null;
 };
 
 type CreateProductDataPhysical = {

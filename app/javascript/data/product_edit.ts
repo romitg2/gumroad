@@ -40,6 +40,7 @@ export const saveProduct = async (permalink: string, id: string, product: Produc
         newlyAdded ? { ...availability, id: null } : availability,
       ),
       installment_plan: product.allow_installment_plan ? product.installment_plan : null,
+      isbn: product.isbn || null,
     },
   });
   if (!response.ok) throw new ResponseError(cast<{ error_message: string }>(await response.json()).error_message);

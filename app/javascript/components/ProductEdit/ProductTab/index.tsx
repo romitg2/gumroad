@@ -152,6 +152,19 @@ export const ProductTab = () => {
                   uniquePermalink={uniquePermalink}
                   url={url}
                 />
+                {product.native_type === "ebook" || product.native_type === "digital" ? (
+                  <fieldset>
+                    <label htmlFor={`${uid}-isbn`}>ISBN</label>
+                    <input
+                      id={`${uid}-isbn`}
+                      type="text"
+                      placeholder="ISBN-10 or ISBN-13"
+                      maxLength={20}
+                      value={product.isbn || ""}
+                      onChange={(evt) => updateProduct({ isbn: evt.target.value })}
+                    />
+                  </fieldset>
+                ) : null}
               </>
             )}
           </section>
