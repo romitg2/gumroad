@@ -204,7 +204,7 @@ class Link < ApplicationRecord
   validate :commission_price_is_valid, if: -> { native_type == Link::NATIVE_TYPE_COMMISSION }
   validate :one_coffee_per_user, on: :create, if: -> { native_type == Link::NATIVE_TYPE_COFFEE }
   validate :quantity_enabled_state_is_allowed
-  validate :isbn_format_valid, if: -> { isbn.present? && native_type == Link::NATIVE_TYPE_DIGITAL }
+  validate :isbn_format_valid, if: -> { isbn.present? && native_type == Link::NATIVE_TYPE_EBOOK }
 
   validates_associated :installment_plan, message: -> (link, _) { link.installment_plan.errors.full_messages.first }
 
@@ -1337,7 +1337,6 @@ class Link < ApplicationRecord
 
   private
     def valid_isbn10?(value)
-      # ISBN-10: 9 digits + checksum (0-9 or X)
       return false unless value.match?(/^[0-9]{9}[0-9X]$/)
 
       sum = 0
@@ -1350,7 +1349,6 @@ class Link < ApplicationRecord
     end
 
     def valid_isbn13?(value)
-      # ISBN-13: 13 digits, weighted sum (1,3) alternating must be divisible by 10
       return false unless value.match?(/^[0-9]{13}$/)
 
       sum = value.chars.each_with_index.sum do |char, index|

@@ -152,7 +152,7 @@ export const ProductTab = () => {
                   uniquePermalink={uniquePermalink}
                   url={url}
                 />
-                {product.native_type === "ebook" || product.native_type === "digital" ? (
+                {product.native_type === "ebook" ? (
                   <fieldset>
                     <label htmlFor={`${uid}-isbn`}>ISBN</label>
                     <input
