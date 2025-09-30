@@ -1,6 +1,6 @@
 <% content_for :meta do %>
   <link href="<%= @product.long_url %>" rel="canonical">
-  <% if @product.isbn.present? && @product.native_type.in?([Link::NATIVE_TYPE_EBOOK, Link::NATIVE_TYPE_DIGITAL]) %>
+  <% if @product.isbn.present? && @product.native_type == Link::NATIVE_TYPE_EBOOK %>
     <script type="application/ld+json">
       <%= {
             "@context" => "https://schema.org/",
