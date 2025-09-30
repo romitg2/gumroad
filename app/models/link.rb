@@ -166,6 +166,7 @@ class Link < ApplicationRecord
   before_validation :associate_price, on: :create
   before_validation :set_unique_permalink
   before_validation :release_custom_permalink_if_possible, if: :custom_permalink_changed?
+  before_validation :normalize_isbn
   validates :user, presence: true
   validates :name, presence: true, length: { maximum: 255 }
   # Keep in sync with Product::BulkUpdateSupportEmailService.
@@ -203,6 +204,7 @@ class Link < ApplicationRecord
   validate :commission_price_is_valid, if: -> { native_type == Link::NATIVE_TYPE_COMMISSION }
   validate :one_coffee_per_user, on: :create, if: -> { native_type == Link::NATIVE_TYPE_COFFEE }
   validate :quantity_enabled_state_is_allowed
+  validate :isbn_format_valid, if: -> { isbn.present? && native_type == Link::NATIVE_TYPE_DIGITAL }
 
   validates_associated :installment_plan, message: -> (link, _) { link.installment_plan.errors.full_messages.first }
 
@@ -1210,6 +1212,27 @@ class Link < ApplicationRecord
   end
 
   protected
+    def normalize_isbn
+      return if self.isbn.nil?
+
+      normalized = self.isbn.to_s.upcase.gsub(/[^0-9X]/, "")
+      self.isbn = normalized.presence
+    end
+
+    def isbn_format_valid
+      value = self.isbn.to_s
+      return if value.blank?
+
+      case value.length
+      when 10
+        errors.add(:isbn, "is not a valid ISBN-10") unless valid_isbn10?(value)
+      when 13
+        errors.add(:isbn, "is not a valid ISBN-13") unless valid_isbn13?(value)
+      else
+        errors.add(:isbn, "must be 10 or 13 characters after normalization")
+      end
+    end
+
     def downcase_filetype
       self.filetype = filetype.downcase if filetype.present?
     end
@@ -1313,6 +1336,31 @@ class Link < ApplicationRecord
     end
 
   private
+    def valid_isbn10?(value)
+      # ISBN-10: 9 digits + checksum (0-9 or X)
+      return false unless value.match?(/^[0-9]{9}[0-9X]$/)
+
+      sum = 0
+      value.chars.each_with_index do |char, index|
+        weight = 10 - index
+        digit = (char == "X") ? 10 : char.to_i
+        sum += weight * digit
+      end
+      (sum % 11).zero?
+    end
+
+    def valid_isbn13?(value)
+      # ISBN-13: 13 digits, weighted sum (1,3) alternating must be divisible by 10
+      return false unless value.match?(/^[0-9]{13}$/)
+
+      sum = value.chars.each_with_index.sum do |char, index|
+        digit = char.to_i
+        weight = (index.even? ? 1 : 3)
+        digit * weight
+      end
+      (sum % 10).zero?
+    end
+
     def as_json_for_api(options)
       keep = %w[
         name description require_shipping preview_url

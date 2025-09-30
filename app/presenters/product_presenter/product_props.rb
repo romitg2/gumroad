@@ -48,6 +48,7 @@ class ProductPresenter::ProductProps
         is_multiseat_license: product.is_tiered_membership && product.is_multiseat_license,
         hide_sold_out_variants: product.hide_sold_out_variants?,
         native_type: product.native_type,
+        isbn: product.isbn,
         preorder: product.is_in_preorder_state ? { release_date: product.preorder_link.release_at } : nil,
         duration_in_months: product.duration_in_months,
         rental: product.rental,

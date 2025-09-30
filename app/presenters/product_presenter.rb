@@ -87,6 +87,7 @@ class ProductPresenter
       product: {
         name: product.name,
         custom_permalink: product.custom_permalink,
+        isbn: product.isbn,
         description: product.description || "",
         price_cents: product.price_cents,
         customizable_price: !!product.customizable_price,

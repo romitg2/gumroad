@@ -61,6 +61,7 @@ class LinkPolicy < ApplicationPolicy
       :name,
       :description,
       :custom_permalink,
+      :isbn,
       :price_currency_type,
       :price_cents,
       :customizable_price,
