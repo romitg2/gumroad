@@ -6,7 +6,7 @@
             "@context" => "https://schema.org/",
             "@type" => "Book",
             "name" => @product.name,
-            "description" => ActionController::Base.helpers.strip_tags(@product.html_safe_description).squish,
+            "description" => ActionController::Base.helpers.strip_tags(@product.html_safe_description).to_s.squish,
             "isbn" => @product.isbn,
             "bookFormat" => "https://schema.org/EBook",
             "url" => @product.long_url,
