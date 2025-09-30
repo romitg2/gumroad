@@ -733,7 +733,7 @@ const Reviews = ({
   };
   useRunOnce(() => void loadNextPage());
 
-  // if (ratings.count === 0) return null;
+  if (ratings.count === 0) return null;
 
   return (
     <section>
