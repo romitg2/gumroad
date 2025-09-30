@@ -749,7 +749,7 @@ const Reviews = ({
         <div itemProp="reviewCount">{ratings.count}</div>
         <div itemProp="ratingValue">{ratings.average}</div>
       </div>
-      <section className="histogram" aria-label="Ratings histogram">
+      <section className="override grid grid-cols-[auto_1fr_auto] gap-3" aria-label="Ratings histogram">
         {([4, 3, 2, 1, 0] as const).map((rating) => (
           <RatingsHistogramRow rating={rating + 1} percentage={ratings.percentages[rating]} key={rating} />
         ))}
@@ -830,7 +830,7 @@ const RefundPolicyInfo = ({ refundPolicy, permalink }: { refundPolicy: RefundPol
   };
   return (
     <>
-      <div style={{ textAlign: "center" }}>
+      <div className="text-center">
         {refundPolicy.fine_print ? (
           <a href={HASH} onClick={() => setViewingRefundPolicy(true)}>
             {refundPolicy.title}
