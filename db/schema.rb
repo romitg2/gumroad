@@ -2354,6 +2354,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_09_30_120000) do
     t.datetime "updated_at", null: false
     t.boolean "universal", default: false, null: false
     t.integer "flags", default: 0, null: false
+    t.boolean "paused", default: false, null: false
     t.index ["offer_code_id"], name: "index_upsells_on_offer_code_id"
     t.index ["product_id"], name: "index_upsells_on_offered_product_id"
     t.index ["seller_id"], name: "index_upsells_on_seller_id"
