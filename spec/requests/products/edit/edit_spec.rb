@@ -1135,4 +1135,49 @@ describe("Product Edit Scenario", type: :system, js: true) do
     expect(product.community_chat_enabled?).to be(false)
     expect(product.active_community).to be_nil
   end
+
+  describe "ebook ISBN editing" do
+    let(:ebook) { create(:product, user: seller, native_type: Link::NATIVE_TYPE_EBOOK) }
+
+    it "allows user to add and update ISBN for ebook products" do
+      expect(ebook.isbn).to be_nil
+
+      visit edit_link_path(ebook.unique_permalink)
+
+      fill_in "ISBN", with: "0-306-40615-2"
+      save_change
+
+      expect(ebook.reload.isbn).to eq("0306406152")
+
+      visit edit_link_path(ebook.unique_permalink)
+      expect(page).to have_field("ISBN", with: "0306406152")
+
+      fill_in "ISBN", with: "978-0-306-40615-7"
+      save_change
+
+      expect(ebook.reload.isbn).to eq("9780306406157")
+    end
+
+    it "validates ISBN format and shows error for invalid ISBN" do
+      visit edit_link_path(ebook.unique_permalink)
+
+      fill_in "ISBN", with: "1234567890" # invalid ISBN checksum
+      click_on "Save changes"
+      wait_for_ajax
+
+      expect(ebook.reload.isbn).to be_nil
+    end
+
+    it "allows clearing ISBN" do
+      ebook.update!(isbn: "0306406152")
+
+      visit edit_link_path(ebook.unique_permalink)
+      expect(page).to have_field("ISBN", with: "0306406152")
+
+      fill_in "ISBN", with: ""
+      save_change
+
+      expect(ebook.reload.isbn).to be_nil
+    end
+  end
 end
