@@ -247,7 +247,20 @@ class Subscription < ApplicationRecord
     purchase = Purchase.new(purchase_params)
     purchase.variant_attributes = original_purchase.variant_attributes
 
-    purchase.offer_code = original_purchase.offer_code if discount_applies_to_next_charge?
+    if discount_applies_to_next_charge?
+      purchase.offer_code = original_purchase.offer_code
+
+      # For installment plans, original offer code is applied to all installments regardless of offer code's current validity
+      if is_installment_plan? && original_purchase.purchase_offer_code_discount.present?
+        original_discount = original_purchase.purchase_offer_code_discount
+        purchase.build_purchase_offer_code_discount(
+          offer_code: purchase.offer_code,
+          offer_code_amount: original_discount.offer_code_amount,
+          offer_code_is_percent: original_discount.offer_code_is_percent,
+          pre_discount_minimum_price_cents: purchase.minimum_paid_price_cents_per_unit_before_discount
+        )
+      end
+    end
 
     purchase.purchaser = user
     purchase.link = link

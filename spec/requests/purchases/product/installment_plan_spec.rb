@@ -285,6 +285,83 @@ describe "Product with installment plan", type: :system, js: true do
         is_original_subscription_purchase: false,
       )
     end
+
+    it "applies the original offer code discount to all upcoming installments even when max_purchase_count is reached" do
+      offer_code_with_max_purchase_count = create(:universal_offer_code, user: seller, code: "MAXLIMIT", amount_cents: 100, max_purchase_count: 1)
+      product.reload
+
+      visit product.long_url + "/" + offer_code_with_max_purchase_count.code
+      expect(page).to have_text("First installment of $3.34, followed by 2 monthly installments of $3.33", normalize_ws: true)
+
+      binding.pry
+      click_on "Pay in 3 installments"
+
+      within_cart_item product.name do
+        expect(page).to have_text("US$10 in 3 installments", normalize_ws: true)
+      end
+
+      expect(page).to have_text("Subtotal US$11", normalize_ws: true)
+      expect(page).to have_text("Discounts MAXLIMIT US$-1", normalize_ws: true)
+      expect(page).to have_text("Total US$10", normalize_ws: true)
+      expect(page).to have_text("Payment today US$3.34", normalize_ws: true)
+      expect(page).to have_text("Future installments US$6.66", normalize_ws: true)
+
+      fill_checkout_form(product)
+      click_on "Pay"
+
+      expect(page).to have_alert(text: "Your purchase was successful! We sent a receipt to test@gumroad.com.")
+
+      purchase = product.sales.last
+      subscription = purchase.subscription
+      expect(purchase).to have_attributes(
+        price_cents: 334,
+        is_installment_payment: true,
+        is_original_subscription_purchase: true,
+      )
+      expect(subscription).to have_attributes(
+        is_installment_plan: true,
+        charge_occurrence_count: 3,
+        recurrence: "monthly",
+      )
+
+      # Verify first purchase has the discount cached
+      expect(purchase.purchase_offer_code_discount).to be_present
+      expect(purchase.purchase_offer_code_discount.offer_code_amount).to eq(100)
+
+      # Process second installment (max_purchase_count of 1 has been reached)
+      travel_to(1.month.from_now)
+      RecurringChargeWorker.new.perform(subscription.id)
+
+      expect(subscription.purchases.successful.count).to eq(2)
+      second_purchase = subscription.purchases.successful.last
+      expect(second_purchase).to have_attributes(
+        price_cents: 333,
+        is_installment_payment: true,
+        is_original_subscription_purchase: false,
+      )
+
+      # Verify second installment still has the discount applied via cached discount
+      expect(second_purchase.purchase_offer_code_discount).to be_present
+      expect(second_purchase.purchase_offer_code_discount.offer_code_amount).to eq(100)
+      expect(second_purchase.offer_code).to eq(offer_code_with_max_purchase_count)
+
+      # Process third installment
+      travel_to(1.month.from_now)
+      RecurringChargeWorker.new.perform(subscription.id)
+
+      expect(subscription.purchases.successful.count).to eq(3)
+      third_purchase = subscription.purchases.successful.last
+      expect(third_purchase).to have_attributes(
+        price_cents: 333,
+        is_installment_payment: true,
+        is_original_subscription_purchase: false,
+      )
+
+      # Verify third installment still has the discount applied via cached discount
+      expect(third_purchase.purchase_offer_code_discount).to be_present
+      expect(third_purchase.purchase_offer_code_discount.offer_code_amount).to eq(100)
+      expect(third_purchase.offer_code).to eq(offer_code_with_max_purchase_count)
+    end
   end
 
   describe "bundles" do
