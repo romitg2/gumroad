@@ -4,6 +4,13 @@ require "spec_helper"
 require "shared_examples/authorize_called"
 
 describe "Widget Page scenario", js: true, type: :system do
+  def hover_copy_button(button)
+    # hover somewhere else first(paragraph) to make sure the button is not already hovered
+    # first("p", visible: :all).hover
+    # scroll_to(button)
+    button.hover
+  end
+
   context "when no user is logged in" do
     before do
       @demo_product = create(:product, user: create(:named_user), unique_permalink: "demo")
@@ -15,7 +22,7 @@ describe "Widget Page scenario", js: true, type: :system do
       expect(page).to have_field("Widget code", with: %(<script src="#{UrlService.root_domain_with_protocol}/js/gumroad.js"></script>\n<a class="gumroad-button" href="#{@demo_product.long_url}">Buy on</a>))
 
       copy_button = find_button("Copy embed code")
-      copy_button.hover
+      hover_copy_button(copy_button)
       expect(page).to have_content("Copy to Clipboard")
 
       copy_button.click
@@ -28,7 +35,7 @@ describe "Widget Page scenario", js: true, type: :system do
 
       expect(page).to have_field("Widget code", with: %(<script src="#{UrlService.root_domain_with_protocol}/js/gumroad-embed.js"></script>\n<div class="gumroad-product-embed"><a href="#{@demo_product.long_url}">Loading...</a></div>))
       copy_button = find_button("Copy embed code")
-      copy_button.hover
+      hover_copy_button(copy_button)
       expect(page).to have_content("Copy to Clipboard")
 
       copy_button.click
@@ -55,7 +62,7 @@ describe "Widget Page scenario", js: true, type: :system do
 
         expect(page).not_to have_content("Copy to Clipboard")
         copy_button = find_button("Copy embed code")
-        copy_button.hover
+        hover_copy_button(copy_button)
         expect(page).to have_content("Copy to Clipboard")
 
         copy_button.click
@@ -66,7 +73,7 @@ describe "Widget Page scenario", js: true, type: :system do
         expect(page).not_to have_content("Copy to Clipboard")
         expect(page).not_to have_content("Copied!")
 
-        copy_button.hover
+        hover_copy_button(copy_button)
         expect(page).to have_content("Copy to Clipboard")
       end
     end
@@ -78,9 +85,12 @@ describe "Widget Page scenario", js: true, type: :system do
         select_tab("Embed")
         expect(page).to have_field("Widget code", with: %(<script src="#{@base_url}/js/gumroad-embed.js"></script>\n<div class="gumroad-product-embed"><a href="#{@product.long_url}">Loading...</a></div>))
 
+        # wait for embed iframe to load, so no layout shift happens when copying the code
+        expect(page).to have_css("iframe[src*='embed=true'][style*='height']", wait: 10)
+
         copy_button = find_button("Copy embed code")
         expect(copy_button).not_to have_tooltip(text: "Copy to Clipboard")
-        copy_button.hover
+        hover_copy_button(copy_button)
         expect(copy_button).to have_tooltip(text: "Copy to Clipboard")
 
         copy_button.click
@@ -91,7 +101,7 @@ describe "Widget Page scenario", js: true, type: :system do
         expect(page).not_to have_content("Copy to Clipboard")
         expect(page).not_to have_content("Copied!")
 
-        copy_button.hover
+        hover_copy_button(copy_button)
         expect(copy_button).to have_tooltip(text: "Copy to Clipboard")
       end
     end
@@ -188,7 +198,7 @@ describe "Widget Page scenario", js: true, type: :system do
         it "allows copying the follow page URL" do
           visit widgets_path
           copy_button = find_button("Copy link")
-          copy_button.hover
+          hover_copy_button(copy_button)
           expect(copy_button).to have_tooltip(text: "Copy link")
           copy_button.click
           expect(copy_button).to have_tooltip(text: "Copied!")
@@ -199,7 +209,7 @@ describe "Widget Page scenario", js: true, type: :system do
           within_section "Subscribe form", section_element: :section  do
             expect(page).to have_field("Subscribe form embed code", text: seller.external_id)
             copy_button = find_button("Copy embed code")
-            copy_button.hover
+            hover_copy_button(copy_button)
             expect(copy_button).to have_tooltip(text: "Copy to Clipboard")
             copy_button.click
             expect(copy_button).to have_tooltip(text: "Copied!")
