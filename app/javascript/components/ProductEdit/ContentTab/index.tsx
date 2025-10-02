@@ -64,6 +64,7 @@ import { WithTooltip } from "$app/components/WithTooltip";
 
 import { FileEmbed, FileEmbedConfig, getDownloadUrl } from "./FileEmbed";
 import { Page, PageTab, titleWithFallback } from "./PageTab";
+import { getReviews } from "$app/data/product_reviews";
 
 const PageTabList = React.forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(({ children }, ref) => (
   <div ref={ref} role="tablist" className="pagelist">
@@ -136,6 +137,17 @@ const ContentTabContent = ({ selectedVariantId }: { selectedVariantId: string | 
     pages.length > 1 || selectedPage?.title || renamingPageId != null || product.native_type === "commission";
   const [insertMenuState, setInsertMenuState] = React.useState<"open" | "inputs" | null>(null);
   const initialValue = React.useMemo(() => selectedPage?.description ?? "", [selectedPageId]);
+  const [hasReviews, setHasReviews] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!id) {
+      setHasReviews(false);
+      return;
+    }
+    void getReviews(id, 1)
+      .then((data) => setHasReviews((data.reviews?.length ?? 0) > 0))
+      .catch(() => setHasReviews(false));
+  }, [id]);
 
   const onSelectFiles = (ids: string[]) => {
     if (!editor) return;
@@ -718,16 +730,18 @@ const ContentTabContent = ({ selectedVariantId }: { selectedVariantId: string | 
                           <span className="icon icon-cart-plus" />
                           <span>Upsell</span>
                         </div>
-                        <div
-                          role="menuitem"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setShowReviewModal(true);
-                          }}
-                        >
-                          <span className="icon icon-solid-star" />
-                          <span>Review</span>
-                        </div>
+                        {hasReviews ? (
+                          <div
+                            role="menuitem"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setShowReviewModal(true);
+                            }}
+                          >
+                            <span className="icon icon-solid-star" />
+                            <span>Review</span>
+                          </div>
+                        ) : null}
                       </>
                     )}
                   </div>
