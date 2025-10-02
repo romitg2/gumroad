@@ -8,6 +8,7 @@ import { ReactSortable } from "react-sortablejs";
 import { cast } from "ts-safe-cast";
 
 import { fetchDropboxFiles, ResponseDropboxFile, uploadDropboxFile } from "$app/data/dropbox_upload";
+import { getReviews } from "$app/data/product_reviews";
 import { Post } from "$app/data/workflows";
 import { escapeRegExp } from "$app/utils";
 import { assertDefined } from "$app/utils/assert";
@@ -64,7 +65,6 @@ import { WithTooltip } from "$app/components/WithTooltip";
 
 import { FileEmbed, FileEmbedConfig, getDownloadUrl } from "./FileEmbed";
 import { Page, PageTab, titleWithFallback } from "./PageTab";
-import { getReviews } from "$app/data/product_reviews";
 
 const PageTabList = React.forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(({ children }, ref) => (
   <div ref={ref} role="tablist" className="pagelist">
@@ -145,7 +145,7 @@ const ContentTabContent = ({ selectedVariantId }: { selectedVariantId: string | 
       return;
     }
     void getReviews(id, 1)
-      .then((data) => setHasReviews((data.reviews?.length ?? 0) > 0))
+      .then((data) => setHasReviews(data.reviews.length > 0))
       .catch(() => setHasReviews(false));
   }, [id]);
 
