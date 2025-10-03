@@ -11,7 +11,6 @@ describe "Ebook ISBN indexing", type: :system, js: true do
 
     visit short_link_path(product)
 
-    # Find JSON-LD script
     script = find("script[type='application/ld+json']", visible: false)
     json = JSON.parse(script.text(:all))
 
@@ -20,7 +19,16 @@ describe "Ebook ISBN indexing", type: :system, js: true do
     expect(json["isbn"]).to eq("9780306406157")
     expect(json["bookFormat"]).to eq("https://schema.org/EBook")
     expect(json["url"]).to eq(product.long_url)
-    # Description is stripped of HTML and squished in view
     expect(json["description"]).to match(/Great book/i)
+
+    expect(json["author"]).to be_a(Hash)
+    expect(json["author"]["@type"]).to eq("Person")
+    expect(json["author"]["name"]).to eq(seller.name_or_username)
+
+    expect(json["offers"]).to be_a(Hash)
+    expect(json["offers"]["@type"]).to eq("Offer")
+    expect(json["offers"]["price"]).to eq("5.0")
+    expect(json["offers"]["priceCurrency"]).to eq("USD")
+    expect(json["offers"]["availability"]).to eq("https://schema.org/InStock")
   end
 end

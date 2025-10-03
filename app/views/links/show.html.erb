@@ -10,6 +10,16 @@
             "isbn" => @product.isbn,
             "bookFormat" => "https://schema.org/EBook",
             "url" => @product.long_url,
+            "author" => {
+              "@type" => "Person",
+              "name" => @product.user.name_or_username
+            },
+            "offers" => {
+              "@type" => "Offer",
+              "price" => (@product.price_cents / 100.0).to_s,
+              "priceCurrency" => @product.price_currency_type.upcase,
+              "availability" => "https://schema.org/InStock"
+            }
           }.to_json.html_safe %>
     </script>
   <% end %>
