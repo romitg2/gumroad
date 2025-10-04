@@ -18,7 +18,7 @@ export const ToggleSettingRow = ({ label, value, help, onChange, dropdown, disab
       {help?.url ? (
         <>
           {" "}
-          <a href={help.url} target="_blank" rel="noopener noreferrer" className="learn-more" style={{ flexShrink: 0 }}>
+          <a href={help.url} target="_blank" rel="noopener noreferrer" className="learn-more flex-shrink-0">
             {help.label}
           </a>
         </>
