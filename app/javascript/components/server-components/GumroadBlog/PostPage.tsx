@@ -16,7 +16,7 @@ import { useRunOnce } from "$app/components/useRunOnce";
 const BackToBlog = ({ className }: { className?: string }) => (
   <div className={cx("scoped-tailwind-preflight", className)}>
     <a href="/blog" className="text-pink-600 hover:text-pink-800 mt-4 flex items-center font-medium">
-      <Icon name="arrow-left" className="mr-1.5" style={{ width: 18, height: 18 }} />
+      <Icon name="arrow-left" className="mr-1.5 w-[18px] h-[18px]" />
       Back to Blog
     </a>
   </div>
@@ -63,10 +63,9 @@ const PostPage = ({
             <div className="grid">
               <p>
                 <a
-                  className="button accent"
+                  className="button accent whitespace-normal"
                   href={call_to_action.url}
                   target="_blank"
-                  style={{ whiteSpace: "normal" }}
                   rel="noopener noreferrer"
                 >
                   {call_to_action.text}
