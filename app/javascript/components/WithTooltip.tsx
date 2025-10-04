@@ -17,7 +17,7 @@ export const WithTooltip = ({ tip, children, position, className }: Props) => {
 
   return (
     <span className={cx("has-tooltip", position, className)}>
-      <span aria-describedby={id} style={{ display: "contents" }}>
+      <span aria-describedby={id} className="contents">
         {children}
       </span>
       <span role="tooltip" id={id}>
