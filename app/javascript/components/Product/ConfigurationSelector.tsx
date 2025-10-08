@@ -710,7 +710,7 @@ export const ConfigurationSelector = React.forwardRef<
                 selected={option.id === selection.optionId}
                 onClick={() => {
                   if (option.id === selection.optionId) return;
-                  update({ optionId: option.id, price: { value: selection.price.value, error: false } });
+                  update({ optionId: option.id, price: { value: null, error: false } });
                 }}
                 priceCents={basePriceCents + computeOptionPrice(option, selection.recurrence)}
                 name={option.name}
