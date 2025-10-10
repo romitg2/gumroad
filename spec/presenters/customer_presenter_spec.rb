@@ -124,6 +124,7 @@ describe CustomerPresenter do
           has_options: true,
           option: purchase1.variant_attributes.first.to_option,
           utm_link: nil,
+          downloads_count: 0,
         }
       )
 
@@ -192,6 +193,7 @@ describe CustomerPresenter do
           has_options: true,
           option: purchase2.variant_attributes.first.to_option,
           utm_link: nil,
+          downloads_count: 0,
         }
       )
     end

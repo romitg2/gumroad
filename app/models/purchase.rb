@@ -2569,8 +2569,7 @@ class Purchase < ApplicationRecord
     else
       total_transaction_amount_for_gumroad_cents * 1.0 / charge.gumroad_amount_cents
     end
-    purchase_seller_portion = (total_transaction_cents - total_transaction_amount_for_gumroad_cents) * 1.0 /
-        (charge.amount_cents - charge.gumroad_amount_cents)
+    purchase_seller_portion = (total_transaction_cents - total_transaction_amount_for_gumroad_cents) * 1.0 / (charge.amount_cents - charge.gumroad_amount_cents)
 
     issued_amount_cents = (total_issued_amount_cents * purchase_portion).floor
     settled_amount_cents = (combined_flow_of_funds.settled_amount.cents * purchase_portion).floor
@@ -2610,6 +2609,16 @@ class Purchase < ApplicationRecord
 
     self.error_code = PurchaseErrorCode::BLOCKED_CUSTOMER_EMAIL_ADDRESS
     errors.add :base, "Your card was not charged, as the creator has prevented you from purchasing this item. Please contact them for more information."
+  end
+
+  def downloads_count
+    consumption_events.where(
+      event_type: [
+        ConsumptionEvent::EVENT_TYPE_DOWNLOAD,
+        ConsumptionEvent::EVENT_TYPE_DOWNLOAD_ALL,
+        ConsumptionEvent::EVENT_TYPE_FOLDER_DOWNLOAD
+      ]
+    ).count
   end
 
   def validate_purchasing_power_parity

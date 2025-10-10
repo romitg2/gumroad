@@ -1800,5 +1800,59 @@ describe "Sales page", type: :system, js: true do
         expect(call_purchase.call.reload.call_url).to eq("https://zoom.us/j/dumber")
       end
     end
+
+    describe "downloads" do
+      let(:url_redirect) { create(:url_redirect, purchase: purchase1) }
+      let(:folder_id) { SecureRandom.uuid }
+
+      before do
+        # 3 download events
+        3.times do
+          create(:consumption_event, purchase: purchase1, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_DOWNLOAD)
+        end
+
+        # Create 1 download_all event
+        create(:consumption_event, purchase: purchase1, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_DOWNLOAD_ALL)
+
+        # Create 1 folder_download event
+        create(:consumption_event, purchase: purchase1, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_FOLDER_DOWNLOAD, folder_id:)
+
+        # Create non-download events (should NOT be counted)
+        create(:consumption_event, purchase: purchase1, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_WATCH)
+        create(:consumption_event, purchase: purchase1, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_READ)
+      end
+
+      it "displays the correct downloads count in the drawer" do
+        login_as seller
+        visit customers_path
+        find(:table_row, { "Name" => "Customer 1" }).click
+
+        within_section "Product 1", section_element: :aside do
+          within_section "Downloads", section_element: :section do
+            expect(page).to have_text("Total downloads")
+            expect(page).to have_text("5")
+          end
+        end
+      end
+
+      context "when purchase has no downloads" do
+        before do
+          purchase1.consumption_events.destroy_all
+        end
+
+        it "displays zero downloads" do
+          login_as seller
+          visit customers_path
+          find(:table_row, { "Name" => "Customer 1" }).click
+
+          within_section "Product 1", section_element: :aside do
+            within_section "Downloads", section_element: :section do
+              expect(page).to have_text("Total downloads")
+              expect(page).to have_text("0")
+            end
+          end
+        end
+      end
+    end
   end
 end

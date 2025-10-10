@@ -988,6 +988,15 @@ const CustomerDrawer = ({
           </>
         ) : null}
       </section>
+      <section className="stack">
+        <header>
+          <h3>Downloads</h3>
+        </header>
+        <div>
+          <h5>Total downloads</h5>
+          {customer.downloads_count}
+        </div>
+      </section>
       {customer.utm_link ? <UtmLinkStack link={customer.utm_link} showHeader /> : null}
       {customer.review ? (
         <ReviewSection

@@ -145,6 +145,7 @@ class CustomerPresenter
         term: utm_link.utm_term,
         content: utm_link.utm_content,
       } : nil,
+      downloads_count: purchase.downloads_count,
     }
   end
 

@@ -6527,4 +6527,91 @@ describe Purchase, :vcr do
       end
     end
   end
+
+  describe "downloads_count" do
+    let(:purchase) { create(:free_purchase) }
+    let(:url_redirect) { create(:url_redirect, purchase:) }
+
+    context "when purchase has no consumption events" do
+      it "returns 0" do
+        expect(purchase.downloads_count).to eq(0)
+      end
+    end
+
+    context "when purchase has download events" do
+      before do
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_DOWNLOAD)
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_DOWNLOAD)
+      end
+
+      it "counts download events correctly" do
+        expect(purchase.downloads_count).to eq(2)
+      end
+    end
+
+    context "when purchase has download_all events" do
+      before do
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_DOWNLOAD_ALL)
+      end
+
+      it "counts download_all events correctly" do
+        expect(purchase.downloads_count).to eq(1)
+      end
+    end
+
+    context "when purchase has folder_download events" do
+      let(:folder_id) { SecureRandom.uuid }
+
+      before do
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_FOLDER_DOWNLOAD, folder_id:)
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_FOLDER_DOWNLOAD, folder_id:)
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_FOLDER_DOWNLOAD, folder_id:)
+      end
+
+      it "counts folder_download events correctly" do
+        expect(purchase.downloads_count).to eq(3)
+      end
+    end
+
+    context "when purchase has multiple download event types" do
+      let(:folder_id) { SecureRandom.uuid }
+
+      before do
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_DOWNLOAD)
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_DOWNLOAD_ALL)
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_FOLDER_DOWNLOAD, folder_id:)
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_DOWNLOAD)
+      end
+
+      it "returns total count of all download event types" do
+        expect(purchase.downloads_count).to eq(4)
+      end
+    end
+
+    context "when purchase has non-download consumption events" do
+      before do
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_WATCH)
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_READ)
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_LISTEN)
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_VIEW)
+      end
+
+      it "does not count non-download events" do
+        expect(purchase.downloads_count).to eq(0)
+      end
+    end
+
+    context "when purchase has both download and non-download events" do
+      before do
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_DOWNLOAD)
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_WATCH)
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_DOWNLOAD_ALL)
+        create(:consumption_event, purchase:, url_redirect_id: url_redirect.id, event_type: ConsumptionEvent::EVENT_TYPE_READ)
+      end
+
+      it "only counts download events" do
+        expect(purchase.downloads_count).to eq(2)
+      end
+    end
+  end
 end
