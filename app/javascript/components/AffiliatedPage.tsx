@@ -58,7 +58,7 @@ const StatsSection = (stats: Stats) => {
   const { locale } = useUserAgentInfo();
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-4" aria-label="Stats">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4" aria-label="Stats">
       <StatsComponent
         title="Revenue"
         description="Your gross sales from all affiliated products."
