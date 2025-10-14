@@ -1,4 +1,4 @@
-import cx from "classnames";
+import { classNames } from "$app/utils/classNames";
 import * as React from "react";
 
 import { assertDefined } from "$app/utils/assert";
@@ -43,8 +43,8 @@ export const Stats = ({
 
   return (
     <section
-      className={cx(
-        "inline-grid content-between gap-2 rounded border border-solid border-[rgb(var(--parent-color)/var(--border-alpha))] bg-[rgb(var(--filled))] p-4 text-4xl leading-tight text-[rgb(var(--color))]",
+      className={classNames(
+        "inline-grid content-between gap-2 rounded border border-solid border-border bg-background p-4 text-4xl leading-tight text-foreground",
         className,
       )}
     >
