@@ -59,7 +59,7 @@ const StatsSection = (stats: Stats) => {
 
   return (
     <div
-      className="grid gap-6"
+      className="grid gap-4"
       aria-label="Stats"
       style={{
         gridTemplateColumns:

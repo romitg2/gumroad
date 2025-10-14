@@ -8,7 +8,7 @@ import { Stats } from "$app/components/Stats";
 
 export const SalesQuickStats = ({ total }: { total: AnalyticsTotal | undefined }) => (
   <div
-    className="grid gap-6"
+    className="grid gap-4"
     style={{
       gridTemplateColumns:
         "repeat(auto-fit, minmax(max(min(100%, (31.25rem - 100%) * 1000), min(50% - 1rem, (31.25rem * 2 - 100%) * 1000)), 1fr))",

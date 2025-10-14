@@ -69,7 +69,7 @@ const CollabsPage = ({
         ) : (
           <div style={{ display: "grid", gap: "var(--spacer-7)" }}>
             <div
-              className="grid gap-6"
+              className="grid gap-4"
               aria-label="Stats"
               style={{
                 gridTemplateColumns:
