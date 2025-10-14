@@ -44,7 +44,7 @@ export const Stats = ({
   return (
     <section
       className={classNames(
-        "inline-grid content-between gap-2 rounded border border-solid border-border bg-background p-4 text-[2.5rem] text-foreground",
+        "inline-grid content-between gap-2 rounded border border-solid border-border bg-background p-5 text-[2.5rem] text-foreground",
         className,
       )}
     >
