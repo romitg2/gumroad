@@ -44,14 +44,9 @@ export const Stats = ({
   return (
     <section
       className={cx(
-        "inline-grid content-between gap-2 rounded border border-solid p-4 text-5xl leading-tight",
+        "inline-grid content-between gap-2 rounded border border-solid border-[rgb(var(--parent-color)/var(--border-alpha))] bg-[rgb(var(--filled))] p-4 text-4xl leading-tight text-[rgb(var(--color))]",
         className,
       )}
-      style={{
-        backgroundColor: "rgb(var(--filled))",
-        color: "rgb(var(--color))",
-        borderColor: "rgb(var(--parent-color) / var(--border-alpha))",
-      }}
     >
       <h2 className="flex gap-3 text-base leading-snug">
         {title}
