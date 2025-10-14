@@ -385,7 +385,13 @@ export const DashboardPage = ({
       <div className="grid gap-4 p-4 md:p-8">
         <h2>Activity</h2>
 
-        <div className="stats-grid">
+        <div
+           className="grid gap-6"
+          style={{
+            gridTemplateColumns:
+              "repeat(auto-fit, minmax(max(min(100%, (31.25rem - 100%) * 1000), min(50% - 1rem, (31.25rem * 2 - 100%) * 1000)), 1fr))",
+          }}
+        >
           <Stats title="Balance" description="Your current balance available for payout" value={balances.balance} />
           <Stats
             title="Last 7 days"

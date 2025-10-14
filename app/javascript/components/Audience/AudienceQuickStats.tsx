@@ -14,7 +14,13 @@ export const AudienceQuickStats = ({
   const userAgentInfo = useUserAgentInfo();
 
   return (
-    <div className="stats-grid">
+    <div
+      className="grid gap-6"
+      style={{
+        gridTemplateColumns:
+          "repeat(auto-fit, minmax(max(min(100%, (31.25rem - 100%) * 1000), min(50% - 1rem, (31.25rem * 2 - 100%) * 1000)), 1fr))",
+      }}
+    >
       <Stats
         className="total-followers"
         title={

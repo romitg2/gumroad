@@ -42,8 +42,17 @@ export const Stats = ({
   }, [value]);
 
   return (
-    <section className={cx("stats", className)}>
-      <h2>
+    <section
+      className={cx("inline-grid content-between gap-3 rounded border p-6 text-5xl leading-tight", className)}
+      style={{
+        backgroundColor: "rgb(var(--filled))",
+        color: "rgb(var(--color))",
+        borderWidth: "1px",
+        borderStyle: "solid",
+        borderColor: "rgb(var(--parent-color) / var(--border-alpha))",
+      }}
+    >
+      <h2 className="flex gap-3 text-base leading-snug">
         {title}
         {description ? (
           <WithTooltip tip={description} position="top">
