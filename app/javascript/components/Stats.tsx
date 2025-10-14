@@ -43,12 +43,13 @@ export const Stats = ({
 
   return (
     <section
-      className={cx("inline-grid content-between gap-3 rounded border p-6 text-5xl leading-tight", className)}
+      className={cx(
+        "inline-grid content-between gap-2 rounded border border-solid p-4 text-5xl leading-tight",
+        className,
+      )}
       style={{
         backgroundColor: "rgb(var(--filled))",
         color: "rgb(var(--color))",
-        borderWidth: "1px",
-        borderStyle: "solid",
         borderColor: "rgb(var(--parent-color) / var(--border-alpha))",
       }}
     >
