@@ -58,14 +58,7 @@ const StatsSection = (stats: Stats) => {
   const { locale } = useUserAgentInfo();
 
   return (
-    <div
-      className="grid gap-4"
-      aria-label="Stats"
-      style={{
-        gridTemplateColumns:
-          "repeat(auto-fit, minmax(max(min(100%, (31.25rem - 100%) * 1000), min(50% - 1rem, (31.25rem * 2 - 100%) * 1000)), 1fr))",
-      }}
-    >
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-4" aria-label="Stats">
       <StatsComponent
         title="Revenue"
         description="Your gross sales from all affiliated products."

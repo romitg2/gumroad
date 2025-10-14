@@ -7,13 +7,7 @@ import { Icon } from "$app/components/Icons";
 import { Stats } from "$app/components/Stats";
 
 export const SalesQuickStats = ({ total }: { total: AnalyticsTotal | undefined }) => (
-  <div
-    className="grid gap-4"
-    style={{
-      gridTemplateColumns:
-        "repeat(auto-fit, minmax(max(min(100%, (31.25rem - 100%) * 1000), min(50% - 1rem, (31.25rem * 2 - 100%) * 1000)), 1fr))",
-    }}
-  >
+  <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
     <Stats
       title={
         <>
