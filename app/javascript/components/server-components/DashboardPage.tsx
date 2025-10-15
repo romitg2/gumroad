@@ -18,7 +18,7 @@ import { MakeAccountIcon } from "$app/components/icons/getting-started/MakeAccou
 import { SmallBetsIcon } from "$app/components/icons/getting-started/SmallBetsIcon";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
 import { DownloadTaxFormsPopover } from "$app/components/server-components/DashboardPage/DownloadTaxFormsPopover";
-import { StatsItem } from "$app/components/Stats";
+import { Stats, StatsItem } from "$app/components/Stats";
 import { PageHeader } from "$app/components/ui/PageHeader";
 import { useUserAgentInfo } from "$app/components/UserAgent";
 import { useRunOnce } from "$app/components/useRunOnce";
@@ -385,7 +385,7 @@ export const DashboardPage = ({
       <div className="grid gap-4 p-4 md:p-8">
         <h2>Activity</h2>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+        <Stats>
           <StatsItem title="Balance" description="Your current balance available for payout" value={balances.balance} />
           <StatsItem
             title="Last 7 days"
@@ -402,7 +402,7 @@ export const DashboardPage = ({
             description="Your all-time net earnings from all products, excluding refunds and chargebacks"
             value={balances.total}
           />
-        </div>
+        </Stats>
 
         <ActivityFeed items={activity_items} />
       </div>
