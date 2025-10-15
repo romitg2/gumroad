@@ -1,7 +1,7 @@
-import { classNames } from "$app/utils/classNames";
 import * as React from "react";
 
 import { assertDefined } from "$app/utils/assert";
+import { classNames } from "$app/utils/classNames";
 
 import { Icon } from "$app/components/Icons";
 import { WithTooltip } from "$app/components/WithTooltip";
@@ -63,10 +63,8 @@ export const StatsItem = ({
   );
 };
 
-export const Stats = ({ children, className }: { children: React.ReactNode; className?: string }) => {
-  return (
-    <div className={classNames("grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4", className)} aria-label="Stats">
-      {children}
-    </div>
-  );
-};
+export const Stats = ({ children, className }: { children: React.ReactNode; className?: string }) => (
+  <div className={classNames("grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4", className)} aria-label="Stats">
+    {children}
+  </div>
+);
