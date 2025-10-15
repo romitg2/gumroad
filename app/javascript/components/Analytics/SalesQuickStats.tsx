@@ -4,10 +4,10 @@ import { formatPriceCentsWithCurrencySymbol } from "$app/utils/currency";
 
 import { type AnalyticsTotal } from "$app/components/Analytics";
 import { Icon } from "$app/components/Icons";
-import { StatsItem } from "$app/components/Stats";
+import { Stats, StatsItem } from "$app/components/Stats";
 
 export const SalesQuickStats = ({ total }: { total: AnalyticsTotal | undefined }) => (
-  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+  <Stats className="md:grid-cols-3">
     <StatsItem
       title={
         <>
@@ -42,5 +42,5 @@ export const SalesQuickStats = ({ total }: { total: AnalyticsTotal | undefined }
           : ""
       }
     />
-  </div>
+  </Stats>
 );

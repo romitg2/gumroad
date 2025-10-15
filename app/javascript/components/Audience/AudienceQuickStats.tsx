@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Icon } from "$app/components/Icons";
-import { StatsItem } from "$app/components/Stats";
+import { Stats, StatsItem } from "$app/components/Stats";
 import { useUserAgentInfo } from "$app/components/UserAgent";
 
 export const AudienceQuickStats = ({
@@ -14,7 +14,7 @@ export const AudienceQuickStats = ({
   const userAgentInfo = useUserAgentInfo();
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <Stats className="md:grid-cols-2">
       <StatsItem
         className="total-followers"
         title={
@@ -37,6 +37,6 @@ export const AudienceQuickStats = ({
         }
         value={newFollowers != null ? newFollowers.toLocaleString(userAgentInfo.locale) : ""}
       />
-    </div>
+    </Stats>
   );
 };
