@@ -13,7 +13,7 @@ import { Icon } from "$app/components/Icons";
 import { Pagination, PaginationProps } from "$app/components/Pagination";
 import { Popover } from "$app/components/Popover";
 import { ProductsLayout } from "$app/components/ProductsLayout";
-import { Stats as StatsComponent } from "$app/components/Stats";
+import { Stats, StatsItem } from "$app/components/Stats";
 import { useDebouncedCallback } from "$app/components/useDebouncedCallback";
 import { useGlobalEventListener } from "$app/components/useGlobalEventListener";
 import { useOriginalLocation } from "$app/components/useOriginalLocation";
@@ -58,28 +58,28 @@ const StatsSection = (stats: Stats) => {
   const { locale } = useUserAgentInfo();
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4" aria-label="Stats">
-      <StatsComponent
+    <Stats>
+      <StatsItem
         title="Revenue"
         description="Your gross sales from all affiliated products."
         value={formatPriceCentsWithCurrencySymbol("usd", stats.total_revenue, { symbolFormat: "short" })}
       />
-      <StatsComponent
+      <StatsItem
         title="Sales"
         description="Your number of affiliated sales."
         value={stats.total_sales.toLocaleString(locale)}
       />
-      <StatsComponent
+      <StatsItem
         title="Products"
         description="Your number of affiliated products."
         value={stats.total_products.toLocaleString(locale)}
       />
-      <StatsComponent
+      <StatsItem
         title="Affiliated creators"
         description="The number of creators you're affiliated with."
         value={stats.total_affiliated_creators.toLocaleString(locale)}
       />
-    </div>
+    </Stats>
   );
 };
 

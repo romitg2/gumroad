@@ -18,7 +18,7 @@ import { MakeAccountIcon } from "$app/components/icons/getting-started/MakeAccou
 import { SmallBetsIcon } from "$app/components/icons/getting-started/SmallBetsIcon";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
 import { DownloadTaxFormsPopover } from "$app/components/server-components/DashboardPage/DownloadTaxFormsPopover";
-import { Stats } from "$app/components/Stats";
+import { StatsItem } from "$app/components/Stats";
 import { PageHeader } from "$app/components/ui/PageHeader";
 import { useUserAgentInfo } from "$app/components/UserAgent";
 import { useRunOnce } from "$app/components/useRunOnce";
@@ -386,18 +386,18 @@ export const DashboardPage = ({
         <h2>Activity</h2>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
-          <Stats title="Balance" description="Your current balance available for payout" value={balances.balance} />
-          <Stats
+          <StatsItem title="Balance" description="Your current balance available for payout" value={balances.balance} />
+          <StatsItem
             title="Last 7 days"
             description="Your total sales in the last 7 days"
             value={balances.last_seven_days_sales_total}
           />
-          <Stats
+          <StatsItem
             title="Last 28 days"
             description="Your total sales in the last 28 days"
             value={balances.last_28_days_sales_total}
           />
-          <Stats
+          <StatsItem
             title="Total earnings"
             description="Your all-time net earnings from all products, excluding refunds and chargebacks"
             value={balances.total}

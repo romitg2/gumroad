@@ -4,11 +4,11 @@ import { formatPriceCentsWithCurrencySymbol } from "$app/utils/currency";
 
 import { type AnalyticsTotal } from "$app/components/Analytics";
 import { Icon } from "$app/components/Icons";
-import { Stats } from "$app/components/Stats";
+import { StatsItem } from "$app/components/Stats";
 
 export const SalesQuickStats = ({ total }: { total: AnalyticsTotal | undefined }) => (
   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-    <Stats
+    <StatsItem
       title={
         <>
           <Icon name="circle-fill" className="text-foreground" />
@@ -17,7 +17,7 @@ export const SalesQuickStats = ({ total }: { total: AnalyticsTotal | undefined }
       }
       value={total?.sales.toLocaleString() ?? ""}
     />
-    <Stats
+    <StatsItem
       title={
         <>
           <Icon name="circle-fill" className="text-muted-foreground" />
@@ -26,7 +26,7 @@ export const SalesQuickStats = ({ total }: { total: AnalyticsTotal | undefined }
       }
       value={total?.views.toLocaleString() ?? ""}
     />
-    <Stats
+    <StatsItem
       title={
         <>
           <Icon name="circle-fill" className="text-accent" />

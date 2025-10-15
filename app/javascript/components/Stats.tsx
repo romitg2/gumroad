@@ -6,7 +6,7 @@ import { assertDefined } from "$app/utils/assert";
 import { Icon } from "$app/components/Icons";
 import { WithTooltip } from "$app/components/WithTooltip";
 
-export const Stats = ({
+export const StatsItem = ({
   title,
   description,
   value,
@@ -60,5 +60,13 @@ export const Stats = ({
         <span style={adjustedFontSize ? { fontSize: adjustedFontSize } : undefined}>{value ?? "-"}</span>
       </div>
     </section>
+  );
+};
+
+export const Stats = ({ children, className }: { children: React.ReactNode; className?: string }) => {
+  return (
+    <div className={classNames("grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4", className)} aria-label="Stats">
+      {children}
+    </div>
   );
 };

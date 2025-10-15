@@ -8,7 +8,7 @@ import { PaginationProps } from "$app/components/Pagination";
 import { ProductsLayout } from "$app/components/ProductsLayout";
 import { CollabsMembershipsTable } from "$app/components/ProductsPage/Collabs/MembershipsTable";
 import { CollabsProductsTable } from "$app/components/ProductsPage/Collabs/ProductsTable";
-import { Stats as StatsComponent } from "$app/components/Stats";
+import { Stats, StatsItem } from "$app/components/Stats";
 import { useUserAgentInfo } from "$app/components/UserAgent";
 import { WithTooltip } from "$app/components/WithTooltip";
 
@@ -68,28 +68,28 @@ const CollabsPage = ({
           </div>
         ) : (
           <div style={{ display: "grid", gap: "var(--spacer-7)" }}>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4" aria-label="Stats">
-              <StatsComponent
+            <Stats>
+              <StatsItem
                 title="Total revenue"
                 description="Gross sales from all your product collabs."
                 value={formatPriceCentsWithCurrencySymbol("usd", stats.total_revenue, { symbolFormat: "short" })}
               />
-              <StatsComponent
+              <StatsItem
                 title="Customers"
                 description="Unique customers across all your product collabs."
                 value={stats.total_customers.toLocaleString(userAgentInfo.locale)}
               />
-              <StatsComponent
+              <StatsItem
                 title="Active members"
                 description="Members with an active subscription from your product collabs."
                 value={stats.total_members.toLocaleString(userAgentInfo.locale)}
               />
-              <StatsComponent
+              <StatsItem
                 title="Collaborations"
                 description="Total number of product collabs."
                 value={stats.total_collaborations.toLocaleString(userAgentInfo.locale)}
               />
-            </div>
+            </Stats>
             <div style={{ display: "grid", gap: "var(--spacer-7)" }}>
               {memberships.length ? (
                 <CollabsMembershipsTable entries={memberships} pagination={membershipsPagination} />
