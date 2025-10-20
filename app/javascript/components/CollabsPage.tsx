@@ -67,8 +67,7 @@ const CollabsPage = ({
                 learn more to get started
               </a>
             </p>
-          </
-            >
+          </Placeholder>
         ) : (
           <div style={{ display: "grid", gap: "var(--spacer-7)" }}>
             <Stats>
