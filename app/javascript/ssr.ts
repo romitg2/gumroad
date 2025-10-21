@@ -93,6 +93,7 @@ import WishlistPage from "$app/components/server-components/WishlistPage";
 import WishlistsFollowingPage from "$app/components/server-components/WishlistsFollowingPage";
 import WishlistsPage from "$app/components/server-components/WishlistsPage";
 import WorkflowsPage from "$app/components/server-components/WorkflowsPage";
+import CodeSnippet from "$app/components/ui/CodeSnippet";
 
 ReactOnRails.register({
   AdminActionButton,
@@ -127,6 +128,7 @@ ReactOnRails.register({
   AuthorizedApplicationsSettingsPage,
   BundleEditPage,
   CheckoutPage,
+  CodeSnippet,
   CommunitiesPage,
   CountrySelectionModal,
   CustomersDownloadPopover,
