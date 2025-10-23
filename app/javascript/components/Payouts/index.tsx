@@ -15,7 +15,6 @@ import { PaginationProps } from "$app/components/Pagination";
 import { ExportPayoutsPopover } from "$app/components/Payouts/ExportPayoutsPopover";
 import { showAlert } from "$app/components/server-components/Alert";
 import { PageHeader } from "$app/components/ui/PageHeader";
-import Placeholder from "$app/components/ui/Placeholder";
 import { useUserAgentInfo } from "$app/components/UserAgent";
 import { WithTooltip } from "$app/components/WithTooltip";
 
@@ -527,7 +526,7 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
 
 const PeriodEmpty = ({ minimumPayoutAmountCents }: { minimumPayoutAmountCents: number }) => (
   <div className="period period-empty full column">
-    <Placeholder>
+    <div className="placeholder">
       <figure>
         <img src={placeholder} />
       </figure>
@@ -540,7 +539,7 @@ const PeriodEmpty = ({ minimumPayoutAmountCents }: { minimumPayoutAmountCents: n
       <NavigationButton color="accent" href="/help/article/269-balance-page">
         Learn about payouts
       </NavigationButton>
-    </Placeholder>
+    </div>
   </div>
 );
 

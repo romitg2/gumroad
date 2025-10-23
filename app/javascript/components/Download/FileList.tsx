@@ -666,7 +666,7 @@ const VideoEmbedPreview = ({
       />
       <TrackClick eventName="watch" resourceId={file.id}>
         <button
-          className="underline"
+          className="link"
           style={{
             position: "absolute",
             top: "50%",

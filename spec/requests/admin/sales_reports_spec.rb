@@ -13,18 +13,26 @@ describe "Admin::SalesReportsController", type: :system, js: true do
     it "displays the sales reports page" do
       visit admin_sales_reports_path
 
-      # displays the sales reports page
       expect(page).to have_text("Sales reports")
       expect(page).to have_text("Generate sales report with custom date ranges")
+    end
 
-      # shows country dropdown with full country names
+    it "shows country dropdown with full country names" do
+      visit admin_sales_reports_path
+
       expect(page).to have_select("sales_report[country_code]", with_options: ["United Kingdom", "United States", "Canada"])
+    end
 
-      # shows date input fields
-      expect(page).to have_text("Sales reports")
-      expect(page).to have_text("Generate sales report with custom date ranges")
+    it "shows date input fields" do
+      visit admin_sales_reports_path
 
-      # shows no jobs message
+      expect(page).to have_field("sales_report[start_date]", type: "date")
+      expect(page).to have_field("sales_report[end_date]", type: "date")
+    end
+
+    it "shows job history section" do
+      visit admin_sales_reports_path
+
       expect(page).to have_text("No sales reports generated yet.")
     end
 

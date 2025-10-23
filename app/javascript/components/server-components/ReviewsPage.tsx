@@ -12,7 +12,6 @@ import { Popover } from "$app/components/Popover";
 import { Thumbnail } from "$app/components/Product/Thumbnail";
 import { RatingStars } from "$app/components/RatingStars";
 import { ReviewForm } from "$app/components/ReviewForm";
-import Placeholder from "$app/components/ui/Placeholder";
 import { useOnChange } from "$app/components/useOnChange";
 
 import placeholderImage from "$assets/images/placeholders/reviews.png";
@@ -121,17 +120,17 @@ const ReviewsPage = ({
         </section>
       ) : reviews.length > 0 ? (
         <section className="p-4 md:p-8">
-          <Placeholder>
+          <div className="placeholder">
             <h2>You've reviewed all your products!</h2>
             <NavigationButton href={discoverUrl} color="accent">
               Discover more
             </NavigationButton>
-          </Placeholder>
+          </div>
         </section>
       ) : null}
       <section className="p-4 md:p-8">
         {reviews.length === 0 && purchases.length === 0 ? (
-          <Placeholder>
+          <div className="placeholder">
             <figure>
               <img src={placeholderImage} />
             </figure>
@@ -143,7 +142,7 @@ const ReviewsPage = ({
             <a href="/help/article/344-rate-and-review-your-purchase" target="_blank" rel="noreferrer">
               Learn more about reviews
             </a>
-          </Placeholder>
+          </div>
         ) : reviews.length > 0 ? (
           <table>
             <caption>Your reviews</caption>

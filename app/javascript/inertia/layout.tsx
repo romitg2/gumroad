@@ -10,13 +10,13 @@ import useRouteLoading from "$app/components/useRouteLoading";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const isRouteLoading = useRouteLoading();
-  const { alert } = useClientAlert();
+  const { alert, isVisible } = useClientAlert();
   const { props } = usePage();
 
   return (
     <>
       <Head title={props.title?.toString() ?? "Gumroad"} />
-      <ClientAlert alert={alert} />
+      <ClientAlert alert={alert} isVisible={isVisible} />
       <div id="inertia-shell" className="flex h-screen flex-col lg:flex-row">
         <Nav title="Dashboard" />
         {isRouteLoading ? <LoadingSkeleton /> : null}

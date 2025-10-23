@@ -19,7 +19,6 @@ import { NumberInput } from "$app/components/NumberInput";
 import { AffiliatesNavigation, Layout } from "$app/components/server-components/AffiliatesPage";
 import { showAlert } from "$app/components/server-components/Alert";
 import { ToggleSettingRow } from "$app/components/SettingRow";
-import Placeholder from "$app/components/ui/Placeholder";
 import { WithTooltip } from "$app/components/WithTooltip";
 
 import placeholderImage from "$assets/images/placeholders/affiliate-signup-form.png";
@@ -101,7 +100,7 @@ export const AffiliateSignupForm = () => {
     >
       {products.length === 0 ? (
         <section className="p-4! md:p-8!">
-          <Placeholder>
+          <div className="placeholder">
             <figure>
               <img src={placeholderImage} />
             </figure>
@@ -114,7 +113,7 @@ export const AffiliateSignupForm = () => {
             >
               New product
             </NavigationButton>
-          </Placeholder>
+          </div>
         </section>
       ) : (
         <form>
@@ -144,7 +143,7 @@ export const AffiliateSignupForm = () => {
                 />
                 {enableAffiliateLink ? (
                   <CopyToClipboard text={affiliateRequestUrl}>
-                    <button type="button" className="underline">
+                    <button type="button" className="link">
                       Copy link
                     </button>
                   </CopyToClipboard>

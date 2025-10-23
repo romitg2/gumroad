@@ -25,7 +25,6 @@ import {
 import { Thumbnail } from "$app/components/Product/Thumbnail";
 import { showAlert } from "$app/components/server-components/Alert";
 import { PageHeader } from "$app/components/ui/PageHeader";
-import Placeholder from "$app/components/ui/Placeholder";
 import { ProductCardGrid } from "$app/components/ui/ProductCardGrid";
 import { useIsAboveBreakpoint } from "$app/components/useIsAboveBreakpoint";
 import { useOriginalLocation } from "$app/components/useOriginalLocation";
@@ -215,7 +214,7 @@ export const Checkout = ({
       />
       {isOpenTuple(cart.items, 1) ? (
         <div className="grid gap-8 p-4 md:p-8">
-          <div className="grid grid-cols-1 items-start gap-x-16 gap-y-8 lg:grid-cols-[2fr_minmax(26rem,1fr)]">
+          <div className="with-sidebar right lg:grid-flow-col" style={{ gridAutoColumns: "minmax(26rem, 1fr)" }}>
             <div className="grid gap-6">
               <div className="cart" role="list">
                 {cart.items.map((item) => (
@@ -364,7 +363,7 @@ export const Checkout = ({
         </div>
       ) : (
         <div className="p-4 md:p-8">
-          <Placeholder>
+          <div className="placeholder">
             <figure>
               <img src={placeholder} />
             </figure>
@@ -373,7 +372,7 @@ export const Checkout = ({
             <a className="button accent" href={discoverUrl}>
               Discover products
             </a>
-          </Placeholder>
+          </div>
         </div>
       )}
     </div>
@@ -539,7 +538,7 @@ const CartItemComponent = ({
               ) : null}
               <li>
                 <button
-                  className="underline"
+                  className="link"
                   onClick={() => {
                     const newItems = cart.items.filter((i) => i !== item);
 

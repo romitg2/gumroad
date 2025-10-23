@@ -17,7 +17,6 @@ import { Option } from "$app/components/Product/ConfigurationSelector";
 import { trackCtaClick } from "$app/components/Product/CtaButton";
 import { showAlert } from "$app/components/server-components/Alert";
 import { PageHeader } from "$app/components/ui/PageHeader";
-import Placeholder from "$app/components/ui/Placeholder";
 import { ProductCardGrid } from "$app/components/ui/ProductCardGrid";
 import { FollowButton } from "$app/components/Wishlist/FollowButton";
 import { WishlistEditor } from "$app/components/Wishlist/WishlistEditor";
@@ -284,12 +283,12 @@ export const Wishlist = ({
         </ProductCardGrid>
 
         {items.length === 0 ? (
-          <Placeholder>
+          <div className="placeholder">
             <figure>
               <Icon name="gift-fill" />
             </figure>
             {can_edit ? "Products from your wishlist will be displayed here" : "This wishlist is currently empty"}
-          </Placeholder>
+          </div>
         ) : null}
 
         {isEditing ? (

@@ -3,9 +3,8 @@ import { createCast } from "ts-safe-cast";
 
 import { register } from "$app/utils/serverComponentUtil";
 
-import { Form } from "$app/components/server-components/Admin/Form";
+import { Form } from "$app/components/Admin/Form";
 import { showAlert } from "$app/components/server-components/Alert";
-import Placeholder from "$app/components/ui/Placeholder";
 
 type JobHistoryItem = {
   job_id: string;
@@ -108,9 +107,9 @@ const AdminSalesReportsPage = ({ countries, job_history, form_action, authentici
             </tbody>
           </table>
         ) : (
-          <Placeholder>
+          <div className="placeholder">
             <h2>No sales reports generated yet.</h2>
-          </Placeholder>
+          </div>
         )}
       </section>
     </>

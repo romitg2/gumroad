@@ -15,7 +15,7 @@ module Product::StructuredData
         "@type" => "Person",
         "name" => user.name
       },
-      "description" => product_description,
+      "description" => custom_summary.presence || strip_tags(html_safe_description).truncate(160),
       "url" => long_url
     }
 
@@ -38,12 +38,5 @@ module Product::StructuredData
         work_example["isbn"] = file.isbn if file.isbn.present?
         work_example
       end
-    end
-
-    def product_description
-      (custom_summary.presence || strip_tags(html_safe_description).presence)
-        .to_s
-        .truncate(160)
-        .presence
     end
 end

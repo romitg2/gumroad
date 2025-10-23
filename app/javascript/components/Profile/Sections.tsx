@@ -1,5 +1,4 @@
 import { EditorContent } from "@tiptap/react";
-import classNames from "classnames";
 import * as React from "react";
 
 import {
@@ -203,18 +202,8 @@ export type PageProps = {
   sections: Section[];
 };
 
-export const SectionLayout = ({
-  children,
-  className,
-  ...props
-}: { children: React.ReactNode } & React.ComponentProps<"section">) => (
-  <section className={classNames("relative border-b border-border px-4 py-8 lg:py-16", className)} {...props}>
-    <div className="mx-auto grid w-full max-w-6xl gap-6">{children}</div>
-  </section>
-);
-
 export const Section = ({ section, creator_profile, currency_code }: { section: Section } & PageProps) => (
-  <SectionLayout id={section.id}>
+  <section id={section.id} className="border-b border-border px-4 py-8 lg:py-16">
     {section.header ? <h2>{section.header}</h2> : null}
     {section.type === "SellerProfileProductsSection" ? (
       <ProductsSectionView section={section} creatorProfile={creator_profile} currencyCode={currency_code} />
@@ -229,5 +218,5 @@ export const Section = ({ section, creator_profile, currency_code }: { section: 
     ) : (
       <WishlistsSectionView key={section.id} section={section} />
     )}
-  </SectionLayout>
+  </section>
 );

@@ -86,13 +86,10 @@ class Admin::BaseController < ApplicationController
 
       kwargs[:props] ||= {}
       kwargs[:props].each_key do |key|
-        next if instance_variable_defined?("@#{key}")
         instance_variable_set("@#{key}", kwargs[:props][key])
       end
 
-      legacy_template = kwargs.delete(:legacy_template) || kwargs[:inertia].underscore
-
-      render template: legacy_template, layout: "admin_old"
+      render template: kwargs[:inertia].downcase.to_s + "_old", layout: "admin_old"
     end
 
   private

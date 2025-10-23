@@ -9,7 +9,6 @@ import { FileKindIcon } from "$app/components/FileRowContent";
 import { Icon } from "$app/components/Icons";
 import { showAlert } from "$app/components/server-components/Alert";
 import { usePurchaseCustomFields, usePurchaseInfo } from "$app/components/server-components/DownloadPage/WithContent";
-import Placeholder from "$app/components/ui/Placeholder";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
@@ -108,9 +107,9 @@ export const FileInput = ({ customFieldId }: { customFieldId: string }) => {
       <div style={{ justifyContent: "center" }}>{fileUpload}</div>
     </div>
   ) : (
-    <Placeholder>
+    <div className="placeholder">
       {fileUpload}
       <div>Files must be smaller than 10 MB</div>
-    </Placeholder>
+    </div>
   );
 };

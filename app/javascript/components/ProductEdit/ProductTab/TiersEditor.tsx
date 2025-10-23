@@ -27,7 +27,6 @@ import { RichTextEditor } from "$app/components/RichTextEditor";
 import { showAlert } from "$app/components/server-components/Alert";
 import { Drawer, ReorderingHandle, SortableList } from "$app/components/SortableList";
 import { Toggle } from "$app/components/Toggle";
-import Placeholder from "$app/components/ui/Placeholder";
 import { useDebouncedCallback } from "$app/components/useDebouncedCallback";
 import { useRunOnce } from "$app/components/useRunOnce";
 import { WithTooltip } from "$app/components/WithTooltip";
@@ -77,11 +76,11 @@ export const TiersEditor = ({ tiers, onChange }: { tiers: Tier[]; onChange: (tie
   );
 
   return tiers.length === 0 ? (
-    <Placeholder>
+    <div className="placeholder">
       <h2>Offer different tiers of this membership</h2>
       Sweeten the deal for your customers with different levels of access. Every membership needs at least one tier.
       {addButton}
-    </Placeholder>
+    </div>
   ) : (
     <>
       {deletionModalVersion ? (
@@ -438,7 +437,7 @@ You can modify or cancel your membership at any time.`;
             </strong>{" "}
             <button
               type="button"
-              className="underline"
+              className="link"
               onClick={() =>
                 void sendSamplePriceChangeEmail({
                   productPermalink: uniquePermalink,

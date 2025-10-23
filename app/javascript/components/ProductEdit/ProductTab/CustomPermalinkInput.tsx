@@ -24,7 +24,7 @@ export const CustomPermalinkInput = ({
       <legend>
         <label htmlFor={uid}>URL</label>
         <CopyToClipboard text={url}>
-          <button type="button" className="font-normal underline">
+          <button type="button" className="link">
             Copy URL
           </button>
         </CopyToClipboard>

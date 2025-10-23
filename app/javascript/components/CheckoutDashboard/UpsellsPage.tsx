@@ -29,14 +29,12 @@ import { useClientAlert } from "$app/components/ClientAlertProvider";
 import { Details } from "$app/components/Details";
 import { Icon } from "$app/components/Icons";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
-import { Modal } from "$app/components/Modal";
 import { Pagination, PaginationProps } from "$app/components/Pagination";
 import { Popover } from "$app/components/Popover";
 import { applySelection } from "$app/components/Product/ConfigurationSelector";
 import { Select } from "$app/components/Select";
 import { CrossSellModal, UpsellModal } from "$app/components/server-components/CheckoutPage";
 import { PageHeader } from "$app/components/ui/PageHeader";
-import Placeholder from "$app/components/ui/Placeholder";
 import { useDebouncedCallback } from "$app/components/useDebouncedCallback";
 import { Sort, useSortingTableDriver } from "$app/components/useSortingTableDriver";
 
@@ -322,7 +320,7 @@ const UpsellsPage = (props: UpsellsPageProps) => {
             ) : null}
           </section>
         ) : (
-          <Placeholder>
+          <div className="placeholder">
             <figure>
               <img src={placeholder} />
             </figure>
@@ -335,7 +333,7 @@ const UpsellsPage = (props: UpsellsPageProps) => {
             <a href="/help/article/331-creating-upsells" target="_blank" rel="noreferrer">
               Learn more about upsells
             </a>
-          </Placeholder>
+          </div>
         )}
         {selectedUpsell ? (
           <UpsellDrawer
@@ -930,7 +928,11 @@ const Form = ({
           </section>
         </form>
         <CheckoutPreview cartItem={previewCartItem}>
-          <Modal open modal={false} title={offerText.value}>
+          <dialog open aria-labelledby={`${uid}preview`}>
+            <header>
+              <h2 id={`${uid}preview`}>{offerText.value}</h2>
+              <button className="close" />
+            </header>
             {isCrossSell ? (
               <CrossSellModal
                 crossSell={{
@@ -1003,7 +1005,7 @@ const Form = ({
                 decline={() => {}}
               />
             )}
-          </Modal>
+          </dialog>
         </CheckoutPreview>
       </div>
     </>

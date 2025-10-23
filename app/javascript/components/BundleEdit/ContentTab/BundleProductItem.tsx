@@ -116,7 +116,7 @@ export const BundleProductItem = ({
                 </li>
               ) : null}
               <li>
-                <button className="underline" onClick={removeBundleProduct}>
+                <button className="link" onClick={removeBundleProduct}>
                   Remove
                 </button>
               </li>

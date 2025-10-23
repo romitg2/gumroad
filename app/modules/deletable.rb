@@ -32,7 +32,6 @@ module Deletable
   def alive?
     deleted_at.nil?
   end
-  alias_method :alive, :alive?
 
   def deleted?
     deleted_at.present?

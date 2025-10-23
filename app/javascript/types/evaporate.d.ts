@@ -19,7 +19,6 @@ declare module "$vendor/evaporate.cjs" {
       bucket: string;
       fetchCurrentServerTimeUrl: string;
       maxFileSize?: number;
-      s3Endpoint?: string;
     });
 
     add(params: UploadParams): string | number;

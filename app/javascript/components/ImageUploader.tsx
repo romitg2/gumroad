@@ -6,7 +6,6 @@ import { Button } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
 import { Progress } from "$app/components/Progress";
 import { showAlert } from "$app/components/server-components/Alert";
-import Placeholder from "$app/components/ui/Placeholder";
 
 export const ImageUploader = ({
   id,
@@ -38,11 +37,11 @@ export const ImageUploader = ({
   return (
     <div className="grid grid-cols-[12.5rem_1fr] gap-5">
       {uploading ? (
-        <Placeholder className="aspect-square items-center">
+        <div className="placeholder aspect-square items-center">
           <Progress width="2rem" />
-        </Placeholder>
+        </div>
       ) : imageUrl == null ? (
-        <Placeholder className="aspect-square items-center" style={{ background }}>
+        <div className="placeholder aspect-square items-center" style={{ background }}>
           <label className="button primary">
             <input
               type="file"
@@ -62,7 +61,7 @@ export const ImageUploader = ({
             <Icon name="upload-fill" />
             Upload
           </label>
-        </Placeholder>
+        </div>
       ) : (
         <figure className="relative aspect-square">
           <img alt={imageAlt} src={imageUrl} className="h-full w-full rounded-sm border border-border bg-background" />

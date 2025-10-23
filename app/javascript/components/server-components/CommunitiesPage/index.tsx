@@ -12,8 +12,6 @@ import { StaticRouterProvider } from "react-router-dom/server";
 import { getCommunities } from "$app/data/communities";
 import { buildStaticRouter, GlobalProps, register } from "$app/utils/serverComponentUtil";
 
-import Placeholder from "$app/components/ui/Placeholder";
-
 import { CommunityView } from "./CommunityView";
 
 const ErrorBoundary = () => {
@@ -21,13 +19,13 @@ const ErrorBoundary = () => {
   return (
     <div>
       <div>
-        <Placeholder>
+        <div className="placeholder">
           <p>
             {isRouteErrorResponse(error) && error.status === 404
               ? "The resource you're looking for doesn't exist."
               : "Something went wrong."}
           </p>
-        </Placeholder>
+        </div>
       </div>
     </div>
   );

@@ -601,13 +601,11 @@ const CustomerDetails = () => {
       {state.products.length === 1 && state.products[0]?.canGift && !state.products[0]?.payInInstallments ? (
         <GiftForm isMembership={state.products[0]?.nativeType === "membership"} />
       ) : null}
-      {state.paymentMethod !== "paypal" ? (
-        <div>
-          <Button color="primary" onClick={() => dispatch({ type: "offer" })} disabled={isSubmitDisabled(state)}>
-            {payLabel}
-          </Button>
-        </div>
-      ) : null}
+      <div>
+        <Button color="primary" onClick={() => dispatch({ type: "offer" })} disabled={isSubmitDisabled(state)}>
+          {payLabel}
+        </Button>
+      </div>
     </>
   );
 };
@@ -682,45 +680,48 @@ const CreditCard = () => {
   if (state.paymentMethod !== "card") return null;
 
   return (
-    <div style={{ borderTop: "none", paddingTop: "0" }}>
-      <div className="paragraphs">
-        {!useSavedCard ? (
-          <fieldset>
-            <legend>
-              <label htmlFor={`${uid}nameOnCard`}>Name on card</label>
-              {isLoggedIn ? (
-                <label>
-                  <input
-                    type="checkbox"
-                    disabled={isProcessing(state)}
-                    checked={keepOnFile}
-                    onChange={(evt) => setKeepOnFile(evt.target.checked)}
-                  />
-                  Save card
-                </label>
-              ) : null}
-            </legend>
-            <input
-              type="text"
-              placeholder="John Doe"
-              id={`${uid}nameOnCard`}
-              value={nameOnCard}
-              disabled={isProcessing(state)}
-              onChange={(evt) => setNameOnCard(evt.target.value)}
-            />
-          </fieldset>
-        ) : null}
-        <CreditCardInput
-          savedCreditCard={state.savedCreditCard}
-          disabled={isProcessing(state)}
-          onReady={(element) => (cardElementRef.current = element)}
-          invalid={cardError}
-          useSavedCard={useSavedCard}
-          setUseSavedCard={setUseSavedCard}
-          onChange={(evt) => setCardError(!!evt.error)}
-        />
+    <>
+      <div style={{ borderTop: "none", paddingTop: "0" }}>
+        <div className="paragraphs">
+          {!useSavedCard ? (
+            <fieldset>
+              <legend>
+                <label htmlFor={`${uid}nameOnCard`}>Name on card</label>
+                {isLoggedIn ? (
+                  <label>
+                    <input
+                      type="checkbox"
+                      disabled={isProcessing(state)}
+                      checked={keepOnFile}
+                      onChange={(evt) => setKeepOnFile(evt.target.checked)}
+                    />
+                    Save card
+                  </label>
+                ) : null}
+              </legend>
+              <input
+                type="text"
+                placeholder="John Doe"
+                id={`${uid}nameOnCard`}
+                value={nameOnCard}
+                disabled={isProcessing(state)}
+                onChange={(evt) => setNameOnCard(evt.target.value)}
+              />
+            </fieldset>
+          ) : null}
+          <CreditCardInput
+            savedCreditCard={state.savedCreditCard}
+            disabled={isProcessing(state)}
+            onReady={(element) => (cardElementRef.current = element)}
+            invalid={cardError}
+            useSavedCard={useSavedCard}
+            setUseSavedCard={setUseSavedCard}
+            onChange={(evt) => setCardError(!!evt.error)}
+          />
+        </div>
       </div>
-    </div>
+      <CustomerDetails />
+    </>
   );
 };
 
@@ -1014,13 +1015,17 @@ const PayPal = () => {
 
   if (state.paymentMethod !== "paypal" || !implementation) return null;
   return (
-    <div>
-      {nativePaypal && implementation === "native" ? (
-        <NativePayPal implementation={nativePaypal} />
-      ) : braintreeToken.type === "available" ? (
-        <BraintreePayPal token={braintreeToken.token} />
-      ) : null}
-    </div>
+    <>
+      <SharedInputs />
+      {isTippingEnabled(state) ? <TipSelector /> : null}
+      <div>
+        {nativePaypal && implementation === "native" ? (
+          <NativePayPal implementation={nativePaypal} />
+        ) : braintreeToken.type === "available" ? (
+          <BraintreePayPal token={braintreeToken.token} />
+        ) : null}
+      </div>
+    </>
   );
 };
 
@@ -1155,12 +1160,25 @@ const StripePaymentRequest = () => {
   if (!canPay || state.paymentMethod !== "stripePaymentRequest") return null;
 
   return (
-    <div>
-      <Button color="primary" onClick={() => dispatch({ type: "offer" })} disabled={isSubmitDisabled(state)}>
-        {payLabel}
-      </Button>
-    </div>
+    <>
+      <SharedInputs />
+      {isTippingEnabled(state) ? <TipSelector /> : null}
+      <div>
+        <Button color="primary" onClick={() => dispatch({ type: "offer" })} disabled={isSubmitDisabled(state)}>
+          {payLabel}
+        </Button>
+      </div>
+    </>
   );
+};
+
+const FreePurchase = () => {
+  const [state, dispatch] = useState();
+  React.useEffect(() => {
+    if (state.status.type === "starting")
+      dispatch({ type: "set-payment-method", paymentMethod: { type: "not-applicable" } });
+  }, [state.status.type]);
+  return <CustomerDetails />;
 };
 
 export const PaymentForm = ({
@@ -1170,7 +1188,6 @@ export const PaymentForm = ({
   const [state, dispatch] = useState();
   const loggedInUser = useLoggedInUser();
   const isTestPurchase = loggedInUser && state.products.find((product) => product.testPurchase);
-  const isFreePurchase = isTestPurchase || !requiresPayment(state);
 
   const paymentFormRef = React.useRef<HTMLDivElement | null>(null);
   const recaptcha = useRecaptcha({ siteKey: state.recaptchaKey });
@@ -1181,10 +1198,6 @@ export const PaymentForm = ({
       paymentFormRef.current
         .querySelector<HTMLInputElement>("input[aria-invalid=true], [aria-invalid=true] input")
         ?.focus();
-    }
-
-    if (state.status.type === "starting" && isFreePurchase) {
-      dispatch({ type: "set-payment-method", paymentMethod: { type: "not-applicable" } });
     }
 
     if (state.status.type === "captcha") {
@@ -1212,9 +1225,14 @@ export const PaymentForm = ({
           </div>
         </div>
       ) : null}
-      <EmailAddress />
-      {!isFreePurchase ? (
+      {isTestPurchase || !requiresPayment(state) ? (
         <>
+          <EmailAddress />
+          <FreePurchase />
+        </>
+      ) : (
+        <>
+          <EmailAddress />
           <div>
             <div className="paragraphs">
               <h4>Pay with</h4>
@@ -1235,17 +1253,12 @@ export const PaymentForm = ({
             </div>
           ) : null}
           <CreditCard />
-        </>
-      ) : null}
-      <CustomerDetails />
-      {!isFreePurchase ? (
-        <>
           <PayPal />
           <StripeElementsProvider>
             <StripePaymentRequest />
           </StripeElementsProvider>
         </>
-      ) : null}
+      )}
       {recaptcha.container}
     </div>
   );

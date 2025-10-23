@@ -15,7 +15,6 @@ import { Progress } from "$app/components/Progress";
 import { showAlert } from "$app/components/server-components/Alert";
 import { ExportSubscribersPopover } from "$app/components/server-components/FollowersPage/ExportSubscribersPopover";
 import { PageHeader } from "$app/components/ui/PageHeader";
-import Placeholder from "$app/components/ui/Placeholder";
 import { Tabs, Tab } from "$app/components/ui/Tabs";
 import { useUserAgentInfo } from "$app/components/UserAgent";
 import { WithTooltip } from "$app/components/WithTooltip";
@@ -230,7 +229,7 @@ export const FollowersPage = ({ followers: initialFollowers, per_page, total }: 
             ) : null}
           </div>
         ) : (
-          <Placeholder>
+          <div className="placeholder">
             <figure>
               <img src={placeholder} />
             </figure>
@@ -256,7 +255,7 @@ export const FollowersPage = ({ followers: initialFollowers, per_page, total }: 
             ) : (
               <h2>No followers found</h2>
             )}
-          </Placeholder>
+          </div>
         )}
       </div>
     </Layout>

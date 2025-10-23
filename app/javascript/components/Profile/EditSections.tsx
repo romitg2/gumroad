@@ -20,7 +20,6 @@ import {
 import { SearchResults } from "$app/data/search";
 import { PROFILE_SORT_KEYS } from "$app/parsers/product";
 import { assertDefined } from "$app/utils/assert";
-import { classNames } from "$app/utils/classNames";
 import { ALLOWED_EXTENSIONS } from "$app/utils/file";
 import { assertResponseError, request, ResponseError } from "$app/utils/request";
 
@@ -135,8 +134,6 @@ export const useSectionImageUploadSettings = () => {
   return imageUploadSettings;
 };
 
-const sectionButtonClasses = "w-[calc(1lh+--spacing(2))] py-1 text-center hover:bg-gray-300/50";
-
 type SubmenuProps = { heading: string; children: React.ReactNode; text: React.ReactNode };
 export const EditorSubmenu = ({ children }: SubmenuProps) => children;
 export const EditorMenu = ({
@@ -157,11 +154,7 @@ export const EditorMenu = ({
   return (
     <Popover
       aria-label={label}
-      trigger={
-        <div className={sectionButtonClasses}>
-          <Icon name="three-dots" />
-        </div>
-      }
+      trigger={<Icon name="three-dots" />}
       onToggle={(open) => {
         if (!open) onClose();
         setMenuState("menu");
@@ -196,15 +189,6 @@ export const EditorMenu = ({
     </Popover>
   );
 };
-
-export const SectionToolbar = ({ children }: { children: React.ReactNode }) => (
-  <div
-    role="toolbar"
-    className="top-4 left-4 flex w-min gap-1 rounded border border-border hover:shadow md:flex-col lg:absolute"
-  >
-    {children}
-  </div>
-);
 
 export const SectionLayout = ({
   section,
@@ -256,7 +240,7 @@ export const SectionLayout = ({
   return (
     <>
       {section.header && !section.hide_header ? <h2>{section.header}</h2> : null}
-      <SectionToolbar>
+      <div role="toolbar">
         <EditorMenu label="Edit section" onClose={onClose}>
           <EditorSubmenu heading="Name" text={section.header}>
             <fieldset>
@@ -286,23 +270,17 @@ export const SectionLayout = ({
             <Icon name="trash2" />
           </button>
         </EditorMenu>
-        <button
-          aria-label="Move section up"
-          disabled={index === 0}
-          onClick={() => move("move-section-up")}
-          className={sectionButtonClasses}
-        >
+        <button aria-label="Move section up" disabled={index === 0} onClick={() => move("move-section-up")}>
           <Icon name="arrow-up" />
         </button>
         <button
           aria-label="Move section down"
           disabled={index === state.sections.length - 1}
           onClick={() => move("move-section-down")}
-          className={sectionButtonClasses}
         >
           <Icon name="arrow-down" />
         </button>
-      </SectionToolbar>
+      </div>
       <div ref={scrollRef} className="absolute" />
       <div className="mx-auto w-full max-w-6xl">{children}</div>
     </>
@@ -517,12 +495,7 @@ const RichTextSectionView = ({ section }: { section: RichTextSection }) => {
           // Conditionally rendering this breaks on Safari, so we use hidden instead
           hidden={!editor.isFocused && !focused}
         >
-          <RichTextEditorToolbar
-            editor={editor}
-            productId={section.id}
-            // Cancel out the element's height to prevent scroll jumping
-            className="border !bg-white !text-black shadow lg:-mt-[calc(1lh+--spacing(4)+2px)]"
-          />
+          <RichTextEditorToolbar editor={editor} productId={section.id} />
         </div>
       ) : null}
       <EditorContent editor={editor} className="rich-text" />
@@ -598,11 +571,7 @@ const FeaturedProductSectionView = ({ section }: { section: FeaturedProductSecti
   );
 };
 
-export const AddSectionButton = ({
-  position,
-  index,
-  className,
-}: { index: number } & Pick<PopoverProps, "position" | "className">) => {
+export const AddSectionButton = ({ position, index }: { index: number } & Pick<PopoverProps, "position">) => {
   const [open, setOpen] = React.useState(false);
   const [state, dispatch] = useReducer();
 
@@ -663,16 +632,8 @@ export const AddSectionButton = ({
       onToggle={setOpen}
       position={position}
       aria-label="Add section"
-      className={classNames(
-        "aspect-ratio-1 !absolute -top-px place-self-center",
-        { "top-full": position === "top" },
-        className,
-      )}
-      trigger={
-        <div className={classNames(sectionButtonClasses, "rounded-b border")}>
-          <Icon name="plus" />
-        </div>
-      }
+      className="add-section"
+      trigger={<Icon name="plus" />}
     >
       <div role="menu" onClick={() => setOpen(false)}>
         <div role="menuitem" onClick={() => addSection("SellerProfileProductsSection")}>

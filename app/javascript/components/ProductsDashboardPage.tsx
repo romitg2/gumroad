@@ -7,7 +7,6 @@ import { NavigationButtonInertia } from "$app/components/NavigationButton";
 import { PaginationProps } from "$app/components/Pagination";
 import { Popover } from "$app/components/Popover";
 import { ProductsLayout } from "$app/components/ProductsLayout";
-import Placeholder from "$app/components/ui/Placeholder";
 import { WithTooltip } from "$app/components/WithTooltip";
 
 import ProductsPage from "./ProductsPage";
@@ -81,7 +80,7 @@ export const ProductsDashboardPage = ({
     >
       <section className="p-4 md:p-8">
         {memberships.length === 0 && products.length === 0 ? (
-          <Placeholder>
+          <div className="placeholder">
             <figure>
               <img src={placeholder} />
             </figure>
@@ -98,7 +97,7 @@ export const ProductsDashboardPage = ({
                 learn more about the products dashboard
               </a>
             </span>
-          </Placeholder>
+          </div>
         ) : (
           <ProductsPage
             memberships={memberships}

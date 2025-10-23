@@ -18,7 +18,6 @@ import { useLoggedInUser } from "$app/components/LoggedInUser";
 import { showAlert } from "$app/components/server-components/Alert";
 import { Layout as SettingsLayout } from "$app/components/Settings/Layout";
 import { TypeSafeOptionSelect } from "$app/components/TypeSafeOptionSelect";
-import Placeholder from "$app/components/ui/Placeholder";
 
 type Products = { permalink: string; name: string }[];
 type Props = {
@@ -200,7 +199,7 @@ const ThirdPartyAnalyticsPage = ({ settings_pages, third_party_analytics, produc
               {addSnippetButton}
             </>
           ) : (
-            <Placeholder>{addSnippetButton}</Placeholder>
+            <div className="placeholder">{addSnippetButton}</div>
           )}
         </section>
       </form>

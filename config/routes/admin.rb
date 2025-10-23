@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-concern :commentable do
-  resources :comments, only: [:index, :create]
-end
-
 namespace :admin do
   get "/", to: "base#index"
   get :impersonate, to: "base#impersonate"
@@ -16,8 +12,6 @@ namespace :admin do
 
   resources :users, only: [:show, :destroy], defaults: { format: "html" } do
     scope module: :users do
-      concerns :commentable
-
       resource :impersonator, only: [:create, :destroy]
       resources :payouts, only: [:index, :show], shallow: true do
         collection do
@@ -32,11 +26,6 @@ namespace :admin do
           post :sync
         end
       end
-      resources :email_changes, only: :index
-      resources :merchant_accounts, only: :index
-      resource :payout_info, only: :show
-      resources :latest_posts, only: :index
-      resources :stats, only: :index
     end
     resources :service_charges, only: :index
     member do
@@ -44,6 +33,7 @@ namespace :admin do
       post :mass_transfer_purchases
       post :probation_with_reminder
       post :refund_balance
+      get :stats
       post :verify
       post :enable
       post :create_stripe_managed_account

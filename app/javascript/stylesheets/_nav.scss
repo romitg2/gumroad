@@ -1,6 +1,6 @@
 @use "sass:math";
 
-nav.main-nav {
+nav {
   display: flex;
   flex-direction: column;
   @include bg-color("black");

@@ -2,9 +2,8 @@
 
 require "spec_helper"
 require "shared_examples/admin_base_controller_concern"
-require "inertia_rails/rspec"
 
-describe Admin::BlockEmailDomainsController, type: :controller, inertia: true do
+describe Admin::BlockEmailDomainsController do
   render_views
 
   it_behaves_like "inherits from Admin::BaseController"
@@ -20,7 +19,7 @@ describe Admin::BlockEmailDomainsController, type: :controller, inertia: true do
       get :show
 
       expect(response).to be_successful
-      expect(inertia.component).to eq "Admin/BlockEmailDomains/Show"
+      expect(response).to render_template(:show)
     end
   end
 
@@ -33,8 +32,8 @@ describe Admin::BlockEmailDomainsController, type: :controller, inertia: true do
       it "enqueues a job to suspend the specified users" do
         put :update, params: { email_domains: { identifiers: } }
         expect(BlockObjectWorker.jobs.size).to eq(2)
+        expect(flash[:notice]).to eq "Blocking email domains in progress!"
         expect(response).to redirect_to(admin_block_email_domains_url)
-        expect(flash[:notice]).to eq "Email domains blocked successfully!"
       end
 
       it "does not pass expiry date to BlockObjectWorker" do
@@ -51,8 +50,8 @@ describe Admin::BlockEmailDomainsController, type: :controller, inertia: true do
       it "enqueues a job to suspend the specified users" do
         put :update, params: { email_domains: { identifiers: } }
         expect(BlockObjectWorker.jobs.size).to eq(2)
+        expect(flash[:notice]).to eq "Blocking email domains in progress!"
         expect(response).to redirect_to(admin_block_email_domains_url)
-        expect(flash[:notice]).to eq "Email domains blocked successfully!"
       end
 
       it "does not pass expiry date to BlockObjectWorker" do

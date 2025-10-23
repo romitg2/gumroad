@@ -11,6 +11,7 @@ const ProductPage = (props: Props & { taxonomy_path: string | null; taxonomies_f
   <DiscoverLayout
     taxonomyPath={props.taxonomy_path ?? undefined}
     taxonomiesForNav={props.taxonomies_for_nav}
+    className="custom-sections"
     forceDomain
   >
     <Layout cart hasHero {...props} />

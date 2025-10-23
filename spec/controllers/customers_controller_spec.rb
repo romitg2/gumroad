@@ -2,9 +2,8 @@
 
 require "spec_helper"
 require "shared_examples/authorize_called"
-require "inertia_rails/rspec"
 
-describe CustomersController, :vcr, type: :controller, inertia: true do
+describe CustomersController, :vcr do
   render_views
 
   let(:seller) { create(:named_user) }
@@ -28,22 +27,22 @@ describe CustomersController, :vcr, type: :controller, inertia: true do
       let(:policy_method) { :index? }
     end
 
-    it "returns HTTP success and renders the correct inertia component and props" do
+    it "returns HTTP success and assigns the correct instance variables" do
       get :index
       expect(response).to be_successful
-      expect(inertia).to render_component("Customers/Index")
-      expect(inertia.props[:customers_presenter][:pagination]).to eq(next: nil, page: 1, pages: 1)
-      expect(inertia.props[:customers_presenter][:customers]).to match_array([hash_including(id: purchase1.external_id), hash_including(id: purchase2.external_id)])
-      expect(inertia.props[:customers_presenter][:count]).to eq(2)
+      expect(assigns[:title]).to eq("Sales")
+
+      expect(assigns[:customers_presenter].pagination).to eq(next: nil, page: 1, pages: 1)
+      expect(assigns[:customers_presenter].customers).to eq([purchase1, purchase2])
+      expect(assigns[:customers_presenter].count).to eq(2)
     end
 
     context "for a specific product" do
-      it "renders the correct inertia component and props" do
+      it "assigns the correct instance variables" do
         get :index, params: { link_id: product1.unique_permalink }
         expect(response).to be_successful
-        expect(inertia).to render_component("Customers/Index")
-        expect(inertia.props[:customers_presenter][:customers]).to match_array([hash_including(id: purchase1.external_id)])
-        expect(inertia.props[:customers_presenter][:product_id]).to eq(product1.external_id)
+        expect(assigns[:customers_presenter].customers).to eq([purchase1])
+        expect(assigns[:customers_presenter].product).to eq(product1)
       end
     end
   end

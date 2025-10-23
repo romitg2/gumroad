@@ -13,7 +13,6 @@ import { Button, NavigationButton } from "$app/components/Button";
 import { useAppDomain } from "$app/components/DomainSettings";
 import { Icon } from "$app/components/Icons";
 import { Modal } from "$app/components/Modal";
-import { SectionLayout } from "$app/components/Profile/Sections";
 import { ImageUploadSettingsContext } from "$app/components/RichTextEditor";
 import { showAlert } from "$app/components/server-components/Alert";
 import { ProfileProps, TabWithId, useTabs } from "$app/components/server-components/Profile";
@@ -32,7 +31,6 @@ import {
   Action,
   EditSection,
   useSectionImageUploadSettings,
-  SectionToolbar,
 } from "./EditSections";
 import { FollowFormBlock } from "./FollowForm";
 
@@ -196,9 +194,9 @@ export const EditProfile = (props: Props) => {
 
   return (
     <SectionReducerContext.Provider value={reducer}>
-      <header className="relative grid grid-cols-1 gap-4 border-b border-border px-4 py-8">
+      <header className="grid grid-cols-1 gap-4 border-b border-border px-4 py-8">
         {/* Work around position:absolute being affected by header's grid */}
-        <SectionToolbar>
+        <div role="toolbar" style={{ gridColumn: "unset" }}>
           <EditorMenu label="Page settings" onClose={() => void saveTabs(tabs)}>
             <EditorSubmenu heading="Pages" text={tabs.length}>
               {tabs.length > 0 ? (
@@ -225,7 +223,7 @@ export const EditProfile = (props: Props) => {
               <Button onClick={addTab}>New page</Button>
             </EditorSubmenu>
           </EditorMenu>
-        </SectionToolbar>
+        </div>
         {props.bio ? (
           <h1 style={{ whiteSpace: "pre-line" }}>
             <AutoLink text={props.bio} />
@@ -262,24 +260,25 @@ export const EditProfile = (props: Props) => {
       </div>
       {visibleSections.length ? (
         visibleSections.map((section, i) => (
-          <SectionLayout
+          <section
             key={section.id}
             id={section.id}
             style={{ overflowAnchor: section.id === movedSectionId ? "none" : undefined }}
+            className="border-b border-border px-4 py-8 lg:py-16"
           >
             <AddSectionButton index={i} />
             <ImageUploadSettingsContext.Provider value={imageUploadSettings}>
               <EditSection section={section} />
             </ImageUploadSettingsContext.Provider>
             {i === visibleSections.length - 1 ? <AddSectionButton index={i + 1} position="top" /> : null}
-          </SectionLayout>
+          </section>
         ))
       ) : (
-        <SectionLayout className="grid flex-1">
+        <section style={{ flexGrow: 1, display: "grid" }}>
           <AddSectionButton index={0} />
           <FollowFormBlock creatorProfile={props.creator_profile} />
           <AddSectionButton index={0} position="top" />
-        </SectionLayout>
+        </section>
       )}
     </SectionReducerContext.Provider>
   );

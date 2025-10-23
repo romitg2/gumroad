@@ -3,9 +3,8 @@
 require "spec_helper"
 require "shared_examples/sellers_base_controller_concern"
 require "shared_examples/authorize_called"
-require "inertia_rails/rspec"
 
-describe DashboardController, type: :controller, inertia: true do
+describe DashboardController do
   render_views
 
   it_behaves_like "inherits from Sellers::BaseController"
@@ -24,10 +23,17 @@ describe DashboardController, type: :controller, inertia: true do
     end
 
     def expect_dashboard_data_in_inertia_response(expected_data = {})
-      expect(inertia.props[:creator_home]).to be_present, "Expected creator_home in Inertia.js response"
+      data_page_match = response.body.match(/data-page="([^"]*)"/)
+      expect(data_page_match).to be_present, "Expected Inertia.js data-page attribute"
+
+      decoded_content = CGI.unescapeHTML(data_page_match[1])
+      json_data = JSON.parse(decoded_content)
+
+      creator_home = json_data["props"]["creator_home"]
+      expect(creator_home).to be_present, "Expected creator_home in Inertia.js response"
 
       expected_data.each do |key, value|
-        expect(inertia.props[:creator_home][key]).to eq(value), "Expected #{key} to be #{value}, but got #{inertia.props[:creator_home][key]}"
+        expect(creator_home[key.to_s]).to eq(value), "Expected #{key} to be #{value}, but got #{creator_home[key.to_s]}"
       end
     end
 
@@ -38,7 +44,7 @@ describe DashboardController, type: :controller, inertia: true do
         expect(response).to be_successful
 
         expect(response.body).to include("data-page")
-        expect(inertia).to render_component("Dashboard/Index")
+        expect(response.body).to include("Dashboard/index")
 
         expect_dashboard_data_in_inertia_response(
           has_sale: false,
@@ -58,7 +64,8 @@ describe DashboardController, type: :controller, inertia: true do
 
         expect(response).to be_successful
 
-        expect(inertia).to render_component("Dashboard/Index")
+        expect(response.body).to include("data-page")
+        expect(response.body).to include("Dashboard/index")
 
         expect_dashboard_data_in_inertia_response(
           has_sale: false
@@ -94,7 +101,8 @@ describe DashboardController, type: :controller, inertia: true do
 
         expect(response).to be_successful
 
-        expect(inertia).to render_component("Dashboard/Index")
+        expect(response.body).to include("data-page")
+        expect(response.body).to include("Dashboard/index")
 
         data_page_match = response.body.match(/data-page="([^"]*)"/)
         if data_page_match
@@ -128,7 +136,8 @@ describe DashboardController, type: :controller, inertia: true do
         expect(response).to be_successful
 
         # For Inertia.js, we should check for the data-page attribute and component name
-        expect(inertia).to render_component("Dashboard/Index")
+        expect(response.body).to include("data-page")
+        expect(response.body).to include("Dashboard/index")
 
         # Check that the dashboard data shows no products (since product was deleted)
         expect_dashboard_data_in_inertia_response(

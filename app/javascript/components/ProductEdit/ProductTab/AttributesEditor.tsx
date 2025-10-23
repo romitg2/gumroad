@@ -2,7 +2,6 @@ import * as React from "react";
 
 import { Button } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
-import Placeholder from "$app/components/ui/Placeholder";
 
 export type Attribute = { name: string; value: string };
 
@@ -57,11 +56,11 @@ export const AttributesEditor = ({
           {addButton}
         </>
       ) : (
-        <Placeholder>
+        <div className="placeholder">
           <h2>Add details</h2>
           Call out important features of your product that help your customers decide to buy
           {addButton}
-        </Placeholder>
+        </div>
       )}
     </fieldset>
   );

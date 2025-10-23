@@ -6,7 +6,7 @@ module ApplicationHelper
   end
 
   def s3_bucket_url
-    "#{AWS_S3_ENDPOINT}/#{S3_BUCKET}"
+    "https://s3.amazonaws.com/#{S3_BUCKET}"
   end
 
   def default_footer_content
