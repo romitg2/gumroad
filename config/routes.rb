@@ -356,7 +356,7 @@ Rails.application.routes.draw do
     resources :test_pings, only: [:create]
 
     # followers
-    resources :followers, only: [:index, :destroy], format: :json do
+    resources :followers, only: [:index, :destroy] do
       collection do
         get "search"
       end

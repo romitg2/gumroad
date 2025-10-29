@@ -4,10 +4,11 @@ import { sendSubscribersReport } from "$app/data/audience";
 import { assertResponseError } from "$app/utils/request";
 
 import { Button } from "$app/components/Button";
+import { useClientAlert } from "$app/components/ClientAlertProvider";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
-import { showAlert } from "$app/components/server-components/Alert";
 
 export const ExportSubscribersPopover = ({ closePopover }: { closePopover: () => void }) => {
+  const { showAlert } = useClientAlert();
   const [loading, setLoading] = React.useState(false);
   const [followers, setFollowers] = React.useState(true);
   const [customers, setCustomers] = React.useState(false);
@@ -24,7 +25,7 @@ export const ExportSubscribersPopover = ({ closePopover }: { closePopover: () =>
         },
       });
 
-      showAlert("Your export is being prepared. You’ll receive an email with the download link shortly.", "success");
+      showAlert("Your export is being prepared. You'll receive an email with the download link shortly.", "success");
       closePopover();
     } catch (error) {
       assertResponseError(error);

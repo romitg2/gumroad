@@ -1,24 +1,23 @@
+import { Link } from "@inertiajs/react";
 import debounce from "lodash/debounce";
 import * as React from "react";
-import { createCast } from "ts-safe-cast";
 
 import { deleteFollower, fetchFollowers, Follower } from "$app/data/followers";
-import { register } from "$app/utils/serverComponentUtil";
 
 import { Button } from "$app/components/Button";
+import { useClientAlert } from "$app/components/ClientAlertProvider";
 import { CopyToClipboard } from "$app/components/CopyToClipboard";
 import { useCurrentSeller } from "$app/components/CurrentSeller";
 import { Icon } from "$app/components/Icons";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
 import { Popover } from "$app/components/Popover";
 import { Progress } from "$app/components/Progress";
-import { showAlert } from "$app/components/server-components/Alert";
-import { ExportSubscribersPopover } from "$app/components/server-components/FollowersPage/ExportSubscribersPopover";
 import { PageHeader } from "$app/components/ui/PageHeader";
-import Placeholder from "$app/components/ui/Placeholder";
 import { Tabs, Tab } from "$app/components/ui/Tabs";
 import { useUserAgentInfo } from "$app/components/UserAgent";
 import { WithTooltip } from "$app/components/WithTooltip";
+
+import { ExportSubscribersPopover } from "$app/components/Audience/FollowersPage/ExportSubscribersPopover";
 
 import placeholder from "$assets/images/placeholders/followers.png";
 
@@ -33,25 +32,27 @@ const Layout = ({
 }) => {
   const loggedInUser = useLoggedInUser();
 
+  console.log("loggedInUser", loggedInUser);
+
   return (
     <div>
       <PageHeader title={title} actions={actions}>
         <Tabs>
-          <Tab href={`${Routes.emails_path()}/published`} isSelected={false}>
-            Published
+          <Tab asChild isSelected={false}>
+            <Link href={`${Routes.emails_path()}/published`}>Published</Link>
           </Tab>
           {loggedInUser?.policies.installment.create ? (
             <>
-              <Tab href={`${Routes.emails_path()}/scheduled`} isSelected={false}>
-                Scheduled
+              <Tab asChild isSelected={false}>
+                <Link href={`${Routes.emails_path()}/scheduled`}>Scheduled</Link>
               </Tab>
-              <Tab href={`${Routes.emails_path()}/drafts`} isSelected={false}>
-                Drafts
+              <Tab asChild isSelected={false}>
+                <Link href={`${Routes.emails_path()}/drafts`}>Drafts</Link>
               </Tab>
             </>
           ) : null}
-          <Tab href={Routes.followers_path()} isSelected>
-            Subscribers
+          <Tab asChild isSelected>
+            <Link href={Routes.followers_path()}>Subscribers</Link>
           </Tab>
         </Tabs>
       </PageHeader>
@@ -60,10 +61,15 @@ const Layout = ({
   );
 };
 
-type Props = { followers: Follower[]; per_page: number; total: number };
+export type FollowersPageProps = {
+  followers: Follower[];
+  per_page: number;
+  total: number;
+};
 
-export const FollowersPage = ({ followers: initialFollowers, per_page, total }: Props) => {
+export const FollowersPage = ({ followers: initialFollowers, per_page, total }: FollowersPageProps) => {
   const userAgentInfo = useUserAgentInfo();
+  const { showAlert } = useClientAlert();
 
   const [loading, setLoading] = React.useState(false);
   const [followers, setFollowers] = React.useState<Follower[]>(initialFollowers);
@@ -230,7 +236,7 @@ export const FollowersPage = ({ followers: initialFollowers, per_page, total }: 
             ) : null}
           </div>
         ) : (
-          <Placeholder>
+          <div className="placeholder">
             <figure>
               <img src={placeholder} />
             </figure>
@@ -256,11 +262,11 @@ export const FollowersPage = ({ followers: initialFollowers, per_page, total }: 
             ) : (
               <h2>No followers found</h2>
             )}
-          </Placeholder>
+          </div>
         )}
       </div>
     </Layout>
   );
 };
 
-export default register({ component: FollowersPage, propParser: createCast() });
+export default FollowersPage;

@@ -9,7 +9,9 @@ class FollowersController < ApplicationController
 
   before_action :fetch_follower, only: %i[confirm cancel destroy]
   before_action :set_user_and_custom_domain_config, only: :new
-  before_action :set_body_id_as_app, only: :index
+  # Do not set body id to "app" for Inertia pages; it conflicts with Inertia's mount element
+
+  layout "inertia", only: [:index]
 
   FOLLOWERS_PER_PAGE = 20
 
@@ -26,11 +28,16 @@ class FollowersController < ApplicationController
       .limit(FOLLOWERS_PER_PAGE)
       .as_json(pundit_user:)
 
-    @react_component_props = {
+    props = {
       followers: paginated_followers,
       per_page: FollowersController::FOLLOWERS_PER_PAGE,
       total: followers.count,
     }
+
+    respond_to do |format|
+      format.html { render inertia: "Audience/FollowersPage", props: }
+      format.json { render json: props }
+    end
   end
 
   def search

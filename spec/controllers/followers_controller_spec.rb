@@ -2,14 +2,55 @@
 
 require "spec_helper"
 require "shared_examples/authorize_called"
+require "inertia_rails/rspec"
 
-describe FollowersController do
+describe FollowersController, inertia: true do
   render_views
 
   let(:seller) { create(:named_seller) }
 
   context "within seller area" do
     include_context "with user signed in as admin for seller"
+
+    describe "GET index" do
+      let!(:follower1) { create(:active_follower, user: seller, confirmed_at: 2.days.ago) }
+      let!(:follower2) { create(:active_follower, user: seller, confirmed_at: 1.day.ago) }
+
+      it "renders the FollowersPage component" do
+        get :index
+
+        expect(response).to have_http_status(:ok)
+        expect(inertia).to render_component("Audience/FollowersPage")
+      end
+
+      it "passes correct props to the component" do
+        get :index
+
+        props = inertia.props
+        expect(props[:followers]).to be_an(Array)
+        expect(props[:followers].length).to eq(2)
+        expect(props[:per_page]).to eq(FollowersController::FOLLOWERS_PER_PAGE)
+        expect(props[:total]).to eq(2)
+      end
+
+      it "orders followers by confirmed_at desc" do
+        get :index
+
+        props = inertia.props
+        follower_ids = props[:followers].map { |f| f[:id] }
+        expect(follower_ids.first).to eq(follower2.external_id)
+        expect(follower_ids.last).to eq(follower1.external_id)
+      end
+
+      it "returns JSON for format json" do
+        get :index, format: :json
+
+        expect(response).to be_successful
+        expect(response.parsed_body["followers"]).to be_an(Array)
+        expect(response.parsed_body["per_page"]).to eq(FollowersController::FOLLOWERS_PER_PAGE)
+        expect(response.parsed_body["total"]).to eq(2)
+      end
+    end
 
     describe "GET search" do
       context "logged in" do
