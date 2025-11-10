@@ -325,4 +325,85 @@ describe "Tiered Membership Spec", type: :system, js: true do
       end
     end
   end
+
+  context "when product has custom fields" do
+    before :each do
+      @product.custom_fields.create!(
+        name: "Favorite Color",
+        required: false,
+        field_type: "text",
+        seller_id: @product.user.id
+      )
+      @product.custom_fields.create!(
+        name: "Subscribe to Newsletter",
+        required: false,
+        field_type: "checkbox",
+        seller_id: @product.user.id
+      )
+    end
+
+    it "does not display custom fields on the manage subscription page" do
+      visit "/subscriptions/#{@subscription.external_id}/manage?token=#{@subscription.token}"
+
+      # Custom fields should not be rendered
+      expect(page).not_to have_text "Favorite Color"
+      expect(page).not_to have_text "Subscribe to Newsletter"
+
+      # Form should still be functional
+      expect(page).to have_field("Recurrence", with: "quarterly")
+      expect(page).to have_button("Update membership")
+    end
+
+    it "successfully updates subscription without custom field validation errors" do
+      visit "/subscriptions/#{@subscription.external_id}/manage?token=#{@subscription.token}"
+
+      choose "Second Tier"
+      wait_for_ajax
+
+      click_on "Update membership"
+      wait_for_ajax
+
+      expect(page).to have_alert(text: "Your membership has been updated.")
+      expect(@subscription.reload.original_purchase.variant_attributes).to eq [@new_tier]
+    end
+
+    it "preserves original purchase custom field values when updating subscription" do
+      # Set custom field values on the original purchase
+      color_field = @product.custom_fields.find_by(name: "Favorite Color")
+      newsletter_field = @product.custom_fields.find_by(name: "Subscribe to Newsletter")
+
+      @subscription.original_purchase.purchase_custom_fields.create!(
+        custom_field: color_field,
+        name: color_field.name,
+        field_type: color_field.field_type,
+        value: "Blue"
+      )
+      @subscription.original_purchase.purchase_custom_fields.create!(
+        custom_field: newsletter_field,
+        name: newsletter_field.name,
+        field_type: newsletter_field.field_type,
+        value: "true"
+      )
+
+      original_custom_field_values = @subscription.original_purchase.purchase_custom_fields.pluck(:custom_field_id, :value).to_h
+
+      visit "/subscriptions/#{@subscription.external_id}/manage?token=#{@subscription.token}"
+
+      choose "Second Tier"
+      wait_for_ajax
+
+      click_on "Update membership"
+      wait_for_ajax
+
+      expect(page).to have_alert(text: "Your membership has been updated.")
+
+      # Verify original purchase custom field values are unchanged
+      @subscription.reload
+      current_custom_field_values = @subscription.original_purchase.purchase_custom_fields.pluck(:custom_field_id, :value).to_h
+
+      expect(current_custom_field_values).to eq(original_custom_field_values)
+      expect(@subscription.original_purchase.purchase_custom_fields.find_by(custom_field: color_field).value).to eq("Blue")
+      expect(@subscription.original_purchase.purchase_custom_fields.find_by(custom_field: newsletter_field).value).to eq(true)
+    end
+  end
 end
