@@ -345,11 +345,9 @@ describe "Tiered Membership Spec", type: :system, js: true do
     it "does not display custom fields on the manage subscription page" do
       visit "/subscriptions/#{@subscription.external_id}/manage?token=#{@subscription.token}"
 
-      # Custom fields should not be rendered
       expect(page).not_to have_text "Favorite Color"
       expect(page).not_to have_text "Subscribe to Newsletter"
 
-      # Form should still be functional
       expect(page).to have_field("Recurrence", with: "quarterly")
       expect(page).to have_button("Update membership")
     end
@@ -368,7 +366,6 @@ describe "Tiered Membership Spec", type: :system, js: true do
     end
 
     it "preserves original purchase custom field values when updating subscription" do
-      # Set custom field values on the original purchase
       color_field = @product.custom_fields.find_by(name: "Favorite Color")
       newsletter_field = @product.custom_fields.find_by(name: "Subscribe to Newsletter")
 
@@ -397,7 +394,6 @@ describe "Tiered Membership Spec", type: :system, js: true do
 
       expect(page).to have_alert(text: "Your membership has been updated.")
 
-      # Verify original purchase custom field values are unchanged
       @subscription.reload
       current_custom_field_values = @subscription.original_purchase.purchase_custom_fields.pluck(:custom_field_id, :value).to_h
 
