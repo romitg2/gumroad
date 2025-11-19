@@ -78,6 +78,13 @@ export const ProductTab = () => {
 
   const url = useProductUrl();
 
+  const handleSetPriceCents = (priceCents: number) => {
+    updateProduct({
+      price_cents: priceCents,
+      ...(priceCents === 0 && { customizable_price: true }),
+    });
+  };
+
   if (!currentSeller) return null;
 
   return (
@@ -271,7 +278,7 @@ export const ProductTab = () => {
                       priceCents={product.price_cents}
                       suggestedPriceCents={product.suggested_price_cents}
                       isPWYW={product.customizable_price}
-                      setPriceCents={(priceCents) => updateProduct({ price_cents: priceCents })}
+                      setPriceCents={handleSetPriceCents}
                       setSuggestedPriceCents={(suggestedPriceCents) =>
                         updateProduct({ suggested_price_cents: suggestedPriceCents })
                       }

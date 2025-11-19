@@ -43,6 +43,13 @@ export const ProductTab = () => {
 
   const url = useProductUrl();
 
+  const handleSetPriceCents = (priceCents: number) => {
+    updateBundle({
+      price_cents: priceCents,
+      ...(priceCents === 0 && { customizable_price: true }),
+    });
+  };
+
   if (!currentSeller) return null;
 
   return (
@@ -80,7 +87,7 @@ export const ProductTab = () => {
             priceCents={bundle.price_cents}
             suggestedPriceCents={bundle.suggested_price_cents}
             isPWYW={bundle.customizable_price}
-            setPriceCents={(priceCents) => updateBundle({ price_cents: priceCents })}
+            setPriceCents={handleSetPriceCents}
             setSuggestedPriceCents={(suggestedPriceCents) =>
               updateBundle({ suggested_price_cents: suggestedPriceCents })
             }
