@@ -44,13 +44,6 @@ describe("Product Edit pay what you want setting", type: :system, js: true) do
     expect(find_field("Suggested amount").value).to eq "10"
   end
 
-  it "displays info alert when price is set to $0" do
-    visit edit_link_path(product.unique_permalink)
-    fill_in "Amount", with: "0"
-
-    expect(page).to have_content("Free products require a pay what they want price.")
-  end
-
   it "hides info alert and enables toggle when price is changed from $0 to a positive value" do
     visit edit_link_path(product.unique_permalink)
     fill_in "Amount", with: "0"

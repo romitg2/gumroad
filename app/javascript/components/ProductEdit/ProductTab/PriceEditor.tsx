@@ -58,7 +58,7 @@ export const PriceEditor = ({
         className="toggle"
         open={isPWYW}
         summary={
-          <Toggle value={isPWYW || isFreeProduct} onChange={setIsPWYW} disabled={isFreeProduct}>
+          <Toggle value={isPWYW} onChange={setIsPWYW} disabled={isFreeProduct}>
             <a href="/help/article/133-pay-what-you-want-pricing" target="_blank" rel="noreferrer">
               Allow customers to pay what they want
             </a>
