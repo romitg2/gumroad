@@ -78,8 +78,6 @@ export const ProductTab = () => {
 
   const url = useProductUrl();
 
-
-
   if (!currentSeller) return null;
 
   return (
