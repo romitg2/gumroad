@@ -4,7 +4,7 @@ import { ClientNavLink } from "$app/components/client-components/Nav";
 import { useCurrentSeller } from "$app/components/CurrentSeller";
 import { useAppDomain } from "$app/components/DomainSettings";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
-import { NavLinkDropdownItem, UnbecomeDropdownItem, NavLinkDropdownMembershipItem } from "$app/components/Nav";
+import { NavLink, NavLinkDropdownItem, UnbecomeDropdownItem, NavLinkDropdownMembershipItem } from "$app/components/Nav";
 import { DashboardNavProfilePopover } from "$app/components/ProfilePopover";
 
 function NavbarFooter() {
@@ -16,9 +16,9 @@ function NavbarFooter() {
   return (
     <>
       {currentSeller?.isBuyer ? (
-        <ClientNavLink text="Start selling" icon="shop-window-fill" href={Routes.dashboard_url(routeParams)} />
+        <NavLink text="Start selling" icon="shop-window-fill" href={Routes.dashboard_url(routeParams)} />
       ) : null}
-      <ClientNavLink text="Settings" icon="gear-fill" href={Routes.settings_main_url(routeParams)} />
+      <NavLink text="Settings" icon="gear-fill" href={Routes.settings_main_url(routeParams)} />
       <ClientNavLink text="Help" icon="book" href={Routes.help_center_root_url(routeParams)} />
       <DashboardNavProfilePopover user={currentSeller}>
         <div role="menu">
