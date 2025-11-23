@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HelpCenter::BaseController < ApplicationController
-  layout "help_center"
+  layout "inertia"
 
   rescue_from ActiveHash::RecordNotFound, with: :redirect_to_help_center_root
 

@@ -10,7 +10,9 @@ module InertiaRendering
         current_user: current_user_props(current_user, impersonated_user),
         authenticity_token: form_authenticity_token,
         flash: inertia_flash_props,
-        title: @title
+        title: @title,
+        helper_host: helper_widget_host,
+        helper_session: helper_session
       )
     end
   end

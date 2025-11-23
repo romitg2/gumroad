@@ -1,25 +1,26 @@
-// import cx from "classnames";
+import { usePage } from "@inertiajs/react";
 import * as React from "react";
-import { createCast } from "ts-safe-cast";
-
-import { register } from "$app/utils/serverComponentUtil";
 
 import { NavigationButton } from "$app/components/Button";
+import { HelpCenterLayout } from "$app/components/HelpCenter/Layout";
 
 interface Article {
   title: string;
   url: string;
+  slug: string;
 }
 
 interface Category {
   url: string;
   title: string;
+  slug: string;
   audience: string;
   articles: Article[];
 }
 
-interface ArticlesIndexPageProps {
+interface IndexProps {
   categories: Category[];
+  [key: string]: any;
 }
 
 const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
@@ -64,7 +65,8 @@ const CategoryArticles = ({ category, searchTerm }: { category: Category; search
   );
 };
 
-const ArticlesIndexPage = ({ categories }: ArticlesIndexPageProps) => {
+export default function HelpCenterArticlesIndex() {
+  const { categories } = usePage<IndexProps>().props;
   const [searchTerm, setSearchTerm] = React.useState("");
 
   const filteredCategories = searchTerm
@@ -75,7 +77,7 @@ const ArticlesIndexPage = ({ categories }: ArticlesIndexPageProps) => {
     : categories;
 
   return (
-    <>
+    <HelpCenterLayout>
       <input
         type="text"
         autoFocus
@@ -89,8 +91,6 @@ const ArticlesIndexPage = ({ categories }: ArticlesIndexPageProps) => {
           <CategoryArticles key={category.url} category={category} searchTerm={searchTerm} />
         ))}
       </div>
-    </>
+    </HelpCenterLayout>
   );
-};
-
-export default register({ component: ArticlesIndexPage, propParser: createCast() });
+}
