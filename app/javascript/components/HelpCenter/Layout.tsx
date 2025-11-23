@@ -1,4 +1,4 @@
-import { router, usePage } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import React from "react";
 import { HelperClientProvider } from "@helperai/react";
 
@@ -39,9 +39,9 @@ export function HelpCenterLayout({ children }: { children: React.ReactNode }) {
         title="Help Center"
         actions={
           isHelpArticle ? (
-            <a href="/help" className="button" aria-label="Search" title="Search">
+            <Link href="/help" className="button" aria-label="Search" title="Search">
               <Icon name="solid-search" />
-            </a>
+            </Link>
           ) : (
             <>
               <NavigationButton
@@ -76,20 +76,22 @@ export function HelpCenterLayout({ children }: { children: React.ReactNode }) {
         }
       >
         <Tabs>
-          <Tab href="/help" isSelected={pathname.startsWith("/help")}>
-            Articles
+          <Tab isSelected={pathname.startsWith("/help")} asChild>
+            <Link href="/help">Articles</Link>
           </Tab>
           <Tab
-            href="/support"
             isSelected={pathname.startsWith("/support")}
             className="flex items-center gap-2"
+            asChild
           >
-            Support tickets
-            {helper_host && helper_session ? (
-              <HelperClientProvider host={helper_host} session={helper_session}>
-                <UnreadTicketsBadge />
-              </HelperClientProvider>
-            ) : null}
+            <Link href="/support">
+              Support tickets
+              {helper_host && helper_session ? (
+                <HelperClientProvider host={helper_host} session={helper_session}>
+                  <UnreadTicketsBadge />
+                </HelperClientProvider>
+              ) : null}
+            </Link>
           </Tab>
         </Tabs>
       </PageHeader>

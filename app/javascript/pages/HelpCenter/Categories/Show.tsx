@@ -1,4 +1,4 @@
-import { usePage } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import * as React from "react";
 
 import { HelpCenterLayout } from "$app/components/HelpCenter/Layout";
@@ -36,9 +36,9 @@ export default function HelpCenterCategoryShow() {
           <ul className="space-y-4 list-none pl-0!">
             {sidebar_categories.map((cat) => (
               <li key={cat.url}>
-                <a href={cat.url} className={cat.is_active ? "font-bold" : ""}>
+                <Link href={cat.url} className={cat.is_active ? "font-bold" : ""}>
                   {cat.title}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -49,7 +49,7 @@ export default function HelpCenterCategoryShow() {
           <div className="space-y-4">
             {category.articles.map((article) => (
               <div key={article.url} className="flex items-center space-x-3">
-                <a href={article.url} className="hover:text-blue-600 hover:underline font-medium flex items-center gap-2 w-fit">
+                <Link href={article.url} className="hover:text-blue-600 hover:underline font-medium flex items-center gap-2 w-fit">
                   <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
@@ -59,7 +59,7 @@ export default function HelpCenterCategoryShow() {
                     ></path>
                   </svg>
                   {article.title}
-                </a>
+                </Link>
               </div>
             ))}
           </div>

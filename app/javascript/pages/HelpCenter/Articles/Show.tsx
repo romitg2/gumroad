@@ -1,4 +1,4 @@
-import { usePage } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import * as React from "react";
 
 import { HelpCenterLayout } from "$app/components/HelpCenter/Layout";
@@ -34,9 +34,9 @@ export default function HelpCenterArticleShow() {
           <ul className="space-y-4 list-none pl-0!">
             {sidebar_categories.map((category) => (
               <li key={category.url}>
-                <a href={category.url} className={category.is_active ? "font-bold" : ""}>
+                <Link href={category.url} className={category.is_active ? "font-bold" : ""}>
                   {category.title}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
