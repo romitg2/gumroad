@@ -13,8 +13,8 @@ import { escapeRegExp } from "$app/utils";
 import { classNames } from "$app/utils/classNames";
 import { initTeamMemberReadOnlyAccess } from "$app/utils/team_member_read_only";
 
-import { CloseOnNavigate } from "$app/components/CloseOnNavigate";
 import NavbarFooter from "$app/components/client-components/Nav/footer";
+import { CloseOnNavigate } from "$app/components/CloseOnNavigate";
 import { useCurrentSeller } from "$app/components/CurrentSeller";
 import { useAppDomain, useDiscoverUrl } from "$app/components/DomainSettings";
 import { Icon } from "$app/components/Icons";
