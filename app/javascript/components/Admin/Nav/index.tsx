@@ -4,6 +4,7 @@ import * as React from "react";
 import AdminNavFooter from "$app/components/Admin/Nav/Footer";
 import { useAppDomain } from "$app/components/DomainSettings";
 import { Nav as NavFramework, NavLink, InertiaNavLink, NavSection } from "$app/components/Nav";
+import { CloseOnNavigate } from "$app/components/CloseOnNavigate";
 
 type PageProps = { title: string };
 
@@ -13,6 +14,7 @@ const Nav = () => {
 
   return (
     <NavFramework title={title} footer={<AdminNavFooter />}>
+      <CloseOnNavigate />
       <NavSection>
         <InertiaNavLink
           text="Suspend users"
