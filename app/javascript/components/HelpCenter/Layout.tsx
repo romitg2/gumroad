@@ -4,12 +4,14 @@ import { HelperClientProvider } from "@helperai/react";
 
 import { Button, NavigationButton } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
+import { UnauthenticatedNewTicketModal } from "$app/components/support/UnauthenticatedNewTicketModal";
 import { UnreadTicketsBadge } from "$app/components/support/UnreadTicketsBadge";
 import { PageHeader } from "$app/components/ui/PageHeader";
 import { Tabs, Tab } from "$app/components/ui/Tabs";
 
 interface PageProps {
   [key: string]: unknown;
+  current_user?: any;
   helper_host?: string | null;
   helper_session?: {
     email?: string | null;
@@ -25,12 +27,34 @@ interface PageProps {
 }
 
 export function HelpCenterLayout({ children }: { children: React.ReactNode }) {
-  const { helper_host, helper_session } = usePage<PageProps>().props;
+  const { current_user, helper_host, helper_session } = usePage<PageProps>().props;
   const pathname = window.location.pathname;
+  const searchParams = new URLSearchParams(window.location.search);
   const isHelpArticle = pathname.startsWith("/help") && pathname !== "/help";
+  const isSignedIn = !!current_user;
+  const isAnonymousUserOnHelpCenter = !isSignedIn && pathname === "/help";
+
+  const [isUnauthenticatedNewTicketOpen, setIsUnauthenticatedNewTicketOpen] = React.useState(
+    isAnonymousUserOnHelpCenter && !!searchParams.get("new_ticket"),
+  );
+
+  React.useEffect(() => {
+    if (isAnonymousUserOnHelpCenter && !isUnauthenticatedNewTicketOpen) {
+      const url = new URL(location.href);
+      if (url.searchParams.get("new_ticket")) {
+        url.searchParams.delete("new_ticket");
+        history.replaceState(null, "", url.toString());
+      }
+    }
+  }, [isUnauthenticatedNewTicketOpen, isAnonymousUserOnHelpCenter]);
 
   const handleOpenNewTicket = () => {
-    router.visit("/support?new_ticket=true");
+    if (isSignedIn) {
+      router.visit("/support?new_ticket=true");
+    } else {
+      // For anonymous users, open the modal
+      setIsUnauthenticatedNewTicketOpen(true);
+    }
   };
 
   return (
@@ -96,6 +120,14 @@ export function HelpCenterLayout({ children }: { children: React.ReactNode }) {
         </Tabs>
       </PageHeader>
       <section className="p-4 md:p-8">{children}</section>
+      {isAnonymousUserOnHelpCenter ? (
+        <UnauthenticatedNewTicketModal
+          open={isUnauthenticatedNewTicketOpen}
+          onClose={() => setIsUnauthenticatedNewTicketOpen(false)}
+          onCreated={() => setIsUnauthenticatedNewTicketOpen(false)}
+          recaptchaSiteKey={null}
+        />
+      ) : null}
     </main>
   );
 }
