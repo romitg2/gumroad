@@ -1,23 +1,12 @@
-import { Link, router, usePage } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import * as React from "react";
 
 import AdminNavFooter from "$app/components/Admin/Nav/Footer";
 import { useAppDomain } from "$app/components/DomainSettings";
-import { Nav as NavFramework, NavLink, InertiaNavLink, NavSection, useNav } from "$app/components/Nav";
+import { Nav as NavFramework, NavLink, InertiaNavLink, NavSection } from "$app/components/Nav";
+import { CloseOnNavigate } from "$app/components/client-components/Nav";
 
 type PageProps = { title: string };
-
-const CloseOnNavigate = () => {
-  const nav = useNav();
-  const close = nav?.close;
-
-  React.useEffect(() => {
-    if (!close) return;
-    return router.on("navigate", close);
-  }, [close]);
-
-  return null;
-};
 
 const Nav = () => {
   const { title } = usePage<PageProps>().props;

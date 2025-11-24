@@ -76,7 +76,7 @@ export const ClientNavLink = ({
   );
 };
 
-const CloseOnNavigate = () => {
+export const CloseOnNavigate = () => {
   const nav = useNav();
   const close = nav?.close;
 
