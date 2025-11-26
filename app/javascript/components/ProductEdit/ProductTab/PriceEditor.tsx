@@ -49,11 +49,11 @@ export const PriceEditor = ({
         onChange={(newAmount) => setPriceCents(newAmount ?? 0)}
         currencyCodeSelector={currencyCodeSelector}
       />
-      {isFreeProduct && (
+      {isFreeProduct ? (
         <div role="alert" className="info">
           Free products require a pay what they want price.
         </div>
-      )}
+      ) : null}
       <Details
         className="toggle"
         open={isPWYW}
