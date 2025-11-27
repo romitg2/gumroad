@@ -17,7 +17,6 @@ describe("Product Edit pay what you want setting", type: :system, js: true) do
 
     pwyw_toggle = find_field("Allow customers to pay what they want", disabled: true)
     expect(pwyw_toggle).to be_checked
-    expect(pwyw_toggle).to be_disabled
 
     expect(page).to have_field("Minimum amount", disabled: true)
     expect(page).to have_field("Suggested amount")

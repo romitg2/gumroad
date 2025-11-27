@@ -163,7 +163,6 @@ describe("Product Edit Previews", type: :system, js: true) do
 
       pwyw_toggle = find_field("Allow customers to pay what they want", disabled: true)
       expect(pwyw_toggle).to be_checked
-      expect(pwyw_toggle).to be_disabled
 
       in_preview do
         expect(page).to have_content "$0+"
@@ -190,7 +189,6 @@ describe("Product Edit Previews", type: :system, js: true) do
 
       pwyw_toggle = find_field("Allow customers to pay what they want", disabled: true)
       expect(pwyw_toggle).to be_checked
-      expect(pwyw_toggle).to be_disabled
 
       in_preview do
         expect(page).to have_content "$0+"
