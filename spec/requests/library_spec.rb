@@ -347,7 +347,7 @@ describe("Library Scenario", type: :system, js: true) do
       Link.import(refresh: true, force: true)
       visit "/library"
 
-      expect(page).to have_text("Showing 1-9 of 12")
+      expect(page).to have_text("Showing 1-12 of 12")
       expect(find("label", text: @creator.name)).to have_text("(10)")
       expect(find("label", text: @another_creator.name)).to have_text("(2)")
 
@@ -356,7 +356,7 @@ describe("Library Scenario", type: :system, js: true) do
       expect(find_field("All Creators", visible: false).checked?).to eq(false)
       expect(find_field(@creator.name, visible: false).checked?).to eq(true)
       expect(find_field(@another_creator.name, visible: false).checked?).to eq(false)
-      expect(page).to have_text("Showing 1-9 of 10")
+      expect(page).to have_text("Showing 1-10 of 10")
       scroll_to find_product_card(@b.link)
       expect(page).to have_product_card(count: 10)
       expect_to_show_purchases_in_order([@j, @i, @h, @g, @f, @e, @d, @c, @b, @a])
@@ -374,7 +374,7 @@ describe("Library Scenario", type: :system, js: true) do
       expect(find_field("All Creators", visible: false).checked?).to eq(true)
       expect(find_field(@creator.name, visible: false).checked?).to eq(false)
       expect(find_field(@another_creator.name, visible: false).checked?).to eq(false)
-      expect(page).to have_text("Showing 1-9 of 12")
+      expect(page).to have_text("Showing 1-12 of 12")
       scroll_to find_product_card(@d.link)
       expect_to_show_purchases_in_order([another_b, another_a, @j, @i, @h, @g, @f, @e, @d, @c, @b, @a])
     end
@@ -475,7 +475,7 @@ describe("Library Scenario", type: :system, js: true) do
     Link.import(refresh: true, force: true)
     visit library_path
 
-    expect(page).to have_text("Showing 1-9 of 18 products")
+    expect(page).to have_text("Showing 1-15 of 18 products")
     9.times do |n|
       expect(page).to have_product_card(products[17 - n], exact_text: true)
     end
