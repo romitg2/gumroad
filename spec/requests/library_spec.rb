@@ -466,8 +466,8 @@ describe("Library Scenario", type: :system, js: true) do
 
   it "shows new results upon scrolling to the bottom of the page" do
     products = []
-    18.times do |n|
-      product = create(:product, name: "Product #{n}")
+    30.times do |n|
+      product = create(:product, name: "Product #{n}", price_cents: 0)
       products << product
       create(:purchase, link: product, purchaser: @user)
     end
@@ -475,15 +475,15 @@ describe("Library Scenario", type: :system, js: true) do
     Link.import(refresh: true, force: true)
     visit library_path
 
-    expect(page).to have_text("Showing 1-15 of 18 products")
-    9.times do |n|
-      expect(page).to have_product_card(products[17 - n], exact_text: true)
+    expect(page).to have_text("Showing 1-15 of 30 products")
+    15.times do |n|
+      expect(page).to have_product_card(products[29 - n], exact_text: true)
     end
-    9.times do |n|
+    15.times do |n|
       expect(page).to_not have_product_card(products[n], exact_text: true)
     end
-    scroll_to find(:section, "9", section_element: :article)
-    9.times do |n|
+    scroll_to find(:section, "15", section_element: :article)
+    15.times do |n|
       expect(page).to have_product_card(products[n], exact_text: true)
     end
   end
