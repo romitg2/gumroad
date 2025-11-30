@@ -78,20 +78,44 @@ def create_recommendable_product_if_not_exists(user, taxonomy_slug)
   create_purchase(user, buyer, product)
 end
 
-create_recommendable_product_if_not_exists(find_or_create_recommendable_user("film"), "films")
-create_recommendable_product_if_not_exists(find_or_create_recommendable_user("music"), "music-and-sound-design")
-create_recommendable_product_if_not_exists(find_or_create_recommendable_user("writing"), "writing-and-publishing")
-create_recommendable_product_if_not_exists(find_or_create_recommendable_user("education"), "education")
-create_recommendable_product_if_not_exists(find_or_create_recommendable_user("software"), "software-development")
-create_recommendable_product_if_not_exists(find_or_create_recommendable_user("comics"), "comics-and-graphic-novels")
-create_recommendable_product_if_not_exists(find_or_create_recommendable_user("drawing"), "drawing-and-painting")
-create_recommendable_product_if_not_exists(find_or_create_recommendable_user("animation"), "3d")
-create_recommendable_product_if_not_exists(find_or_create_recommendable_user("audio"), "audio")
-create_recommendable_product_if_not_exists(find_or_create_recommendable_user("games"), "gaming")
-create_recommendable_product_if_not_exists(find_or_create_recommendable_user("photography"), "photography")
-create_recommendable_product_if_not_exists(find_or_create_recommendable_user("crafts"), "self-improvement")
-create_recommendable_product_if_not_exists(find_or_create_recommendable_user("design"), "design")
-create_recommendable_product_if_not_exists(find_or_create_recommendable_user("sports"), "fitness-and-health")
-create_recommendable_product_if_not_exists(find_or_create_recommendable_user("merchandise"), "fiction-books")
+taxonomies = [
+  { category: "film", slug: "films" },
+  { category: "music", slug: "music-and-sound-design" },
+  { category: "writing", slug: "writing-and-publishing" },
+  { category: "education", slug: "education" },
+  { category: "software", slug: "software-development" },
+  { category: "comics", slug: "comics-and-graphic-novels" },
+  { category: "drawing", slug: "drawing-and-painting" },
+  { category: "animation", slug: "3d" },
+  { category: "audio", slug: "audio" },
+  { category: "games", slug: "gaming" },
+  { category: "photography", slug: "photography" },
+  { category: "crafts", slug: "self-improvement" },
+  { category: "design", slug: "design" },
+  { category: "sports", slug: "fitness-and-health" },
+  { category: "merchandise", slug: "fiction-books" },
+  { category: "cooking", slug: "food-and-drink" },
+  { category: "business", slug: "business-and-money" },
+  { category: "lifestyle", slug: "comics-and-graphic-novels" },
+  { category: "fashion", slug: "design" },
+  { category: "travel", slug: "fiction-books" },
+  { category: "tech", slug: "software-development" },
+  { category: "art", slug: "drawing-and-painting" },
+  { category: "wellness", slug: "fitness-and-health" },
+  { category: "marketing", slug: "business-and-money" },
+  { category: "productivity", slug: "self-improvement" },
+  { category: "language", slug: "education" },
+  { category: "science", slug: "education" },
+  { category: "history", slug: "writing-and-publishing" },
+  { category: "poetry", slug: "writing-and-publishing" },
+  { category: "dance", slug: "fitness-and-health" },
+]
+
+taxonomies.each do |taxonomy_data|
+  create_recommendable_product_if_not_exists(
+    find_or_create_recommendable_user(taxonomy_data[:category]),
+    taxonomy_data[:slug]
+  )
+end
 
 DevTools.delete_all_indices_and_reindex_all
