@@ -492,21 +492,22 @@ describe("Library Scenario", type: :system, js: true) do
     let(:purchase) { create(:purchase, purchaser: @user, link: create(:product, :bundle)) }
     before do
       purchase.create_artifacts_and_send_receipt!
-      create_list(:purchase, 8, purchaser: @user) do |purchase, i|
-        purchase.link.update!(name: "Product #{i}")
+      14.times do |i|
+        product = create(:product, name: "Product #{i}")
+        create(:purchase, link: product, purchaser: @user)
       end
     end
 
     it "filters by bundle" do
       visit library_path
-      (0..7).each do |i|
+      (0..13).each do |i|
         expect(page).to have_section("Product #{i}", exact: true)
       end
       expect(page).to have_section("Bundle Product 2")
       expect(page).to_not have_section("Bundle Product 1")
 
       select_combo_box_option search: "Bundle", from: "Bundles"
-      (0..7).each do |i|
+      (0..13).each do |i|
         expect(page).to_not have_section("Product #{i}", exact: true)
       end
 
