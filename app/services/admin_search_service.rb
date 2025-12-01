@@ -58,7 +58,7 @@ class AdminSearchService
       purchases = purchases.where(id: license.purchase_id)
     end
 
-    if [transaction_date, last_4, card_type, price, expiry_date].any?
+    if [transaction_date, last_4, card_type, price, expiry_date].any?(&:present?)
       purchases = purchases.where.not(stripe_fingerprint: nil)
 
       if transaction_date.present?
@@ -93,7 +93,7 @@ class AdminSearchService
       service_charges = service_charges.where(user_id: user.id)
     end
 
-    if [transaction_date, last_4, card_type, price, expiry_date].any?
+    if [transaction_date, last_4, card_type, price, expiry_date].any?(&:present?)
       service_charges = service_charges.where.not(charge_processor_fingerprint: nil)
 
       if transaction_date.present?
