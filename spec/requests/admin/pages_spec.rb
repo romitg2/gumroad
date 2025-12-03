@@ -67,6 +67,7 @@ describe "Admin Pages Scenario", type: :system, js: true do
       upsell_offer_code.purchases << purchase
 
       visit admin_purchase_path(purchase)
+
       expect(page).not_to have_text("Discount code")
       expect(page).to have_text("Discount")
       expect(page).to have_text("15% off")
