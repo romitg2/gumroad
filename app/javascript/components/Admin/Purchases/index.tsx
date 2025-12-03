@@ -94,7 +94,7 @@ export type Purchase = PurchaseStatesInfo & {
     url_redirect: UrlRedirect | null;
   }[];
   url_redirect: UrlRedirect | null;
-  offer_code: { code: string; displayed_amount_off: string } | null;
+  offer_code: { code: string | null; displayed_amount_off: string } | null;
   street_address: string | null;
   full_name: string | null;
   city: string | null;

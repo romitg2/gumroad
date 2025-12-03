@@ -99,7 +99,7 @@ class Admin::PurchasePresenter
                          }
                        end,
                        url_redirect: purchase.url_redirect ? url_redirect_props(purchase.url_redirect) : nil,
-                       offer_code: purchase.offer_code&.code.present? ? {
+                       offer_code: purchase.offer_code ? {
                          code: purchase.offer_code.code,
                          displayed_amount_off: purchase.offer_code.displayed_amount_off(purchase.link.price_currency_type, with_symbol: true),
                        } : nil,
