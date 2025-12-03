@@ -357,9 +357,11 @@ const Info = ({ purchase }: { purchase: Purchase }) => (
 
       {purchase.offer_code && !purchase.gift?.is_sender_purchase ? (
         <>
-          <dt>Discount code</dt>
+          <dt>{purchase.offer_code.code ? "Discount code" : "Discount"}</dt>
           <dd>
-            {purchase.offer_code.code} for {purchase.offer_code.displayed_amount_off} off
+            {purchase.offer_code.code
+              ? `${purchase.offer_code.code} for ${purchase.offer_code.displayed_amount_off} off`
+              : `${purchase.offer_code.displayed_amount_off} off`}
           </dd>
         </>
       ) : null}
