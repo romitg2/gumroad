@@ -342,30 +342,7 @@ describe "Tiered Membership Spec", type: :system, js: true do
       )
     end
 
-    it "does not display custom fields on the manage subscription page" do
-      visit "/subscriptions/#{@subscription.external_id}/manage?token=#{@subscription.token}"
-
-      expect(page).not_to have_text "Favorite Color"
-      expect(page).not_to have_text "Subscribe to Newsletter"
-
-      expect(page).to have_field("Recurrence", with: "quarterly")
-      expect(page).to have_button("Update membership")
-    end
-
-    it "successfully updates subscription without custom field validation errors" do
-      visit "/subscriptions/#{@subscription.external_id}/manage?token=#{@subscription.token}"
-
-      choose "Second Tier"
-      wait_for_ajax
-
-      click_on "Update membership"
-      wait_for_ajax
-
-      expect(page).to have_alert(text: "Your membership has been updated.")
-      expect(@subscription.reload.original_purchase.variant_attributes).to eq [@new_tier]
-    end
-
-    it "preserves original purchase custom field values when updating subscription" do
+    it "hides custom fields on manage membership page" do
       color_field = @product.custom_fields.find_by(name: "Favorite Color")
       newsletter_field = @product.custom_fields.find_by(name: "Subscribe to Newsletter")
 
@@ -386,9 +363,14 @@ describe "Tiered Membership Spec", type: :system, js: true do
 
       visit "/subscriptions/#{@subscription.external_id}/manage?token=#{@subscription.token}"
 
+      expect(page).not_to have_text "Favorite Color"
+      expect(page).not_to have_text "Subscribe to Newsletter"
+
+      expect(page).to have_field("Recurrence", with: "quarterly")
+      expect(page).to have_button("Update membership")
+
       choose "Second Tier"
       wait_for_ajax
-
       click_on "Update membership"
       wait_for_ajax
 
