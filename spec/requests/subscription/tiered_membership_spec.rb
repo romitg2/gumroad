@@ -342,7 +342,7 @@ describe "Tiered Membership Spec", type: :system, js: true do
       )
     end
 
-    it "hides custom fields on manage membership page" do
+    it "hides custom fields on manage membership page and preserves original custom field values when updating membership" do
       color_field = @product.custom_fields.find_by(name: "Favorite Color")
       newsletter_field = @product.custom_fields.find_by(name: "Subscribe to Newsletter")
 
