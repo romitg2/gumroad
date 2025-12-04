@@ -401,7 +401,7 @@ const SharedInputs = ({ showCustomFields }: { showCustomFields: boolean }) => {
           </div>
         </div>
       ) : null}
-      {showCustomFields && <CustomFields />}
+      {showCustomFields ? <CustomFields /> : null}
     </>
   );
 };
