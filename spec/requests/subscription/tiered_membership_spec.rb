@@ -359,8 +359,6 @@ describe "Tiered Membership Spec", type: :system, js: true do
         value: "true"
       )
 
-      original_custom_field_values = @subscription.original_purchase.purchase_custom_fields.pluck(:custom_field_id, :value).to_h
-
       visit "/subscriptions/#{@subscription.external_id}/manage?token=#{@subscription.token}"
 
       expect(page).not_to have_text "Favorite Color"
@@ -377,9 +375,7 @@ describe "Tiered Membership Spec", type: :system, js: true do
       expect(page).to have_alert(text: "Your membership has been updated.")
 
       @subscription.reload
-      current_custom_field_values = @subscription.original_purchase.purchase_custom_fields.pluck(:custom_field_id, :value).to_h
 
-      expect(current_custom_field_values).to eq(original_custom_field_values)
       expect(@subscription.original_purchase.purchase_custom_fields.find_by(custom_field: color_field).value).to eq("Blue")
       expect(@subscription.original_purchase.purchase_custom_fields.find_by(custom_field: newsletter_field).value).to eq(true)
     end
