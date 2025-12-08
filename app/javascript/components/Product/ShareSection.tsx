@@ -165,7 +165,7 @@ export const ShareSection = ({
           {saveState.newlyCreated ? (
             <span>
               Wishlist created!{" "}
-              <a href={saveState.wishlist.url} target="_blank" rel="noopener noreferrer">
+              <a href={saveState.wishlist.url}>
                 Edit it here.
               </a>
             </span>
