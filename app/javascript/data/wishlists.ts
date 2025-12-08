@@ -8,8 +8,6 @@ import { CardWishlist } from "$app/components/Wishlist/Card";
 export type Wishlist = {
   id: string;
   name: string;
-  // Full URL to the wishlist page (e.g., https://seller.gumroad.dev/wishlists/wishlist-6-402653785)
-  // Used to link directly to the newly created wishlist with edit=true query parameter
   url: string;
 };
 
