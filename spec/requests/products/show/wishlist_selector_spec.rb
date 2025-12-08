@@ -30,6 +30,8 @@ describe "Product page wishlist selector", js: true, type: :system do
       expect(user.wishlists.last.products).to contain_exactly(product)
       expect(user.wishlists.last.name).to eq("Wishlist 1")
 
+      expect(page).to have_link("Edit it here.", href: wishlist_url(user.wishlists.last.url_slug, host: user.subdomain_with_protocol))
+
       expect { add_to_wishlist("New wishlist", expected_name: "Wishlist 2") }.to change(user.wishlists, :count).by(1)
       expect(page).to have_alert(text: "Wishlist created")
       expect(user.wishlists.last.products).to contain_exactly(product)

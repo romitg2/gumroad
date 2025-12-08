@@ -49,7 +49,8 @@ class WishlistPresenter
   def listing_props(product: nil)
     {
       id: wishlist.external_id,
-      name: wishlist.name
+      name: wishlist.name,
+      url: wishlist_url(wishlist.url_slug, host: wishlist.user.subdomain_with_protocol)
     }.merge(product ? selections_in_wishlist_props(product:) : {})
   end
 
