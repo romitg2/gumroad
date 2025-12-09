@@ -40,6 +40,8 @@ export const TiersEditor = ({ tiers, onChange }: { tiers: Tier[]; onChange: (tie
     onChange(tiers.map((version) => (version.id === id ? { ...version, ...update } : version)));
   };
 
+  console.log("tiers", tiers);
+
   const [deletionModalVersionId, setDeletionModalVersionId] = React.useState<string | null>(null);
   const deletionModalVersion = tiers.find(({ id }) => id === deletionModalVersionId);
 
@@ -141,13 +143,21 @@ const TierEditor = ({
 
   const url = useProductUrl({ option: tier.id });
 
-  const updateRecurrencePriceValue = (recurrence: RecurrenceId, update: Partial<RecurrencePriceValue>) =>
+  const updateRecurrencePriceValue = (recurrence: RecurrenceId, update: Partial<RecurrencePriceValue>) => {
+    const updatedRecurrencePriceValues = {
+      ...tier.recurrence_price_values,
+      [recurrence]: { ...tier.recurrence_price_values[recurrence], ...update },
+    };
+
+    const enabledPrices = Object.values(updatedRecurrencePriceValues).filter((value) => value.enabled);
+    const allEnabledPricesAreZero =
+      enabledPrices.length > 0 && enabledPrices.every((value) => !value.price_cents || value.price_cents === 0);
+
     updateTier({
-      recurrence_price_values: {
-        ...tier.recurrence_price_values,
-        [recurrence]: { ...tier.recurrence_price_values[recurrence], ...update },
-      },
+      recurrence_price_values: updatedRecurrencePriceValues,
+      ...(allEnabledPricesAreZero && { customizable_price: true }),
     });
+  };
 
   const defaultRecurrencePriceValue = product.subscription_duration
     ? tier.recurrence_price_values[product.subscription_duration]
@@ -175,6 +185,10 @@ const TierEditor = ({
   const integrations = Object.entries(product.integrations)
     .filter(([_, enabled]) => enabled)
     .map(([name]) => name);
+
+  const enabledPrices = Object.values(tier.recurrence_price_values).filter((value) => value.enabled);
+  const allEnabledPricesAreZero =
+    enabledPrices.length > 0 && enabledPrices.every((value) => !value.price_cents || value.price_cents === 0);
 
   return (
     <Row role="listitem">
@@ -276,11 +290,17 @@ const TierEditor = ({
                 </div>
               ))}
             </fieldset>
+            {allEnabledPricesAreZero ? (
+              <div role="alert" className="info">
+                Free tiers require a pay what they want price.
+              </div>
+            ) : null}
             <Details
               summary={
                 <Toggle
                   value={tier.customizable_price}
                   onChange={(customizable_price) => updateTier({ customizable_price })}
+                  disabled={allEnabledPricesAreZero}
                 >
                   Allow customers to pay what they want
                 </Toggle>
