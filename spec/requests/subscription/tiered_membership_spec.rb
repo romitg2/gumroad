@@ -359,7 +359,7 @@ describe "Tiered Membership Spec", type: :system, js: true do
         value: "true"
       )
 
-      visit "/subscriptions/#{@subscription.external_id}/manage?token=#{@subscription.token}"
+      visit manage_subscription_path(@subscription.external_id, token: @subscription.token)
 
       expect(page).not_to have_text "Favorite Color"
       expect(page).not_to have_text "Subscribe to Newsletter"
