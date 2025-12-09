@@ -40,8 +40,6 @@ export const TiersEditor = ({ tiers, onChange }: { tiers: Tier[]; onChange: (tie
     onChange(tiers.map((version) => (version.id === id ? { ...version, ...update } : version)));
   };
 
-  console.log("tiers", tiers);
-
   const [deletionModalVersionId, setDeletionModalVersionId] = React.useState<string | null>(null);
   const deletionModalVersion = tiers.find(({ id }) => id === deletionModalVersionId);
 
