@@ -46,16 +46,16 @@ describe "Admin::UsersController Scenario", type: :system, js: true do
     end
   end
 
-  describe "user memberships" do
-    context "when the user has no user memberships" do
-      it "doesn't render user memberships" do
+  describe "user collaborations" do
+    context "when the user has no user collaborations" do
+      it "doesn't render user collaborations" do
         visit admin_user_path(user.id)
 
         expect(page).not_to have_text("User Collaborations")
       end
     end
 
-    context "when the user has user memberships" do
+    context "when the user has user collaborations" do
       let(:seller_one) { create(:user, :without_username) }
       let(:seller_two) { create(:user) }
       let(:seller_three) { create(:user) }
@@ -64,7 +64,7 @@ describe "Admin::UsersController Scenario", type: :system, js: true do
       let!(:team_membership_two) { create(:team_membership, user:, seller: seller_two) }
       let!(:team_membership_three) { create(:team_membership, user:, seller: seller_three, deleted_at: 1.hour.ago) }
 
-      it "renders user memberships" do
+      it "renders user collaborations" do
         visit admin_user_path(user.id)
 
         find_and_click "h3", text: "User Collaborations"
