@@ -67,8 +67,6 @@ class Admin::BaseController < ApplicationController
   end
 
   protected
-
-  private
     def find_user(identifier)
       return nil if identifier.blank?
 
