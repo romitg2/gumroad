@@ -2580,6 +2580,34 @@ describe User, :vcr do
       expect(build(:user, timezone: "Pacific Time (US & Canada)").timezone_formatted_offset).to eq("-08:00")
       expect(build(:user, timezone: "London").timezone_formatted_offset).to eq("+00:00")
     end
+
+    it "returns DST-aware offset for Pacific Time" do
+      user = build(:user, timezone: "Pacific Time (US & Canada)")
+
+      # During Standard Time (winter) - PST is UTC-8
+      travel_to Time.utc(2025, 1, 15, 12, 0, 0) do
+        expect(user.timezone_formatted_offset).to eq("-08:00")
+      end
+
+      # During Daylight Saving Time (summer) - PDT is UTC-7
+      travel_to Time.utc(2025, 7, 15, 12, 0, 0) do
+        expect(user.timezone_formatted_offset).to eq("-07:00")
+      end
+    end
+
+    it "returns DST-aware offset for London" do
+      user = build(:user, timezone: "London")
+
+      # During Standard Time (winter) - GMT is UTC+0
+      travel_to Time.utc(2025, 1, 15, 12, 0, 0) do
+        expect(user.timezone_formatted_offset).to eq("+00:00")
+      end
+
+      # During British Summer Time (summer) - BST is UTC+1
+      travel_to Time.utc(2025, 7, 15, 12, 0, 0) do
+        expect(user.timezone_formatted_offset).to eq("+01:00")
+      end
+    end
   end
 
   describe "#supports_card?" do

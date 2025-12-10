@@ -809,10 +809,9 @@ class User < ApplicationRecord
   # Returns the user's UTC offset, formatted (e.g. "-08:00")
   # Useful to resolve inconsistencies between Rails, Elasticsearch and MySQL which may all have
   # different TZ databases: https://github.com/gumroad/web/pull/25208
-  # Note that it doesn't acknowledge DST by nature: it is just the difference between the timezone's
   # Standard time and UTC, so the returned value does not change depending on when the method is called.
   def timezone_formatted_offset
-    ActiveSupport::TimeZone.new(timezone_id).formatted_offset
+    Time.now.in_time_zone(timezone).formatted_offset
   end
 
   def supports_card?(card)
