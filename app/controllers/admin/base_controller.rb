@@ -3,7 +3,7 @@
 class Admin::BaseController < ApplicationController
   include ActionView::Helpers::DateHelper, ActionView::Helpers::NumberHelper, AdminActionTracker, Impersonate
 
-  layout "inertia"
+  layout "admin"
 
   inertia_share do
     {
