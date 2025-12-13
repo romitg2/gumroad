@@ -93,7 +93,7 @@ class AdminSearchService
       service_charges = service_charges.where(user_id: user.id)
     end
 
-    if [transaction_date, last_4, card_type, price, expiry_date].any?(&:present?)
+    if [transaction_date, last_4, card_type, price, expiry_date].any?
       service_charges = service_charges.where.not(charge_processor_fingerprint: nil)
 
       if transaction_date.present?
