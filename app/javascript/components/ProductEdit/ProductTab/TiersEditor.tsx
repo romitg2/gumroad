@@ -35,6 +35,11 @@ import { WithTooltip } from "$app/components/WithTooltip";
 
 let newTierId = 0;
 
+const areAllEnabledPricesZero = (recurrencePriceValues: Record<string, RecurrencePriceValue>): boolean => {
+  const enabledPrices = Object.values(recurrencePriceValues).filter((value) => value.enabled);
+  return enabledPrices.length > 0 && enabledPrices.every((value) => !value.price_cents || value.price_cents === 0);
+};
+
 export const TiersEditor = ({ tiers, onChange }: { tiers: Tier[]; onChange: (tiers: Tier[]) => void }) => {
   const updateVersion = (id: string, update: Partial<Tier>) => {
     onChange(tiers.map((version) => (version.id === id ? { ...version, ...update } : version)));
@@ -147,9 +152,7 @@ const TierEditor = ({
       [recurrence]: { ...tier.recurrence_price_values[recurrence], ...update },
     };
 
-    const enabledPrices = Object.values(updatedRecurrencePriceValues).filter((value) => value.enabled);
-    const allEnabledPricesAreZero =
-      enabledPrices.length > 0 && enabledPrices.every((value) => !value.price_cents || value.price_cents === 0);
+    const allEnabledPricesAreZero = areAllEnabledPricesZero(updatedRecurrencePriceValues);
 
     updateTier({
       recurrence_price_values: updatedRecurrencePriceValues,
@@ -184,9 +187,7 @@ const TierEditor = ({
     .filter(([_, enabled]) => enabled)
     .map(([name]) => name);
 
-  const enabledPrices = Object.values(tier.recurrence_price_values).filter((value) => value.enabled);
-  const allEnabledPricesAreZero =
-    enabledPrices.length > 0 && enabledPrices.every((value) => !value.price_cents || value.price_cents === 0);
+  const allEnabledPricesAreZero = areAllEnabledPricesZero(tier.recurrence_price_values);
 
   return (
     <Row role="listitem">
