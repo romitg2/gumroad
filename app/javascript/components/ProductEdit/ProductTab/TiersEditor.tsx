@@ -152,11 +152,9 @@ const TierEditor = ({
       [recurrence]: { ...tier.recurrence_price_values[recurrence], ...update },
     };
 
-    const allEnabledPricesAreZero = areAllEnabledPricesZero(updatedRecurrencePriceValues);
-
     updateTier({
       recurrence_price_values: updatedRecurrencePriceValues,
-      ...(allEnabledPricesAreZero && { customizable_price: true }),
+      ...(areAllEnabledPricesZero(updatedRecurrencePriceValues) && { customizable_price: true }),
     });
   };
 
