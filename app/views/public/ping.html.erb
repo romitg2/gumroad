@@ -37,162 +37,172 @@
       </div>
 
       <div class="overflow-x-auto">
-        <table class="table w-full">
-            <thead>
-              <tr>
-                <th>Parameter</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row" data-label="Parameter">sale_id</th>
-                <td data-label="Description">The id of the sale</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">sale_timestamp</th>
-                <td data-label="Description">The timestamp of the sale</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">order_number</th>
-                <td data-label="Description">Numeric version of sale_id</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">seller_id</th>
-                <td data-label="Description"></td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">product_id</th>
-                <td data-label="Description"></td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">product_permalink</th>
-                <td data-label="Description"></td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">short_product_id</th>
-                <td data-label="Description">Unique identifier for the product</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">product_name</th>
-                <td data-label="Description"></td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">email</th>
-                <td data-label="Description">The email of the buyer</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">url_params</th>
-                <td data-label="Description">{'source_url' : 'https%3A%2F%2Fgumroad.com%2Fwidgets', 'campaignid' : 'c123', 'userid' : '456', 'version' : '1.4.5' }</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">full_name</th>
-                <td data-label="Description">If present, the name of the buyer</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">purchaser_id</th>
-                <td data-label="Description">The id of the purchaser's Gumroad account, if the purchaser has one</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">subscription_id</th>
-                <td data-label="Description">The id of the subscription, if the purchase is part of a subscription</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">ip_country</th>
-                <td data-label="Description">If present, the country of the buyer's IP address</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">price</th>
-                <td data-label="Description">The price paid, in USD cents</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">recurrence</th>
-                <td data-label="Description">If present, the recurrence of the payment option chosen by the buyer such as 'monthly', 'yearly', etc</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">variants</th>
-                <td data-label="Description">If present, a dictionary {'size' : 'large', 'color' : 'red'}</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">offer_code</th>
-                <td data-label="Description">If present</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">test</th>
-                <td data-label="Description">If you are buying your own product, for testing purposes</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">custom_fields</th>
-                <td data-label="Description">If present, a dictionary {'name' : 'john smith', 'spouse name' : 'jane smith'}</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">shipping_information</th>
-                <td data-label="Description">If present, a dictionary</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">is_recurring_charge</th>
-                <td data-label="Description">If relevant, a boolean</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">is_preorder_authorization</th>
-                <td data-label="Description">If relevant, a boolean</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">license_key</th>
-                <td data-label="Description">If licenses are enabled for the product</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">quantity</th>
-                <td data-label="Description"></td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">shipping_rate</th>
-                <td data-label="Description">The shipping paid, in USD cents, if the product is a physical product</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">affiliate</th>
-                <td data-label="Description">If present, the affiliate's email address</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">affiliate_credit_amount_cents</th>
-                <td data-label="Description">If present, the amount paid to the affiliate in USD cents</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">is_gift_receiver_purchase</th>
-                <td data-label="Description">true if a gift, false otherwise</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">gifter_email</th>
-                <td data-label="Description">Email address of gifter</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">gift_price</th>
-                <td data-label="Description">The price paid by the gifter, in USD cents</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">refunded</th>
-                <td data-label="Description">true if this sale has been refunded, false otherwise</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">discover_fee_charged</th>
-                <td data-label="Description">true if this sale was subject to Gumroad Discover fees, false otherwise</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">can_contact</th>
-                <td data-label="Description"></td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">referrer</th>
-                <td data-label="Description"></td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">gumroad_fee</th>
-                <td data-label="Description">Gumroad's fee, in USD cents</td>
-              </tr>
-              <tr>
-                <th scope="row" data-label="Parameter">card</th>
-                <td data-label="Description">Payment instrument details</td>
-              </tr>
+        <table class="w-full rounded-sm border border-border">
+          <thead>
+            <tr class="border-b border-border">
+              <th class="px-4 py-3 text-left align-middle font-semibold">
+                Parameter
+              </th>
+              <th class="px-4 py-3 text-left align-middle font-semibold">
+                Description
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">sale_id</td>
+              <td class="px-4 py-3 align-middle text-sm">The id of the sale</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">sale_timestamp</td>
+              <td class="px-4 py-3 align-middle text-sm">The timestamp of the sale</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">order_number</td>
+              <td class="px-4 py-3 align-middle text-sm">Numeric version of sale_id</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">seller_id</td>
+              <td class="px-4 py-3 align-middle text-sm text-muted">—</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">product_id</td>
+              <td class="px-4 py-3 align-middle text-sm text-muted">—</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">product_permalink</td>
+              <td class="px-4 py-3 align-middle text-sm text-muted">—</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">short_product_id</td>
+              <td class="px-4 py-3 align-middle text-sm">Unique identifier for the product</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">product_name</td>
+              <td class="px-4 py-3 align-middle text-sm text-muted">—</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">email</td>
+              <td class="px-4 py-3 align-middle text-sm">The email of the buyer</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">url_params</td>
+              <td class="px-4 py-3 align-middle text-sm">
+                <code class="rounded border border-border bg-active-bg px-2 py-1 text-xs">{'source_url' : 'https%3A%2F%2Fgumroad.com%2Fwidgets', 'campaignid' : 'c123', 'userid' : '456', 'version' : '1.4.5' }</code>
+              </td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">full_name</td>
+              <td class="px-4 py-3 align-middle text-sm">If present, the name of the buyer</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">purchaser_id</td>
+              <td class="px-4 py-3 align-middle text-sm">The id of the purchaser's Gumroad account, if the purchaser has one</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">subscription_id</td>
+              <td class="px-4 py-3 align-middle text-sm">The id of the subscription, if the purchase is part of a subscription</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">ip_country</td>
+              <td class="px-4 py-3 align-middle text-sm">If present, the country of the buyer's IP address</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">price</td>
+              <td class="px-4 py-3 align-middle text-sm">The price paid, in USD cents</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">recurrence</td>
+              <td class="px-4 py-3 align-middle text-sm">If present, the recurrence of the payment option chosen by the buyer such as 'monthly', 'yearly', etc</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">variants</td>
+              <td class="px-4 py-3 align-middle text-sm">
+                If present, a dictionary <code class="rounded border border-border bg-active-bg px-2 py-1 text-xs">{'size' : 'large', 'color' : 'red'}</code>
+              </td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">offer_code</td>
+              <td class="px-4 py-3 align-middle text-sm">If present</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">test</td>
+              <td class="px-4 py-3 align-middle text-sm">If you are buying your own product, for testing purposes</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">custom_fields</td>
+              <td class="px-4 py-3 align-middle text-sm">
+                If present, a dictionary <code class="rounded border border-border bg-active-bg px-2 py-1 text-xs">{'name' : 'john smith', 'spouse name' : 'jane smith'}</code>
+              </td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">shipping_information</td>
+              <td class="px-4 py-3 align-middle text-sm">If present, a dictionary</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">is_recurring_charge</td>
+              <td class="px-4 py-3 align-middle text-sm">If relevant, a boolean</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">is_preorder_authorization</td>
+              <td class="px-4 py-3 align-middle text-sm">If relevant, a boolean</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">license_key</td>
+              <td class="px-4 py-3 align-middle text-sm">If licenses are enabled for the product</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">quantity</td>
+              <td class="px-4 py-3 align-middle text-sm text-muted">—</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">shipping_rate</td>
+              <td class="px-4 py-3 align-middle text-sm">The shipping paid, in USD cents, if the product is a physical product</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">affiliate</td>
+              <td class="px-4 py-3 align-middle text-sm">If present, the affiliate's email address</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">affiliate_credit_amount_cents</td>
+              <td class="px-4 py-3 align-middle text-sm">If present, the amount paid to the affiliate in USD cents</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">is_gift_receiver_purchase</td>
+              <td class="px-4 py-3 align-middle text-sm">true if a gift, false otherwise</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">gifter_email</td>
+              <td class="px-4 py-3 align-middle text-sm">Email address of gifter</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">gift_price</td>
+              <td class="px-4 py-3 align-middle text-sm">The price paid by the gifter, in USD cents</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">refunded</td>
+              <td class="px-4 py-3 align-middle text-sm">true if this sale has been refunded, false otherwise</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">discover_fee_charged</td>
+              <td class="px-4 py-3 align-middle text-sm">true if this sale was subject to Gumroad Discover fees, false otherwise</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">can_contact</td>
+              <td class="px-4 py-3 align-middle text-sm text-muted">—</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">referrer</td>
+              <td class="px-4 py-3 align-middle text-sm text-muted">—</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">gumroad_fee</td>
+              <td class="px-4 py-3 align-middle text-sm">Gumroad's fee, in USD cents</td>
+            </tr>
+            <tr class="border-t border-border bg-background hover:bg-active-bg">
+              <td class="whitespace-nowrap px-4 py-3 align-middle font-mono text-sm font-medium">card</td>
+              <td class="px-4 py-3 align-middle text-sm">Payment instrument details</td>
+            </tr>
             </tbody>
           </table>
         </div>
