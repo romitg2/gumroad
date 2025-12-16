@@ -1,3 +1,43 @@
+<% ping_parameters = [
+  { name: "sale_id", description: "The id of the sale" },
+  { name: "sale_timestamp", description: "The timestamp of the sale" },
+  { name: "order_number", description: "Numeric version of sale_id" },
+  { name: "seller_id" },
+  { name: "product_id" },
+  { name: "product_permalink" },
+  { name: "short_product_id", description: "Unique identifier for the product" },
+  { name: "product_name" },
+  { name: "email", description: "The email of the buyer" },
+  { name: "url_params", description: "{'source_url' : 'https%3A%2F%2Fgumroad.com%2Fwidgets', 'campaignid' : 'c123', 'userid' : '456', 'version' : '1.4.5' }", code: true },
+  { name: "full_name", description: "If present, the name of the buyer" },
+  { name: "purchaser_id", description: "The id of the purchaser's Gumroad account, if the purchaser has one" },
+  { name: "subscription_id", description: "The id of the subscription, if the purchase is part of a subscription" },
+  { name: "ip_country", description: "If present, the country of the buyer's IP address" },
+  { name: "price", description: "The price paid, in USD cents" },
+  { name: "recurrence", description: "If present, the recurrence of the payment option chosen by the buyer such as 'monthly', 'yearly', etc" },
+  { name: "variants", description: "{'size' : 'large', 'color' : 'red'}", code: true, prefix: "If present, a dictionary" },
+  { name: "offer_code", description: "If present" },
+  { name: "test", description: "If you are buying your own product, for testing purposes" },
+  { name: "custom_fields", description: "{'name' : 'john smith', 'spouse name' : 'jane smith'}", code: true, prefix: "If present, a dictionary" },
+  { name: "shipping_information", description: "If present, a dictionary" },
+  { name: "is_recurring_charge", description: "If relevant, a boolean" },
+  { name: "is_preorder_authorization", description: "If relevant, a boolean" },
+  { name: "license_key", description: "If licenses are enabled for the product" },
+  { name: "quantity" },
+  { name: "shipping_rate", description: "The shipping paid, in USD cents, if the product is a physical product" },
+  { name: "affiliate", description: "If present, the affiliate's email address" },
+  { name: "affiliate_credit_amount_cents", description: "If present, the amount paid to the affiliate in USD cents" },
+  { name: "is_gift_receiver_purchase", description: "true if a gift, false otherwise" },
+  { name: "gifter_email", description: "Email address of gifter" },
+  { name: "gift_price", description: "The price paid by the gifter, in USD cents" },
+  { name: "refunded", description: "true if this sale has been refunded, false otherwise" },
+  { name: "discover_fee_charged", description: "true if this sale was subject to Gumroad Discover fees, false otherwise" },
+  { name: "can_contact" },
+  { name: "referrer" },
+  { name: "gumroad_fee", description: "Gumroad's fee, in USD cents" },
+  { name: "card", description: "Payment instrument details" },
+] %>
+
 <main class="p-4 md:p-8">
   <div class="mx-auto max-w-5xl">
     <article class="flex flex-col gap-8">
@@ -40,385 +80,31 @@
         <table class="grid w-full gap-4 rounded-sm border-0 lg:table lg:border lg:border-border">
           <thead class="hidden lg:table-header-group">
             <tr class="border-b border-border">
-              <th class="px-4 py-3 text-left align-middle font-semibold">
-                Parameter
-              </th>
-              <th class="px-4 py-3 text-left align-middle font-semibold">
-                Description
-              </th>
+              <th class="px-4 py-3 text-left align-middle font-semibold">Parameter</th>
+              <th class="px-4 py-3 text-left align-middle font-semibold">Description</th>
             </tr>
           </thead>
           <tbody class="contents lg:table-row-group">
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                sale_id
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                The id of the sale
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                sale_timestamp
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                The timestamp of the sale
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                order_number
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                Numeric version of sale_id
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                seller_id
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm text-muted lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                —
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                product_id
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm text-muted lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                —
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                product_permalink
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm text-muted lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                —
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                short_product_id
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                Unique identifier for the product
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                product_name
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm text-muted lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                —
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                email
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                The email of the buyer
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                url_params
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                <code class="rounded border border-border bg-active-bg px-2 py-1 text-xs">{'source_url' : 'https%3A%2F%2Fgumroad.com%2Fwidgets', 'campaignid' : 'c123', 'userid' : '456', 'version' : '1.4.5' }</code>
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                full_name
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                If present, the name of the buyer
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                purchaser_id
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                The id of the purchaser's Gumroad account, if the purchaser has one
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                subscription_id
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                The id of the subscription, if the purchase is part of a subscription
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                ip_country
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                If present, the country of the buyer's IP address
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                price
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                The price paid, in USD cents
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                recurrence
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                If present, the recurrence of the payment option chosen by the buyer such as 'monthly', 'yearly', etc
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                variants
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                If present, a dictionary <code class="rounded border border-border bg-active-bg px-2 py-1 text-xs">{'size' : 'large', 'color' : 'red'}</code>
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                offer_code
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                If present
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                test
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                If you are buying your own product, for testing purposes
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                custom_fields
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                If present, a dictionary <code class="rounded border border-border bg-active-bg px-2 py-1 text-xs">{'name' : 'john smith', 'spouse name' : 'jane smith'}</code>
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                shipping_information
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                If present, a dictionary
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                is_recurring_charge
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                If relevant, a boolean
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                is_preorder_authorization
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                If relevant, a boolean
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                license_key
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                If licenses are enabled for the product
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                quantity
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm text-muted lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                —
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                shipping_rate
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                The shipping paid, in USD cents, if the product is a physical product
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                affiliate
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                If present, the affiliate's email address
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                affiliate_credit_amount_cents
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                If present, the amount paid to the affiliate in USD cents
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                is_gift_receiver_purchase
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                true if a gift, false otherwise
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                gifter_email
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                Email address of gifter
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                gift_price
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                The price paid by the gifter, in USD cents
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                refunded
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                true if this sale has been refunded, false otherwise
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                discover_fee_charged
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                true if this sale was subject to Gumroad Discover fees, false otherwise
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                can_contact
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm text-muted lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                —
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                referrer
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm text-muted lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                —
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                gumroad_fee
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                Gumroad's fee, in USD cents
-              </td>
-            </tr>
-            <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
-              <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
-                card
-              </td>
-              <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0">
-                <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
-                Payment instrument details
-              </td>
-            </tr>
+            <% ping_parameters.each do |param| %>
+              <tr class="block rounded-sm border border-border bg-background hover:bg-active-bg lg:table-row lg:border-t lg:border-b-0 lg:border-l-0 lg:border-r-0">
+                <td class="block px-4 py-3 align-middle font-mono text-sm font-medium lg:table-cell lg:whitespace-nowrap">
+                  <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Parameter</div>
+                  <%= param[:name] %>
+                </td>
+                <td class="block border-t border-border px-4 py-3 align-middle text-sm lg:table-cell lg:border-0 <%= 'text-muted' unless param[:description] %>">
+                  <div class="mb-1 text-xs font-semibold uppercase tracking-wider lg:hidden">Description</div>
+                  <% if param[:description] %>
+                    <% if param[:code] %>
+                      <%= param[:prefix] %><% if param[:prefix] %> <% end %><code class="rounded border border-border bg-active-bg px-2 py-1 text-xs"><%= param[:description] %></code>
+                    <% else %>
+                      <%= param[:description] %>
+                    <% end %>
+                  <% else %>
+                    —
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
           </tbody>
         </table>
       </div>
