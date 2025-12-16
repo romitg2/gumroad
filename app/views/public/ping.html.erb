@@ -1,45 +1,43 @@
 <main class="p-4 md:p-8">
-  <div>
-    <form>
-      <section class="container">
-        <header>
-          <h3>Gumroad Ping</h3>
-        </header>
-        <div class="flex flex-col gap-4">
-          <p>Gumroad Ping is a simple alert that notifies you in real time whenever one of your products is purchased.</p>
-          <div>
-            <p>For example, you can use Gumroad Ping to:</p>
-            <ul id="about-list">
-              <li>
-                <span>Thank the purchaser publicly on your website.</span>
-              </li>
-              <li>
-                <span>Generate QR codes.</span>
-              </li>
-              <li>
-                <span>Create an account for them on your own platform.</span>
-              </li>
-            </ul>
-          </div>
-          <p>
-            The ping comes in the form of an HTTP POST request to the URL that you specify in your
-            <%= link_to("account settings.", settings_advanced_path) %>
-            The payload is x-www-form-urlencoded. If your endpoint does not return a 200 HTTP status code, the POST is retried once an hour for up to 3 hours.
-          </p>
-          <p>
-            In each request, Gumroad sends the parameters in the table below.
-          </p>
-          <p>
-            You can also use our API and
-            <%= link_to("subscribe", api_path(anchor: "resource-subscriptions")) %>
-            to be notified of future sales.
-          </p>
-          <p>You can pass unique URL parameters by adding them to any Gumroad product URL. If passed, they will show up in the url_params dictionary as seen below.</p>
-          <p>For security reasons we highly recommend that you use an HTTPS endpoint as your URL.</p>
-        </div>
+  <div class="mx-auto max-w-5xl">
+    <article class="flex flex-col gap-8">
+      <header>
+        <h1 class="text-3xl font-bold">Gumroad Ping</h1>
+      </header>
+
+      <div class="flex flex-col gap-4">
+        <p>Gumroad Ping is a simple alert that notifies you in real time whenever one of your products is purchased.</p>
 
         <div>
-          <table class="table">
+          <p>For example, you can use Gumroad Ping to:</p>
+          <ul class="ml-6 mt-2 list-disc space-y-1">
+            <li>Thank the purchaser publicly on your website.</li>
+            <li>Generate QR codes.</li>
+            <li>Create an account for them on your own platform.</li>
+          </ul>
+        </div>
+
+        <p>
+          The ping comes in the form of an HTTP POST request to the URL that you specify in your
+          <%= link_to("account settings", settings_advanced_path) %>.
+          The payload is x-www-form-urlencoded. If your endpoint does not return a 200 HTTP status code, the POST is retried once an hour for up to 3 hours.
+        </p>
+
+        <p>In each request, Gumroad sends the parameters in the table below.</p>
+
+        <p>
+          You can also use our API and
+          <%= link_to("subscribe", api_path(anchor: "resource-subscriptions")) %>
+          to be notified of future sales.
+        </p>
+
+        <p>You can pass unique URL parameters by adding them to any Gumroad product URL. If passed, they will show up in the url_params dictionary as seen below.</p>
+
+        <p>For security reasons we highly recommend that you use an HTTPS endpoint as your URL.</p>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="table w-full">
             <thead>
               <tr>
                 <th>Parameter</th>
@@ -198,7 +196,6 @@
             </tbody>
           </table>
         </div>
-      </section>
-    </form>
-  </div>
+      </article>
+    </div>
 </main>
