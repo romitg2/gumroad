@@ -22,7 +22,7 @@ describe Admin::PurchasesController, :vcr, inertia: true do
       expect(response).to redirect_to(admin_purchase_path(@purchase.external_id))
     end
 
-    it "returns successful response with Inertia page data when using external_id" do
+    it "returns successful response with Inertia page data" do
       expect(Admin::PurchasePresenter).to receive(:new).with(@purchase).and_call_original
       get :show, params: { external_id: @purchase.external_id }
 
@@ -42,7 +42,6 @@ describe Admin::PurchasesController, :vcr, inertia: true do
       expect(assigns(:purchase)).to eq(@purchase)
       assert_response :success
     end
-
 
     it "finds the purchase correctly when loaded via numeric external id" do
       expect(Purchase).to receive(:find_by_external_id_numeric).and_call_original

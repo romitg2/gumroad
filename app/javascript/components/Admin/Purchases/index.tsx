@@ -35,7 +35,7 @@ export type Purchase = PurchaseStatesInfo & {
     email: string;
   };
   merchant_account: {
-    external_id: string;
+    id: number;
     charge_processor_id: string;
     holder_of_funds: string;
   } | null;
@@ -49,7 +49,7 @@ export type Purchase = PurchaseStatesInfo & {
   formatted_affiliate_credit_amount: string | null;
   gumroad_responsible_for_tax: boolean;
   product: {
-    external_id: string;
+    id: number;
     name: string;
     long_url: string;
   };
@@ -65,7 +65,7 @@ export type Purchase = PurchaseStatesInfo & {
   external_id_numeric: number;
   quantity: number;
   refunds: {
-    user: { external_id: string; name: string | null } | null;
+    user: { id: number; name: string | null } | null;
     status: string;
     created_at: string;
   }[];
@@ -79,6 +79,7 @@ export type Purchase = PurchaseStatesInfo & {
   ip_country: string | null;
   is_preorder_authorization: boolean;
   subscription: {
+    id: number;
     external_id: string;
     cancelled_at: string | null;
     cancelled_by_buyer: boolean | null;
@@ -125,7 +126,7 @@ const Header = ({ purchase }: { purchase: Purchase }) => (
     <h2>
       <Link href={Routes.admin_purchase_path(purchase.external_id)}>{purchase.formatted_display_price}</Link>
       {purchase.gumroad_responsible_for_tax ? ` + ${purchase.formatted_gumroad_tax_amount} VAT` : null} for{" "}
-      <Link href={Routes.admin_product_path(purchase.product.external_id)} title={purchase.product.external_id}>
+      <Link href={Routes.admin_product_path(purchase.product.id)} title={purchase.product.id.toString()}>
         {purchase.product.name}
       </Link>{" "}
       {purchase.variants_list}{" "}
@@ -172,8 +173,8 @@ const Info = ({ purchase }: { purchase: Purchase }) => (
         <>
           <dt>Merchant account</dt>
           <dd>
-            <Link href={Routes.admin_merchant_account_path(purchase.merchant_account.external_id)}>
-              {purchase.merchant_account.external_id} – {purchase.merchant_account.charge_processor_id}
+            <Link href={Routes.admin_merchant_account_path(purchase.merchant_account.id)}>
+              {purchase.merchant_account.id} – {purchase.merchant_account.charge_processor_id}
             </Link>
           </dd>
           <dt>Funds held by</dt>
@@ -272,8 +273,8 @@ const Info = ({ purchase }: { purchase: Purchase }) => (
                   <li>
                     Refunder:
                     {refund.user ? (
-                      <Link href={Routes.admin_user_path(refund.user.external_id)}>
-                        {refund.user.name || `User ${refund.user.external_id}`}
+                      <Link href={Routes.admin_user_path(refund.user.id)}>
+                        {refund.user.name || `User ${refund.user.id}`}
                       </Link>
                     ) : (
                       "(unknown)"
@@ -480,7 +481,7 @@ const GiftInfo = ({ purchaseExternalId, gift }: { purchaseExternalId: string; gi
           <dt>Note</dt>
           <dd>{gift.note}</dd>
 
-          <dt>Receiver purchase extrenal id</dt>
+          <dt>Receiver purchase external id</dt>
           <dd>
             <Link href={Routes.admin_purchase_path(gift.other_purchase_external_id)}>
               {gift.other_purchase_external_id}
