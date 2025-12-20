@@ -21,7 +21,7 @@ describe PublicController, type: :controller, inertia: true do
   end
 
   describe "GET api" do
-    it "succeeds, sets title, and renders the correct inertia component" do
+    it "succeeds and renders inertia component" do
       get :api
       expect(response).to be_successful
       expect(assigns(:title)).to eq("API")
