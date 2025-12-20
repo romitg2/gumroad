@@ -8,6 +8,8 @@ class PublicController < ApplicationController
   before_action :hide_layouts, only: [:thank_you]
   before_action :set_on_public_page
 
+  layout "inertia", only: [:api]
+
   def home
     redirect_to user_signed_in? ? after_sign_in_path_for(logged_in_user) : login_path
   end
@@ -53,7 +55,8 @@ class PublicController < ApplicationController
 
   def api
     @title = "API"
-    @on_api_page = true
+
+    render inertia: "Public/Api"
   end
 
   def ping
