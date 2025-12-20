@@ -14,8 +14,8 @@ export const Parameters: React.FC<ParametersProps> = ({ parameters }) => (
         <div key={index}>
           <strong>{param.name}</strong>
           {!param.required && <span className="text-muted"> (optional)</span>}
-          {param.type && <span className="text-muted"> ({param.type})</span>}
-          {param.default && <span className="text-muted"> - Default: "{param.default}"</span>}
+          {param.type ? <span className="text-muted"> ({param.type})</span> : null}
+          {param.default ? <span className="text-muted"> - Default: "{param.default}"</span> : null}
           <br />
           <span dangerouslySetInnerHTML={{ __html: param.description }} />
         </div>

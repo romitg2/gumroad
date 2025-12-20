@@ -315,7 +315,7 @@ export const API_METHODS: ApiResourceData[] = [
     ]
   }
 }`,
-      }
+      },
     ],
   },
   {
@@ -544,7 +544,7 @@ export const API_METHODS: ApiResourceData[] = [
     "price_difference_cents": 100
   }, {...}, {...}]
 }`,
-      }
+      },
     ],
   },
   {
@@ -688,7 +688,7 @@ export const API_METHODS: ApiResourceData[] = [
   "success": true,
   "message": "The offer_code has been deleted successfully."
 }`,
-      }
+      },
     ],
   },
   {
@@ -783,7 +783,7 @@ export const API_METHODS: ApiResourceData[] = [
   "success": true,
   "message": "The custom_field has been deleted successfully."
 }`,
-      }
+      },
     ],
   },
   {
@@ -807,7 +807,7 @@ export const API_METHODS: ApiResourceData[] = [
     "url": "https://gumroad.com/sailorjohn" # only if username is set
   }
 }`,
-      }
+      },
     ],
   },
   {
@@ -923,7 +923,7 @@ export const API_METHODS: ApiResourceData[] = [
   "success": true,
   "message": "The resource_subscription was deleted successfully."
 }`,
-      }
+      },
     ],
   },
   {
@@ -1294,7 +1294,7 @@ If not set, issue full refund. You can issue multiple partial refunds per sale u
         responseExample: `{
   "success": true
 }`,
-      }
+      },
     ],
   },
   {
@@ -1379,7 +1379,7 @@ If not set, issue full refund. You can issue multiple partial refunds per sale u
     "status": "alive"
   }
 }`,
-      }
+      },
     ],
   },
   {
@@ -1719,7 +1719,7 @@ If not set, issue full refund. You can issue multiple partial refunds per sale u
     "subscription_failed_at": null # we were unable to charge the subscriber's card
   }
 }`,
-      }
+      },
     ],
   },
   {
@@ -1828,7 +1828,7 @@ If not set, issue full refund. You can issue multiple partial refunds per sale u
     "payment_processor": "stripe"
   }
 }`,
-      }
+      },
     ],
-  }
+  },
 ];

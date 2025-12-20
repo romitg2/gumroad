@@ -1,11 +1,12 @@
 import { Link } from "@inertiajs/react";
 import React from "react";
 
+import { API_METHODS, ApiMethodData, ApiResourceData } from "$app/data/api_methods";
+
 import { Parameters } from "$app/components/Api/Parameters";
 import { Layout } from "$app/components/Developer/Layout";
 import CodeSnippet from "$app/components/ui/CodeSnippet";
 import { Pill } from "$app/components/ui/Pill";
-import { API_METHODS, ApiMethodData, ApiResourceData } from "$app/data/api_methods";
 
 const ApiNavigation = ({ apiMethods }: { apiMethods: ApiResourceData[] }) => (
   <nav role="navigation" aria-label="API Reference">
@@ -27,7 +28,7 @@ const ApiNavigation = ({ apiMethods }: { apiMethods: ApiResourceData[] }) => (
         <menu>
           {apiMethods.map((method) => (
             <li key={method.name}>
-              <Link href={`${Routes.api_path()}#${method.name.toLowerCase().replace(/ /g, "-")}`}>
+              <Link href={`${Routes.api_path()}#${method.name.toLowerCase().replace(/ /gu, "-")}`}>
                 {method.name}
               </Link>
             </li>
@@ -49,15 +50,15 @@ const ApiMethod = ({ method }: { method: ApiMethodData }) => (
       <CodeSnippet>
         {method.isOauth ? `https://gumroad.com${method.path}` : `https://api.gumroad.com/v2${method.path}`}
       </CodeSnippet>
-      {method.parameters && method.parameters.length > 0 && <Parameters parameters={method.parameters} />}
-      {method.curlExample && <CodeSnippet caption="cURL example">{method.curlExample}</CodeSnippet>}
-      {method.responseExample && <CodeSnippet caption="Example response:">{method.responseExample}</CodeSnippet>}
+      {method.parameters && method.parameters.length > 0 ? <Parameters parameters={method.parameters} /> : null}
+      {method.curlExample ? <CodeSnippet caption="cURL example">{method.curlExample}</CodeSnippet> : null}
+      {method.responseExample ? <CodeSnippet caption="Example response:">{method.responseExample}</CodeSnippet> : null}
     </div>
   </div>
 );
 
 const ApiResource = ({ resource }: { resource: ApiResourceData }) => (
-  <div className="stack" id={resource.name.toLowerCase().replace(/ /g, "-")}>
+  <div className="stack" id={resource.name.toLowerCase().replace(/ /gu, "-")}>
     <div>
       <h2>{resource.name}</h2>
     </div>
@@ -67,8 +68,7 @@ const ApiResource = ({ resource }: { resource: ApiResourceData }) => (
   </div>
 );
 
-const PublicApi = () => {
-  return (
+const PublicApi = () => (
     <Layout currentPage="api">
       <main className="p-4 md:p-8">
         <div>
@@ -247,6 +247,5 @@ const PublicApi = () => {
       </main>
     </Layout>
   );
-};
 
 export default PublicApi;
