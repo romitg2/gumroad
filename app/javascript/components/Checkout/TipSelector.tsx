@@ -1,12 +1,14 @@
 import cx from "classnames";
 import * as React from "react";
 
+import { formatUSDCentsWithExpandedCurrencySymbol } from "$app/utils/currency";
+
 import { Button } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
 import { PriceInput } from "$app/components/PriceInput";
 import { useIsAboveBreakpoint } from "$app/components/useIsAboveBreakpoint";
 
-import { getErrors, getTotalPriceFromProducts, isProcessing, useState } from "./payment";
+import { computeTip, getErrors, getTotalPriceFromProducts, isProcessing, useState } from "./payment";
 
 const getTipLabel = (tip: number) => {
   if (tip === 0) return "No tip";
@@ -29,10 +31,16 @@ export const TipSelector = () => {
   // On mobile, always show the custom tip input
   const showCustomTipInput = !isDesktop || state.tip.type === "fixed";
 
+  const tip = computeTip(state);
+  const formattedTip = tip ? formatUSDCentsWithExpandedCurrencySymbol(Math.floor(tip)) : null;
+
   return (
     <div>
       <div className="flex flex-col gap-4">
-        <h4>Add a tip?</h4>
+        <div className="flex items-center justify-between">
+          <h4>Add a tip?</h4>
+          {formattedTip ? <span className="font-bold">{formattedTip}</span> : null}
+        </div>
         {showPercentageOptions ? (
           <div
             role="radiogroup"
