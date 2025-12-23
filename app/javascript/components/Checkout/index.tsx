@@ -258,10 +258,10 @@ export const Checkout = ({
                   </div>
                 ) : null}
                 <div className="grid gap-4 border-border p-4">
+                  <CartPriceItem title="Subtotal" price={formatPrice(subtotal)} />
+                  {tip ? <CartPriceItem title="Tip" price={formatPrice(tip)} /> : null}
                   {state.surcharges.type === "loaded" ? (
                     <>
-                      <CartPriceItem title="Subtotal" price={formatPrice(subtotal)} />
-                      {tip ? <CartPriceItem title="Tip" price={formatPrice(tip)} /> : null}
                       {state.surcharges.result.tax_included_cents ? (
                         <CartPriceItem
                           title={`${nameOfSalesTaxForCountry(state.country)} (included)`}
@@ -342,32 +342,25 @@ export const Checkout = ({
                     </form>
                   ) : null}
                 </div>
-                {total != null ? (
-                  <>
-                    <footer className="grid gap-4 border-t border-border p-4">
-                      <CartPriceItem title="Total" price={formatPrice(total)} large />
-                    </footer>
-                    {commissionCompletionTotal > 0 || futureInstallmentsWithoutTipsTotal > 0 ? (
-                      <div className="grid gap-4 border-t border-border p-4">
-                        <CartPriceItem
-                          title="Payment today"
-                          price={formatPrice(total - commissionCompletionTotal - futureInstallmentsWithoutTipsTotal)}
-                        />
-                        {commissionCompletionTotal > 0 ? (
-                          <CartPriceItem
-                            title="Payment after completion"
-                            price={formatPrice(commissionCompletionTotal)}
-                          />
-                        ) : null}
-                        {futureInstallmentsWithoutTipsTotal > 0 ? (
-                          <CartPriceItem
-                            title="Future installments"
-                            price={formatPrice(futureInstallmentsWithoutTipsTotal)}
-                          />
-                        ) : null}
-                      </div>
+                <footer className="grid gap-4 border-t border-border p-4">
+                  <CartPriceItem title="Total" price={formatPrice(total ?? subtotal + (tip ?? 0))} large />
+                </footer>
+                {total != null && (commissionCompletionTotal > 0 || futureInstallmentsWithoutTipsTotal > 0) ? (
+                  <div className="grid gap-4 border-t border-border p-4">
+                    <CartPriceItem
+                      title="Payment today"
+                      price={formatPrice(total - commissionCompletionTotal - futureInstallmentsWithoutTipsTotal)}
+                    />
+                    {commissionCompletionTotal > 0 ? (
+                      <CartPriceItem title="Payment after completion" price={formatPrice(commissionCompletionTotal)} />
                     ) : null}
-                  </>
+                    {futureInstallmentsWithoutTipsTotal > 0 ? (
+                      <CartPriceItem
+                        title="Future installments"
+                        price={formatPrice(futureInstallmentsWithoutTipsTotal)}
+                      />
+                    ) : null}
+                  </div>
                 ) : null}
               </CartItemList>
               {recommendedProducts && recommendedProducts.length > 0 ? (
