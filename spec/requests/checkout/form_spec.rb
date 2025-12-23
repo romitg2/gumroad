@@ -172,11 +172,12 @@ describe("Checkout form page", type: :system, js: true) do
 
       find_field("Allow customers to add tips to their orders", checked: false).check
       in_preview do
-        expect(page).to have_text("Add a tip")
-        expect(page).to have_radio_button("0%", checked: true)
-        expect(page).to have_radio_button("10%", checked: false)
+        expect(page).to have_text("Add a tip?")
+        expect(page).to have_radio_button("No tip", checked: true)
+        expect(page).to have_radio_button("15%", checked: false)
         expect(page).to have_radio_button("20%", checked: false)
-        expect(page).to have_radio_button("Other", checked: false)
+        expect(page).to have_radio_button("25%", checked: false)
+        expect(page).to have_radio_button("Custom tip", checked: false)
       end
       click_on "Save changes"
       expect(page).to have_alert(text: "Changes saved!")
@@ -184,11 +185,12 @@ describe("Checkout form page", type: :system, js: true) do
 
       refresh
       in_preview do
-        expect(page).to have_text("Add a tip")
-        expect(page).to have_radio_button("0%", checked: true)
-        expect(page).to have_radio_button("10%", checked: false)
+        expect(page).to have_text("Add a tip?")
+        expect(page).to have_radio_button("No tip", checked: true)
+        expect(page).to have_radio_button("15%", checked: false)
         expect(page).to have_radio_button("20%", checked: false)
-        expect(page).to have_radio_button("Other", checked: false)
+        expect(page).to have_radio_button("25%", checked: false)
+        expect(page).to have_radio_button("Custom tip", checked: false)
       end
       find_field("Allow customers to add tips to their orders", checked: true).uncheck
       click_on "Save changes"

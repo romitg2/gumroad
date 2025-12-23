@@ -16,13 +16,13 @@ describe("Product checkout with tipping", type: :system, js: true) do
       add_to_cart(product2)
       fill_checkout_form(product2)
 
-      expect(page).to have_radio_button("0%", checked: true)
+      expect(page).to have_radio_button("No tip", checked: true)
 
-      choose "10%"
+      choose "15%"
 
       expect(page).to have_text("Subtotal US$40", normalize_ws: true)
-      expect(page).to have_text("Tip US$4", normalize_ws: true)
-      expect(page).to have_text("Total US$44", normalize_ws: true)
+      expect(page).to have_text("Tip US$6", normalize_ws: true)
+      expect(page).to have_text("Total US$46", normalize_ws: true)
       click_on "Pay"
 
       expect(page).to have_alert(text: "Your purchase was successful! We sent a receipt to test@gumroad.com.")
@@ -30,14 +30,14 @@ describe("Product checkout with tipping", type: :system, js: true) do
       purchase1 = Purchase.last
       expect(purchase1).to be_successful
       expect(purchase1.link).to eq(product1)
-      expect(purchase1.price_cents).to eq(2200)
-      expect(purchase1.tip.value_cents).to eq(200)
+      expect(purchase1.price_cents).to eq(2300)
+      expect(purchase1.tip.value_cents).to eq(300)
 
       purchase2 = Purchase.second_to_last
       expect(purchase2).to be_successful
       expect(purchase2.link).to eq(product2)
-      expect(purchase2.price_cents).to eq(2200)
-      expect(purchase2.tip.value_cents).to eq(200)
+      expect(purchase2.price_cents).to eq(2300)
+      expect(purchase2.tip.value_cents).to eq(300)
     end
 
     it "allows the buyer to tip a fixed amount" do
@@ -47,10 +47,10 @@ describe("Product checkout with tipping", type: :system, js: true) do
       add_to_cart(product2)
       fill_checkout_form(product2)
 
-      expect(page).to have_radio_button("0%", checked: true)
+      expect(page).to have_radio_button("No tip", checked: true)
 
-      choose "Other"
-      fill_in "Tip", with: 20
+      choose "Custom tip"
+      fill_in "Custom tip", with: 20
 
       expect(page).to have_text("Subtotal US$30", normalize_ws: true)
       expect(page).to have_text("Tip US$20", normalize_ws: true)
@@ -81,11 +81,12 @@ describe("Product checkout with tipping", type: :system, js: true) do
         click_on "Donate"
         fill_checkout_form(coffee_product)
 
-        expect(page).not_to have_text("Add a tip")
-        expect(page).not_to have_radio_button("0%")
-        expect(page).not_to have_radio_button("10%")
+        expect(page).not_to have_text("Add a tip?")
+        expect(page).not_to have_radio_button("No tip")
+        expect(page).not_to have_radio_button("15%")
         expect(page).not_to have_radio_button("20%")
-        expect(page).not_to have_radio_button("Other")
+        expect(page).not_to have_radio_button("25%")
+        expect(page).not_to have_radio_button("Custom tip")
 
         expect(page).to have_text("Subtotal US$10", normalize_ws: true)
         expect(page).to have_text("Total US$10", normalize_ws: true)
@@ -94,17 +95,18 @@ describe("Product checkout with tipping", type: :system, js: true) do
         add_to_cart(product)
         fill_checkout_form(product)
 
-        expect(page).to have_text("Add a tip")
-        expect(page).to have_radio_button("0%", checked: true)
-        expect(page).to have_radio_button("10%")
+        expect(page).to have_text("Add a tip?")
+        expect(page).to have_radio_button("No tip", checked: true)
+        expect(page).to have_radio_button("15%")
         expect(page).to have_radio_button("20%")
-        expect(page).to have_radio_button("Other")
+        expect(page).to have_radio_button("25%")
+        expect(page).to have_radio_button("Custom tip")
 
-        choose "10%"
+        choose "15%"
 
         expect(page).to have_text("Subtotal US$25", normalize_ws: true)
-        expect(page).to have_text("Tip US$2.50", normalize_ws: true)
-        expect(page).to have_text("Total US$27.50", normalize_ws: true)
+        expect(page).to have_text("Tip US$3.75", normalize_ws: true)
+        expect(page).to have_text("Total US$28.75", normalize_ws: true)
         click_on "Pay"
 
         expect(page).to have_alert(text: "Your purchase was successful! We sent a receipt to test@gumroad.com.")
@@ -112,14 +114,14 @@ describe("Product checkout with tipping", type: :system, js: true) do
         purchase1 = Purchase.last
         expect(purchase1).to be_successful
         expect(purchase1.link).to eq(coffee_product)
-        expect(purchase1.price_cents).to eq(1100)
-        expect(purchase1.tip.value_cents).to eq(100)
+        expect(purchase1.price_cents).to eq(1150)
+        expect(purchase1.tip.value_cents).to eq(150)
 
         purchase2 = Purchase.second_to_last
         expect(purchase2).to be_successful
         expect(purchase2.link).to eq(product)
-        expect(purchase2.price_cents).to eq(1650)
-        expect(purchase2.tip.value_cents).to eq(150)
+        expect(purchase2.price_cents).to eq(1725)
+        expect(purchase2.tip.value_cents).to eq(225)
       end
     end
   end
@@ -136,17 +138,19 @@ describe("Product checkout with tipping", type: :system, js: true) do
       visit free_product1.long_url
       add_to_cart(free_product1, pwyw_price: 0)
 
-      expect(page).not_to have_radio_button("0%")
-      expect(page).not_to have_radio_button("10%")
+      expect(page).not_to have_radio_button("No tip")
+      expect(page).not_to have_radio_button("15%")
       expect(page).not_to have_radio_button("20%")
-      expect(page).not_to have_radio_button("Other")
+      expect(page).not_to have_radio_button("25%")
+      expect(page).not_to have_radio_button("Custom tip")
 
-      fill_in "Tip", with: 5
+      fill_in "Custom tip", with: 5
 
-      expect(page).not_to have_radio_button("0%")
-      expect(page).not_to have_radio_button("10%")
+      expect(page).not_to have_radio_button("No tip")
+      expect(page).not_to have_radio_button("15%")
       expect(page).not_to have_radio_button("20%")
-      expect(page).not_to have_radio_button("Other")
+      expect(page).not_to have_radio_button("25%")
+      expect(page).not_to have_radio_button("Custom tip")
 
       fill_checkout_form(free_product2)
 
@@ -177,7 +181,7 @@ describe("Product checkout with tipping", type: :system, js: true) do
         visit free_product1.long_url
         add_to_cart(free_product1, pwyw_price: 0)
 
-        fill_in "Tip", with: 0.99
+        fill_in "Custom tip", with: 0.99
         fill_checkout_form(free_product1)
         expect(page).to have_text("Total US$0.99", normalize_ws: true)
         click_on "Pay"
@@ -198,7 +202,7 @@ describe("Product checkout with tipping", type: :system, js: true) do
         visit free_product1.long_url
         add_to_cart(free_product1, pwyw_price: 0)
 
-        fill_in "Tip", with: 0.5
+        fill_in "Custom tip", with: 0.5
         fill_checkout_form(free_product1)
         expect(page).to have_text("Total US$0.5", normalize_ws: true)
         click_on "Pay"
@@ -214,7 +218,7 @@ describe("Product checkout with tipping", type: :system, js: true) do
         visit free_product1.long_url
         add_to_cart(free_product1, pwyw_price: 0)
 
-        fill_in "Tip", with: 1.98
+        fill_in "Custom tip", with: 1.98
         fill_checkout_form(free_product1)
         expect(page).to have_text("Total US$1.98", normalize_ws: true)
         click_on "Pay"
@@ -236,7 +240,7 @@ describe("Product checkout with tipping", type: :system, js: true) do
         visit free_product1.long_url
         add_to_cart(free_product1, pwyw_price: 0)
 
-        fill_in "Tip", with: 1.5
+        fill_in "Custom tip", with: 1.5
         fill_checkout_form(free_product1)
         expect(page).to have_text("Total US$1.5", normalize_ws: true)
         click_on "Pay"
@@ -255,7 +259,7 @@ describe("Product checkout with tipping", type: :system, js: true) do
       fill_checkout_form(membership_product)
       wait_for_ajax
 
-      expect(page).not_to have_text("Add a tip")
+      expect(page).not_to have_text("Add a tip?")
 
       click_on "Pay"
 
@@ -277,7 +281,7 @@ describe("Product checkout with tipping", type: :system, js: true) do
       fill_checkout_form(product)
       wait_for_ajax
 
-      expect(page).not_to have_text("Add a tip")
+      expect(page).not_to have_text("Add a tip?")
 
       click_on "Pay"
 
@@ -304,7 +308,7 @@ describe("Product checkout with tipping", type: :system, js: true) do
       expect(page).to have_radio_button("5%", checked: false)
       expect(page).to have_radio_button("15%", checked: true)
       expect(page).to have_radio_button("25%", checked: false)
-      expect(page).to have_radio_button("Other", checked: false)
+      expect(page).to have_radio_button("Custom tip", checked: false)
     end
   end
 
