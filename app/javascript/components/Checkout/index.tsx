@@ -26,6 +26,7 @@ import {
   CartItemActions,
 } from "$app/components/CartItemList";
 import { PaymentForm } from "$app/components/Checkout/PaymentForm";
+import { TipSelector } from "$app/components/Checkout/TipSelector";
 import { Icon } from "$app/components/Icons";
 import { Popover } from "$app/components/Popover";
 import { Card } from "$app/components/Product/Card";
@@ -55,7 +56,7 @@ import {
   CartItem as CartItemProps,
   findCartItem,
 } from "./cartState";
-import { computeTip, computeTipForPrice, getTotalPrice, isProcessing, useState } from "./payment";
+import { computeTip, computeTipForPrice, getTotalPrice, isProcessing, isTippingEnabled, useState } from "./payment";
 
 import placeholder from "$assets/images/placeholders/checkout.png";
 
@@ -251,6 +252,11 @@ export const Checkout = ({
                 ))}
               </CartItemList>
               <CartItemList>
+                {isTippingEnabled(state) ? (
+                  <div className="grid gap-4 border-b border-border p-4">
+                    <TipSelector />
+                  </div>
+                ) : null}
                 <div className="grid gap-4 border-border p-4">
                   {state.surcharges.type === "loaded" ? (
                     <>
