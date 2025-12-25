@@ -275,6 +275,24 @@ export default function LibraryPage() {
     return filtered;
   }, [state.results, state.search]);
 
+  const filteredCreators = React.useMemo(() => {
+    const resultsForCounts = state.results.filter(
+      (result) => !result.purchase.is_bundle_purchase && result.purchase.is_archived === state.search.showArchivedOnly,
+    );
+    const countsByCreatorId = new Map<string, number>();
+    for (const result of resultsForCounts) {
+      const creatorId = result.product.creator_id;
+      countsByCreatorId.set(creatorId, (countsByCreatorId.get(creatorId) ?? 0) + 1);
+    }
+    return creators
+      .map((creator) => ({
+        ...creator,
+        count: countsByCreatorId.get(creator.id) ?? 0,
+      }))
+      .filter((creator) => creator.count > 0)
+      .sort((a, b) => b.count - a.count);
+  }, [creators, state.results, state.search.showArchivedOnly]);
+
   const [resultsLimit, setResultsLimit] = React.useState(15);
   React.useEffect(() => setResultsLimit(15), [filteredResults]);
 
@@ -488,7 +506,7 @@ export default function LibraryPage() {
                           readOnly
                         />
                       </label>
-                      {(showingAllCreators ? creators : creators.slice(0, 5)).map((creator) => (
+                      {(showingAllCreators ? filteredCreators : filteredCreators.slice(0, 5)).map((creator) => (
                         <label key={creator.id}>
                           {creator.name}
                           <span className="shrink-0 text-muted">{`(${creator.count})`}</span>
@@ -510,7 +528,7 @@ export default function LibraryPage() {
                         </label>
                       ))}
                       <div>
-                        {creators.length > 5 && !showingAllCreators ? (
+                        {filteredCreators.length > 5 && !showingAllCreators ? (
                           <button className="underline" onClick={() => setShowingAllCreators(true)}>
                             Show more
                           </button>
