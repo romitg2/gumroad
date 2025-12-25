@@ -447,12 +447,10 @@ describe("Library Scenario", type: :system, js: true) do
 
     it "updates creator counts when toggling archived filter" do
       another_creator = create(:named_user, name: "Another Creator")
-      # @creator has 10 products from before block, archive 3 of them
       @a.update!(is_archived: true)
       @b.update!(is_archived: true)
       @c.update!(is_archived: true)
 
-      # another_creator: 2 non-archived, 1 archived
       create(:purchase, link: create(:product, user: another_creator, name: "Another Product 1"), purchaser: @user)
       create(:purchase, link: create(:product, user: another_creator, name: "Another Product 2"), purchaser: @user)
       create(:purchase, link: create(:product, user: another_creator, name: "Another Product 3"), purchaser: @user, is_archived: true)
@@ -460,23 +458,18 @@ describe("Library Scenario", type: :system, js: true) do
       Link.import(refresh: true, force: true)
       visit "/library"
 
-      # Non-archived view: @creator has 7, another_creator has 2
       expect(page).to have_text("Showing 1-9 of 9")
       expect(find("label", text: @creator.name)).to have_text("(7)")
       expect(find("label", text: another_creator.name)).to have_text("(2)")
 
-      # Toggle to archived view
       find_and_click("label", text: "Show archived only")
 
-      # Archived view: @creator has 3, another_creator has 1
       expect(page).to have_text("Showing 1-4 of 4")
       expect(find("label", text: @creator.name)).to have_text("(3)")
       expect(find("label", text: another_creator.name)).to have_text("(1)")
 
-      # Toggle back to non-archived view
       find_and_click("label", text: "Show archived only")
 
-      # Back to non-archived counts
       expect(page).to have_text("Showing 1-9 of 9")
       expect(find("label", text: @creator.name)).to have_text("(7)")
       expect(find("label", text: another_creator.name)).to have_text("(2)")
