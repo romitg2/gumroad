@@ -203,9 +203,8 @@ describe Products::ArchivedController, inertia: true do
     end
 
     it "does not change purchase_disabled_at on an already unpublished product" do
-      original_disabled_at = 1.week.ago
+      original_disabled_at = 1.week.ago.floor
       membership.update!(purchase_disabled_at: original_disabled_at)
-      original_disabled_at = membership.reload.purchase_disabled_at
 
       post :create, params: { id: membership.unique_permalink }, as: :json
 
