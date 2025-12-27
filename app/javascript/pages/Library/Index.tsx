@@ -275,19 +275,22 @@ export default function LibraryPage() {
     return filtered;
   }, [state.results, state.search]);
 
-  const filteredCreators = React.useMemo(() => {
-    const resultsForCounts = state.results.filter(
-      (result) => !result.purchase.is_bundle_purchase && result.purchase.is_archived === state.search.showArchivedOnly,
-    );
-    const countsByCreatorId = new Map<string, number>();
-    for (const result of resultsForCounts) {
-      const creatorId = result.product.creator_id;
-      countsByCreatorId.set(creatorId, (countsByCreatorId.get(creatorId) ?? 0) + 1);
-    }
+  const creatorsWithProductCounts = React.useMemo(() => {
+    const productCountByCreatorId = state.results.reduce((counts, result) => {
+      const matchesArchiveFilter = result.purchase.is_archived === state.search.showArchivedOnly;
+      const isIndividualPurchase = !result.purchase.is_bundle_purchase;
+
+      if (matchesArchiveFilter && isIndividualPurchase) {
+        const creatorId = result.product.creator_id;
+        counts.set(creatorId, (counts.get(creatorId) ?? 0) + 1);
+      }
+      return counts;
+    }, new Map<string, number>());
+
     return creators
       .map((creator) => ({
         ...creator,
-        count: countsByCreatorId.get(creator.id) ?? 0,
+        count: productCountByCreatorId.get(creator.id) ?? 0,
       }))
       .filter((creator) => creator.count > 0)
       .sort((a, b) => b.count - a.count);
@@ -506,29 +509,31 @@ export default function LibraryPage() {
                           readOnly
                         />
                       </label>
-                      {(showingAllCreators ? filteredCreators : filteredCreators.slice(0, 5)).map((creator) => (
-                        <label key={creator.id}>
-                          {creator.name}
-                          <span className="shrink-0 text-muted">{`(${creator.count})`}</span>
-                          <input
-                            type="checkbox"
-                            checked={state.search.creators.includes(creator.id)}
-                            onClick={() =>
-                              dispatch({
-                                type: "update-search",
-                                search: {
-                                  creators: state.search.creators.includes(creator.id)
-                                    ? state.search.creators.filter((id) => id !== creator.id)
-                                    : [...state.search.creators, creator.id],
-                                },
-                              })
-                            }
-                            readOnly
-                          />
-                        </label>
-                      ))}
+                      {(showingAllCreators ? creatorsWithProductCounts : creatorsWithProductCounts.slice(0, 5)).map(
+                        (creator) => (
+                          <label key={creator.id}>
+                            {creator.name}
+                            <span className="shrink-0 text-muted">{`(${creator.count})`}</span>
+                            <input
+                              type="checkbox"
+                              checked={state.search.creators.includes(creator.id)}
+                              onClick={() =>
+                                dispatch({
+                                  type: "update-search",
+                                  search: {
+                                    creators: state.search.creators.includes(creator.id)
+                                      ? state.search.creators.filter((id) => id !== creator.id)
+                                      : [...state.search.creators, creator.id],
+                                  },
+                                })
+                              }
+                              readOnly
+                            />
+                          </label>
+                        ),
+                      )}
                       <div>
-                        {filteredCreators.length > 5 && !showingAllCreators ? (
+                        {creatorsWithProductCounts.length > 5 && !showingAllCreators ? (
                           <button className="underline" onClick={() => setShowingAllCreators(true)}>
                             Show more
                           </button>
