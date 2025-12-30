@@ -163,8 +163,8 @@ export const EmptyStatePlaceholder = ({
   placeholderImage: string;
 }) => (
   <Placeholder>
-    <figure>
-      <img src={placeholderImage} />
+    <figure className="w-full px-2 md:px-6">
+      <img src={placeholderImage} className="h-auto w-full" />
     </figure>
     <h2>{title}</h2>
     <p>{description}</p>

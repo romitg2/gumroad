@@ -98,8 +98,8 @@ export default function WishlistsFollowingPage() {
           </Table>
         ) : (
           <Placeholder>
-            <figure>
-              <img src={placeholder} />
+            <figure className="w-full px-2 md:px-6">
+              <img src={placeholder} className="h-auto w-full" />
             </figure>
             <h2>Follow wishlists that inspire you</h2>
             Bookmark and organize your desired products with ease

@@ -24,8 +24,8 @@ export function ConversationList({
     return (
       <section className="p-4 md:p-8">
         <Placeholder>
-          <figure>
-            <img src={placeholderImage} />
+          <figure className="w-full px-2 md:px-6">
+            <img src={placeholderImage} className="h-auto w-full" />
           </figure>
           <h2>Need a hand? We're here for you.</h2>
           <p>

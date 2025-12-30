@@ -555,8 +555,8 @@ const CustomersPage = ({
           </section>
         ) : (
           <Placeholder>
-            <figure>
-              <img src={placeholder} />
+            <figure className="w-full px-2 md:px-6">
+              <img src={placeholder} className="h-auto w-full" />
             </figure>
             {searchQuery !== null ? (
               <h2>No sales found</h2>

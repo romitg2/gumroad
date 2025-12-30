@@ -176,8 +176,8 @@ const TableRowLoadingSpinner = () => (
 const EmptyState = () => (
   <section className="p-4 md:p-8">
     <Placeholder>
-      <figure>
-        <img src={placeholder} />
+      <figure className="w-full px-2 md:px-6">
+        <img src={placeholder} className="h-auto w-full" />
       </figure>
       <h2>No collaborations yet</h2>
       <h4>Creators who have invited you to collaborate on their products will appear here.</h4>

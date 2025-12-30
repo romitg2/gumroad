@@ -862,8 +862,8 @@ const EmptyCommunitiesPlaceholder = ({ hasProducts }: { hasProducts: boolean }) 
   <div>
     <section>
       <Placeholder>
-        <figure>
-          <img src={placeholderImage} />
+        <figure className="w-full px-2 md:px-6">
+          <img src={placeholderImage} className="h-auto w-full" />
         </figure>
         <h2>Build your community, one product at a time!</h2>
         <p className="max-w-prose">

@@ -82,8 +82,8 @@ export const ProductsDashboardPage = ({
       <section className="p-4 md:p-8">
         {memberships.length === 0 && products.length === 0 ? (
           <Placeholder>
-            <figure>
-              <img src={placeholder} />
+            <figure className="w-full px-2 md:px-6">
+              <img src={placeholder} className="h-auto w-full" />
             </figure>
             <h2>We’ve never met an idea we didn’t like.</h2>
             <p>Your first product doesn’t need to be perfect. Just put it out there, and see if it sticks.</p>

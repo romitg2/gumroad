@@ -96,8 +96,8 @@ const WorkflowList = ({ workflows }: WorkflowListProps) => {
       ) : (
         <div className="p-4 md:p-8">
           <Placeholder>
-            <figure>
-              <img src={placeholder} />
+            <figure className="w-full px-2 md:px-6">
+              <img src={placeholder} className="h-auto w-full" />
             </figure>
             <h2>Automate emails with ease.</h2>
             <h4>Workflows allow you to send scheduled emails to a subset of your audience based on a trigger.</h4>

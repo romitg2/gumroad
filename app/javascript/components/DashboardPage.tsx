@@ -148,8 +148,8 @@ type GettingStartedItemProps = {
 
 const Greeter = () => (
   <Placeholder>
-    <figure>
-      <img src={placeholderImage} />
+    <figure className="w-full px-2 md:px-6">
+      <img src={placeholderImage} className="h-auto w-full" />
     </figure>
     <h2>We're here to help you get paid for your work.</h2>
     <NavigationButton href={Routes.new_product_path()} color="accent">

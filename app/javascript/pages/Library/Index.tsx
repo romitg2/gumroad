@@ -353,8 +353,8 @@ export default function LibraryPage() {
         {state.results.length === 0 || showArchivedNotice ? (
           <Placeholder>
             {state.results.length === 0 ? (
-              <figure>
-                <img src={placeholder} />
+              <figure className="w-full px-2 md:px-6">
+                <img src={placeholder} className="h-auto w-full" />
               </figure>
             ) : null}
             {state.results.length === 0 ? (

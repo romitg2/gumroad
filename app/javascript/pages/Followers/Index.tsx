@@ -235,8 +235,8 @@ export default function FollowersPage() {
           </div>
         ) : (
           <Placeholder>
-            <figure>
-              <img src={placeholder} />
+            <figure className="w-full px-2 md:px-6">
+              <img src={placeholder} className="h-auto w-full" />
             </figure>
             {searchQuery.length === 0 ? (
               <>

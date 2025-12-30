@@ -118,8 +118,8 @@ export default function WishlistsPage() {
           </Table>
         ) : (
           <Placeholder>
-            <figure>
-              <img src={placeholder} />
+            <figure className="w-full px-2 md:px-6">
+              <img src={placeholder} className="h-auto w-full" />
             </figure>
             <h2>Save products you are wishing for</h2>
             Bookmark and organize your desired products with ease

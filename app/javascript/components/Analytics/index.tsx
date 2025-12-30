@@ -206,8 +206,8 @@ const Analytics = ({ products: initialProducts, country_codes, state_names }: An
       ) : (
         <div className="p-4 md:p-8">
           <Placeholder>
-            <figure>
-              <img src={placeholder} />
+            <figure className="w-full px-2 md:px-6">
+              <img src={placeholder} className="h-auto w-full" />
             </figure>
             <h2>You're just getting started.</h2>
             <p>

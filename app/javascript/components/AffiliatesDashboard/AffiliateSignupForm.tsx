@@ -105,8 +105,8 @@ export const AffiliateSignupForm = () => {
       {products.length === 0 ? (
         <section className="p-4! md:p-8!">
           <Placeholder>
-            <figure>
-              <img src={placeholderImage} />
+            <figure className="w-full px-2 md:px-6">
+              <img src={placeholderImage} className="h-auto w-full" />
             </figure>
             <h2>Almost there!</h2>
             You need a published product to add affiliates.

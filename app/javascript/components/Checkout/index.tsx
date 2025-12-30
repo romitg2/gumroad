@@ -389,8 +389,8 @@ export const Checkout = ({
       ) : (
         <div className="p-4 md:p-8">
           <Placeholder>
-            <figure>
-              <img src={placeholder} />
+            <figure className="w-full px-2 md:px-6">
+              <img src={placeholder} className="h-auto w-full" />
             </figure>
             <h3>You haven't added anything...yet!</h3>
             <p>Once you do, it'll show up here so you can complete your purchases.</p>

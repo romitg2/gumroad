@@ -88,8 +88,8 @@ const AudiencePage = ({ total_follower_count }: { total_follower_count: number }
       ) : (
         <div className="p-4 md:p-8">
           <Placeholder>
-            <figure>
-              <img src={placeholder} />
+            <figure className="w-full px-2 md:px-6">
+              <img src={placeholder} className="h-auto w-full" />
             </figure>
             <h2>It's quiet. Too quiet.</h2>
             <p>
