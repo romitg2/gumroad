@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "@inertiajs/react";
 
 import { PageHeader } from "$app/components/ui/PageHeader";
 import { Tabs, Tab } from "$app/components/ui/Tabs";
@@ -19,11 +20,27 @@ export const Layout = ({
   <div>
     <PageHeader title={pageNames[currentPage]}>
       <Tabs>
-        {Object.entries(pageNames).map(([page, name]) => (
-          <Tab key={page} isSelected={page === currentPage} href={Routes[`${page}_path`]()}>
-            {name}
-          </Tab>
-        ))}
+        {Object.entries(pageNames).map(([page, name]) => {
+          if (page === "widgets") {
+            return (
+              <Tab key={page} isSelected={page === currentPage} href={Routes[`${page}_path`]()}>
+                {name}
+              </Tab>
+            );
+          } else if (page === "ping") {
+            return (
+              <Link key={page} href={Routes[`${page}_path`]()} as="div">
+                <Tab isSelected={page === currentPage}>{name}</Tab>
+              </Link>
+            );
+          } else if (page === "api") {
+            return (
+              <Link key={page} href={Routes[`${page}_path`]()} as="div">
+                <Tab isSelected={page === currentPage}>{name}</Tab>
+              </Link>
+            );
+          }
+        })}
       </Tabs>
     </PageHeader>
     {children}
