@@ -22,7 +22,7 @@ import { Thumbnail } from "$app/components/Product/Thumbnail";
 import { Select } from "$app/components/Select";
 import { showAlert } from "$app/components/server-components/Alert";
 import { Alert } from "$app/components/ui/Alert";
-import Placeholder from "$app/components/ui/Placeholder";
+import Placeholder, { PlaceholderImage } from "$app/components/ui/Placeholder";
 import { ProductCard, ProductCardFigure, ProductCardHeader, ProductCardFooter } from "$app/components/ui/ProductCard";
 import { ProductCardGrid } from "$app/components/ui/ProductCardGrid";
 import { useAddThirdPartyAnalytics } from "$app/components/useAddThirdPartyAnalytics";
@@ -353,9 +353,7 @@ export default function LibraryPage() {
         {state.results.length === 0 || showArchivedNotice ? (
           <Placeholder>
             {state.results.length === 0 ? (
-              <figure className="w-full px-2 md:px-6">
-                <img src={placeholder} className="h-auto w-full" />
-              </figure>
+              <PlaceholderImage src={placeholder} />
             ) : null}
             {state.results.length === 0 ? (
               <>

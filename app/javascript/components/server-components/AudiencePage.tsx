@@ -17,7 +17,7 @@ import { Icon } from "$app/components/Icons";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { Popover } from "$app/components/Popover";
 import { showAlert } from "$app/components/server-components/Alert";
-import Placeholder from "$app/components/ui/Placeholder";
+import Placeholder, { PlaceholderImage } from "$app/components/ui/Placeholder";
 import { WithTooltip } from "$app/components/WithTooltip";
 
 import placeholder from "$assets/images/placeholders/audience.png";
@@ -88,9 +88,7 @@ const AudiencePage = ({ total_follower_count }: { total_follower_count: number }
       ) : (
         <div className="p-4 md:p-8">
           <Placeholder>
-            <figure className="w-full px-2 md:px-6">
-              <img src={placeholder} className="h-auto w-full" />
-            </figure>
+            <PlaceholderImage src={placeholder} />
             <h2>It's quiet. Too quiet.</h2>
             <p>
               You don't have any followers yet. Once you do, you'll see them here, along with powerful data that can

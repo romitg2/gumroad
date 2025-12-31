@@ -21,7 +21,7 @@ import { showAlert } from "$app/components/server-components/Alert";
 import { ToggleSettingRow } from "$app/components/SettingRow";
 import { Alert } from "$app/components/ui/Alert";
 import { Pill } from "$app/components/ui/Pill";
-import Placeholder from "$app/components/ui/Placeholder";
+import Placeholder, { PlaceholderImage } from "$app/components/ui/Placeholder";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "$app/components/ui/Table";
 import { WithTooltip } from "$app/components/WithTooltip";
 
@@ -105,9 +105,7 @@ export const AffiliateSignupForm = () => {
       {products.length === 0 ? (
         <section className="p-4! md:p-8!">
           <Placeholder>
-            <figure className="w-full px-2 md:px-6">
-              <img src={placeholderImage} className="h-auto w-full" />
-            </figure>
+            <PlaceholderImage src={placeholderImage} />
             <h2>Almost there!</h2>
             You need a published product to add affiliates.
             <NavigationButton

@@ -22,4 +22,10 @@ const Placeholder: React.FC<PlaceholderProps> = ({ className, children, ...rest 
   </div>
 );
 
+export const PlaceholderImage = ({ src }: { src: string }) => (
+  <figure className="w-full px-2 md:px-6">
+    <img src={src} className="h-auto w-full" />
+  </figure>
+);
+
 export default Placeholder;

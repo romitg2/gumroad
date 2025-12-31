@@ -55,7 +55,7 @@ import { showAlert } from "$app/components/server-components/Alert";
 import { Skeleton } from "$app/components/Skeleton";
 import { PageHeader } from "$app/components/ui/PageHeader";
 import { Pill } from "$app/components/ui/Pill";
-import Placeholder from "$app/components/ui/Placeholder";
+import Placeholder, { PlaceholderImage } from "$app/components/ui/Placeholder";
 import { Sheet, SheetHeader } from "$app/components/ui/Sheet";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "$app/components/ui/Table";
 import { Tabs, Tab } from "$app/components/ui/Tabs";
@@ -583,9 +583,7 @@ const AffiliatesTab = () => {
               </>
             ) : (
               <Placeholder>
-                <figure className="w-full px-2 md:px-6">
-                  <img src={placeholder} className="h-auto w-full" />
-                </figure>
+                <PlaceholderImage src={placeholder} />
                 <h2>No affiliates found</h2>
               </Placeholder>
             )}
