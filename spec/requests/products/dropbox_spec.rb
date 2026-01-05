@@ -29,8 +29,8 @@ describe "Dropbox uploads", type: :system, js: true do
     sleep 0.5 # wait for the editor to update the content
     save_change
     expect(product.reload.alive_product_files.count).to eq 2
-    expect(product.alive_product_files.first.display_name).to eq("Download-Card")
-    expect(product.alive_product_files.last.display_name).to eq("SmallTestFile")
+    file_names = product.alive_product_files.map(&:display_name)
+    expect(file_names).to match_array(["Download-Card", "SmallTestFile"])
     expected_content = product.alive_product_files.map do |file|
       { "type" => "fileEmbed", "attrs" => { "id" => file.external_id, "uid" => anything, "collapsed" => false } }
     end
