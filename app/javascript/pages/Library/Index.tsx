@@ -171,7 +171,7 @@ export const DeleteProductModal = ({
 
 type Props = {
   results: Result[];
-  creators: { id: string; name: string; count: number }[];
+  creators: { id: string; name: string }[];
   bundles: { id: string; label: string }[];
   reviews_page_enabled: boolean;
   following_wishlists_enabled: boolean;
@@ -277,10 +277,7 @@ export default function LibraryPage() {
 
   const creatorsWithProductCounts = React.useMemo(() => {
     const productCountByCreatorId = state.results.reduce((counts, result) => {
-      const matchesArchiveFilter = result.purchase.is_archived === state.search.showArchivedOnly;
-      const isIndividualPurchase = !result.purchase.is_bundle_purchase;
-
-      if (matchesArchiveFilter && isIndividualPurchase) {
+      if (result.purchase.is_archived === state.search.showArchivedOnly && !result.purchase.is_bundle_purchase) {
         const creatorId = result.product.creator_id;
         counts.set(creatorId, (counts.get(creatorId) ?? 0) + 1);
       }
