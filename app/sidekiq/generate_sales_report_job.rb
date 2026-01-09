@@ -40,7 +40,7 @@ class GenerateSalesReportJob
                  purchase.price_cents_net_of_refunds, purchase.fee_cents_net_of_refunds, purchase.gumroad_tax_cents_net_of_refunds,
                  purchase.shipping_cents, purchase.total_cents_net_of_refunds]
 
-          if %w(AU SG).include?(country_code)
+          if %w(AU SG IN).include?(country_code)
             row += [purchase.link.is_physical? ? "DTC" : "BS", purchase.zip_tax_rate_id, purchase.purchase_sales_tax_info.business_vat_id]
           end
 
@@ -89,13 +89,15 @@ class GenerateSalesReportJob
         headers += ["Direct-To-Customer / Buy-Sell", "Zip Tax Rate ID", "Customer ABN Number"]
       elsif country_code == "SG"
         headers += ["Direct-To-Customer / Buy-Sell", "Zip Tax Rate ID", "Customer GST Number"]
+      elsif country_code == "IN"
+        headers += ["Direct-To-Customer / Buy-Sell", "Zip Tax Rate ID", "Customer GSTIN"]
       end
 
       headers
     end
 
     def slack_sender(country_code)
-      if %w(AU SG).include?(country_code)
+      if %w(AU SG IN).include?(country_code)
         "GST Reporting"
       else
         "VAT Reporting"

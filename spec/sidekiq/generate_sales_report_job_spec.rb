@@ -91,6 +91,20 @@ describe GenerateSalesReportJob do
       expect(SlackMessageWorker).to have_enqueued_sidekiq_job("payments", "GST Reporting", anything, "green")
     end
 
+    it "creates a CSV file for sales into India" do
+      expect(ExpiringS3FileService).to receive(:new) do |args|
+        expect(args[:path]).to eq("sales-tax/in-sales-quarterly")
+        expect(args[:filename]).to include("india-all-sales-report-2015-01-01-to-2015-03-31")
+        expect(args[:bucket]).to eq(REPORTING_S3_BUCKET)
+        expect(args[:expiry]).to eq(1.week)
+        @mock_service
+      end
+
+      described_class.new.perform("IN", start_date, end_date, GenerateSalesReportJob::ALL_SALES)
+
+      expect(SlackMessageWorker).to have_enqueued_sidekiq_job("payments", "GST Reporting", anything, "green")
+    end
+
     it "creates a CSV file for sales into the United Kingdom and does not send slack notification when send_notification is false",
        vcr: { cassette_name: "GenerateSalesReportJob/happy_case/creates_a_CSV_file_for_sales_into_the_United_Kingdom" } do
       expect(ExpiringS3FileService).to receive(:new).and_return(@mock_service)

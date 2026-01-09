@@ -22,6 +22,7 @@ describe GenerateFinancialReportsForPreviousQuarterJob do
       expect(GenerateSalesReportJob).to have_enqueued_sidekiq_job("AU", an_instance_of(String), an_instance_of(String), GenerateSalesReportJob::ALL_SALES)
       expect(GenerateSalesReportJob).to have_enqueued_sidekiq_job("SG", an_instance_of(String), an_instance_of(String), GenerateSalesReportJob::ALL_SALES)
       expect(GenerateSalesReportJob).to have_enqueued_sidekiq_job("NO", an_instance_of(String), an_instance_of(String), GenerateSalesReportJob::ALL_SALES)
+      expect(GenerateSalesReportJob).to have_enqueued_sidekiq_job("IN", an_instance_of(String), an_instance_of(String), GenerateSalesReportJob::ALL_SALES)
     end
 
     [[2017,  1, 2016, 4],
