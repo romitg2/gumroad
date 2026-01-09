@@ -1,3 +1,4 @@
+import { router } from "@inertiajs/react";
 import * as React from "react";
 
 import AdminSalesReportsForm from "$app/components/Admin/SalesReports/Form";
@@ -26,6 +27,18 @@ type Props = {
 
 const AdminSalesReportsJobHistory = ({ countries, sales_types, jobHistory, authenticityToken }: Props) => {
   const [showNewSalesReportForm, setShowNewSalesReportForm] = React.useState(false);
+
+  const hasProcessingJobs = jobHistory.some((job) => job.status === "processing");
+
+  React.useEffect(() => {
+    if (!hasProcessingJobs) return;
+
+    const intervalId = setInterval(() => {
+      router.reload({ only: ["job_history"] });
+    }, 3000);
+
+    return () => clearInterval(intervalId);
+  }, [hasProcessingJobs]);
 
   const countryCodeToName = React.useMemo(() => {
     const map: Record<string, string> = {};
