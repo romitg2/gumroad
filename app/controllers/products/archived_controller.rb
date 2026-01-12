@@ -3,8 +3,6 @@
 class Products::ArchivedController < Sellers::BaseController
   include ProductsHelper
 
-  PER_PAGE = 10
-
   before_action :fetch_product_and_enforce_ownership, only: %i[create destroy]
 
   layout "inertia", only: [:index]
