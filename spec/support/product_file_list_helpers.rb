@@ -82,20 +82,6 @@ module ProductFileListHelpers
     dropbox_file.transfer_to_s3
   end
 
-  def stub_dropbox_file_transfer(dropbox_file)
-    allow(HTTParty).to receive(:get)
-      .with(dropbox_file.dropbox_url, hash_including(:stream_body))
-      .and_yield("fake file content")
-
-    s3_resource = double("s3_resource")
-    s3_bucket = double("s3_bucket")
-    s3_object = double("s3_object")
-    allow(Aws::S3::Resource).to receive(:new).and_return(s3_resource)
-    allow(s3_resource).to receive(:bucket).and_return(s3_bucket)
-    allow(s3_bucket).to receive(:object).and_return(s3_object)
-    allow(s3_object).to receive(:upload_file).and_return(true)
-  end
-
   private
     def content_section
       page.first "[role=tree][aria-label=Files]"
@@ -110,5 +96,19 @@ module ProductFileListHelpers
         name: filename,
         id: "id:#{SecureRandom.hex(16)}"
       }
+    end
+
+    def stub_dropbox_file_transfer(dropbox_file)
+      allow(HTTParty).to receive(:get)
+        .with(dropbox_file.dropbox_url, hash_including(:stream_body))
+        .and_yield("fake file content")
+
+      s3_resource = double("s3_resource")
+      s3_bucket = double("s3_bucket")
+      s3_object = double("s3_object")
+      allow(Aws::S3::Resource).to receive(:new).and_return(s3_resource)
+      allow(s3_resource).to receive(:bucket).and_return(s3_bucket)
+      allow(s3_bucket).to receive(:object).and_return(s3_object)
+      allow(s3_object).to receive(:upload_file).and_return(true)
     end
 end
