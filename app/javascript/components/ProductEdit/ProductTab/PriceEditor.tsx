@@ -6,6 +6,7 @@ import { Details } from "$app/components/Details";
 import { PriceInput } from "$app/components/PriceInput";
 import { InstallmentPlanEditor } from "$app/components/ProductEdit/ProductTab/InstallmentPlanEditor";
 import { Toggle } from "$app/components/Toggle";
+import { Alert } from "$app/components/ui/Alert";
 
 export const PriceEditor = ({
   priceCents,
@@ -50,9 +51,7 @@ export const PriceEditor = ({
         currencyCodeSelector={currencyCodeSelector}
       />
       {isFreeProduct ? (
-        <div role="alert" className="info">
-          Free products require a pay what they want price.
-        </div>
+        <Alert variant="info">Free products require a pay what they want price.</Alert>
       ) : null}
       <Details
         className="toggle"
