@@ -529,7 +529,7 @@ export default function PayoutsIndex() {
       <div className="space-y-8 p-4 md:p-8">
         {!instant_payout ? (
           show_instant_payouts_notice ? (
-            <Alert variant="info">
+            <Alert variant="info" role="status">
               <p>
                 To enable <strong>instant</strong> payouts,{" "}
                 <a href={Routes.settings_payments_path()}>update your payout method</a> to one of the{" "}
@@ -541,7 +541,7 @@ export default function PayoutsIndex() {
             </Alert>
           ) : null
         ) : instant_payout.payable_amount_cents >= MINIMUM_INSTANT_PAYOUT_AMOUNT_CENTS ? (
-          <Alert variant="info">
+          <Alert variant="info" role="status">
             <div>
               <b>
                 You have{" "}
@@ -652,7 +652,7 @@ export default function PayoutsIndex() {
                   </footer>
                 </div>
                 {instantPayoutAmountCents > MAXIMUM_INSTANT_PAYOUT_AMOUNT_CENTS ? (
-                  <Alert variant="info">
+                  <Alert variant="info" role="status">
                     Your balance exceeds the maximum amount for a single instant payout, so we'll automatically split
                     your balance into multiple payouts.
                   </Alert>
@@ -662,7 +662,7 @@ export default function PayoutsIndex() {
           </Alert>
         ) : null}
         {payouts_status === "paused" ? (
-          <Alert variant="warning">
+          <Alert variant="warning" role="status">
             <p>
               {payouts_paused_by === "stripe" ? (
                 <strong>
@@ -690,20 +690,20 @@ export default function PayoutsIndex() {
         ) : null}
         {next_payout_period_data != null ? (
           next_payout_period_data.has_stripe_connect ? (
-            <Alert variant="info">
+            <Alert variant="info" role="status">
               <p>For Stripe Connect users, all future payouts will be deposited directly to your Stripe account</p>
             </Alert>
           ) : (
             <section className="grid gap-4">
               {next_payout_period_data.payout_note &&
               !["processing", "paused"].includes(next_payout_period_data.status) ? (
-                <Alert variant="info">
+                <Alert variant="info" role="status">
                   <p>{next_payout_period_data.payout_note}</p>
                 </Alert>
               ) : null}
               {next_payout_period_data.status === "not_payable" ? (
                 past_payout_period_data.length > 0 ? (
-                  <Alert variant="info">
+                  <Alert variant="info" role="status">
                     <p>
                       Reach a balance of at least{" "}
                       {formatPriceCentsWithCurrencySymbol("usd", next_payout_period_data.minimum_payout_amount_cents, {
