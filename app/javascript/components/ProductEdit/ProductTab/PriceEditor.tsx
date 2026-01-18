@@ -50,9 +50,7 @@ export const PriceEditor = ({
         onChange={(newAmount) => setPriceCents(newAmount ?? 0)}
         currencyCodeSelector={currencyCodeSelector}
       />
-      {isFreeProduct ? (
-        <Alert variant="info">Free products require a pay what they want price.</Alert>
-      ) : null}
+      {isFreeProduct ? <Alert variant="info">Free products require a pay what they want price.</Alert> : null}
       <Details
         className="toggle"
         open={isPWYW}
