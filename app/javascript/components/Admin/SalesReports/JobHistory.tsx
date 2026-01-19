@@ -4,6 +4,7 @@ import * as React from "react";
 import AdminSalesReportsForm from "$app/components/Admin/SalesReports/Form";
 import { Button } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
+import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { Placeholder } from "$app/components/ui/Placeholder";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "$app/components/ui/Table";
 
@@ -103,8 +104,8 @@ const AdminSalesReportsJobHistory = ({ countries, sales_types, jobHistory, authe
                     </div>
                   </a>
                 ) : (
-                  <div className="grid grid-cols-[auto_1fr] gap-2">
-                    <Icon name="circle" />
+                  <div className="grid grid-cols-[auto_1fr] items-center gap-2">
+                    <LoadingSpinner />
                     <span>Processing</span>
                   </div>
                 )}
