@@ -91,15 +91,7 @@ describe "Admin::SalesReportsController", type: :system, js: true do
           download_url: "https://example.com/report.csv"
         )
 
-        call_count = 0
-        allow($redis).to receive(:lrange).with(RedisKey.sales_report_jobs, 0, 19) do
-          call_count += 1
-          if call_count == 1
-            [processing_job.to_json]
-          else
-            [completed_job.to_json]
-          end
-        end
+        allow($redis).to receive(:lrange).with(RedisKey.sales_report_jobs, 0, 19).and_return([processing_job.to_json], [completed_job.to_json])
 
         visit admin_sales_reports_path
 
