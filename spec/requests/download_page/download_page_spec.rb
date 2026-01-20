@@ -979,3 +979,4 @@ describe("Download Page", type: :system, js: true) do
       expect(page).to have_text("We are preparing the file for download. You will receive an email when it is ready.")
     end
   end
+end
