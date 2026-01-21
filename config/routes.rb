@@ -657,12 +657,7 @@ Rails.application.routes.draw do
 
     namespace :products do
       resources :affiliated, only: [:index]
-      resources :collabs, only: [:index] do
-        collection do
-          get :products_paged
-          get :memberships_paged
-        end
-      end
+      resources :collabs, only: [:index]
       resources :archived, only: %i[index create destroy]
     end
 
@@ -670,6 +665,7 @@ Rails.application.routes.draw do
       scope module: :products, format: true, constraints: { format: :json } do
         resources :other_refund_policies, only: :index
         resources :remaining_call_availabilities, only: :index
+        resources :available_offer_codes, only: :index
       end
     end
 
@@ -745,6 +741,7 @@ Rails.application.routes.draw do
     # analytics
     get "/analytics" => redirect("/dashboard/sales")
     get "/dashboard/sales", to: "analytics#index", as: :sales_dashboard
+    get "/dashboard/churn", to: "churn#show", as: :churn_dashboard
     get "/analytics/data/by_date", to: "analytics#data_by_date", as: "analytics_data_by_date"
     get "/analytics/data/by_state", to: "analytics#data_by_state", as: "analytics_data_by_state"
     get "/analytics/data/by_referral", to: "analytics#data_by_referral", as: "analytics_data_by_referral"
@@ -878,11 +875,6 @@ Rails.application.routes.draw do
     # old API route
     namespace "api" do
       api_routes
-    end
-
-    # developers pages
-    scope "developers" do
-      get "/", to: "public#developers", as: "developers"
     end
 
     scope "api" do
