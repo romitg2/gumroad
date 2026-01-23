@@ -8,7 +8,7 @@ type SendMagicLinkRequestArgs = {
 export const sendMagicLink = async ({ emailSource, subscriptionId }: SendMagicLinkRequestArgs) => {
   const response = await request({
     method: "POST",
-    url: Routes.send_magic_link_subscription_path(subscriptionId),
+    url: Routes.magic_link_subscription_path(subscriptionId),
     accept: "json",
     data: { email_source: emailSource },
   });
