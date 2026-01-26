@@ -91,7 +91,7 @@ describe LibraryPresenter do
       end
 
       it "returns results for all live subscriptions and excludes cancelled ones when access is blocked" do
-        purchases, _ = described_class.new(buyer).library_cards
+        purchases, creators = described_class.new(buyer).library_cards
 
         expect(purchases).to eq([
                                   {
