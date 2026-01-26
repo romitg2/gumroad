@@ -530,7 +530,10 @@ export default function LibraryPage() {
                       )}
                       <div>
                         {creatorsWithProductCounts.length > 5 && !showingAllCreators ? (
-                          <button className="cursor-pointer underline all-unset" onClick={() => setShowingAllCreators(true)}>
+                          <button
+                            className="cursor-pointer underline all-unset"
+                            onClick={() => setShowingAllCreators(true)}
+                          >
                             Show more
                           </button>
                         ) : null}
