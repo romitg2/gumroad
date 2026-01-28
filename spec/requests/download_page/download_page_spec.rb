@@ -320,8 +320,7 @@ describe("Download Page", type: :system, js: true) do
     it "displays a link to manage membership if active" do
       visit "/d/#{@url_redirect.token}"
       select_disclosure "Membership" do
-        button = find("a[href='#{@manage_membership_path}']")
-        expect(button).to have_text "Manage"
+        expect(page).to have_link("Manage", href: /#{Regexp.quote(@manage_membership_path)}/)
       end
     end
 
@@ -331,8 +330,7 @@ describe("Download Page", type: :system, js: true) do
       it "displays a link to restart membership if inactive" do
         visit "/d/#{@url_redirect.token}"
         select_disclosure "Membership" do
-          button = find("a[href='#{@manage_membership_path}']")
-          expect(button).to have_text "Restart"
+          expect(page).to have_link("Restart", href: /#{Regexp.quote(@manage_membership_path)}/)
         end
       end
 
@@ -347,8 +345,7 @@ describe("Download Page", type: :system, js: true) do
         it "includes a Manage Membership link if the subscription is restartable" do
           allow_any_instance_of(Subscription).to receive(:alive_or_restartable?).and_return(true)
           visit "/d/#{@url_redirect.token}"
-          button = find("a[href='#{@manage_membership_path}']")
-          expect(button).to have_text "Manage membership"
+          expect(page).to have_link("Manage membership", href: /#{Regexp.quote(@manage_membership_path)}/)
         end
 
         it "includes a Resubscribe link if the subscription is not restartable" do
@@ -715,7 +712,7 @@ describe("Download Page", type: :system, js: true) do
     it "links to the bundle receipt" do
       visit purchase.product_purchases.first.url_redirect.download_page_url
       select_disclosure "Receipt"
-      expect(page).to have_link("View receipt", href: receipt_purchase_path(purchase.external_id, email: purchase.email))
+      expect(page).to have_link("View receipt", href: /#{Regexp.quote(receipt_purchase_path(purchase.external_id, email: purchase.email))}/)
 
       click_on "Resend receipt"
       expect(page).to have_alert(text: "Receipt resent")

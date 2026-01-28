@@ -17,7 +17,7 @@ export async function getRecommendedProducts(
   const response = await request({
     method: "GET",
     accept: "json",
-    url: Routes.recommended_products_path({
+    url: Routes.recommended_products_url({
       cart_product_ids: cartProductIds,
       limit,
       recommendation_type: recommendationType,
