@@ -15,10 +15,16 @@ import { Modal } from "$app/components/Modal";
 import { PurchaseArchiveButton } from "$app/components/PurchaseArchiveButton";
 import { Review, ReviewForm } from "$app/components/ReviewForm";
 import { showAlert } from "$app/components/server-components/Alert";
-import { PurchaseCustomField } from "$app/components/server-components/DownloadPage/WithContent";
 import { Card, CardContent } from "$app/components/ui/Card";
 import { PageHeader } from "$app/components/ui/PageHeader";
 import { useIsAboveBreakpoint } from "$app/components/useIsAboveBreakpoint";
+
+export type PurchaseCustomField = {
+  custom_field_id: string;
+} & (
+  | { type: "shortAnswer" | "longAnswer"; value: string }
+  | { type: "fileUpload"; files: { name: string; size: number; extension: string }[] }
+);
 
 type ContentUnavailabilityReasonCode =
   | "inactive_membership"
@@ -155,7 +161,7 @@ export const Layout = ({
                       {purchase.membership.is_installment_plan_completed ? (
                         "This installment plan has been paid in full."
                       ) : (
-                        <NavigationButton href={Routes.manage_subscription_url(purchase.membership.subscription_id)}>
+                        <NavigationButton href={Routes.manage_subscription_path(purchase.membership.subscription_id)}>
                           Manage
                         </NavigationButton>
                       )}
@@ -169,13 +175,13 @@ export const Layout = ({
                       </summary>
                       <div style={{ display: "grid" }}>
                         {purchase.membership.has_active_subscription ? (
-                          <NavigationButton href={Routes.manage_subscription_url(purchase.membership.subscription_id)}>
+                          <NavigationButton href={Routes.manage_subscription_path(purchase.membership.subscription_id)}>
                             Manage
                           </NavigationButton>
                         ) : purchase.membership.is_subscription_ended ? (
                           "This subscription has ended."
                         ) : purchase.membership.is_subscription_cancelled_or_failed ? (
-                          <NavigationButton href={Routes.manage_subscription_url(purchase.membership.subscription_id)}>
+                          <NavigationButton href={Routes.manage_subscription_path(purchase.membership.subscription_id)}>
                             Restart
                           </NavigationButton>
                         ) : null}
@@ -192,8 +198,8 @@ export const Layout = ({
                       <NavigationButton
                         href={
                           purchase.email
-                            ? Routes.receipt_purchase_url(receiptPurchaseId, { email: purchase.email })
-                            : Routes.receipt_purchase_url(receiptPurchaseId)
+                            ? Routes.receipt_purchase_path(receiptPurchaseId, { email: purchase.email })
+                            : Routes.receipt_purchase_path(receiptPurchaseId)
                         }
                       >
                         View receipt

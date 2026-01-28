@@ -4,19 +4,20 @@ class UrlRedirectsController < ApplicationController
   include SignedUrlHelper
   include ProductsHelper
 
+  layout "inertia", only: [:read, :download_page]
+
   before_action :fetch_url_redirect, except: %i[
-    show stream download_subtitle_file read download_archive latest_media_locations download_product_files
-    audio_durations
+    show stream download_subtitle_file read download_archive download_product_files
   ]
   before_action :redirect_to_custom_domain_if_needed, only: :download_page
   before_action :redirect_bundle_purchase_to_library_if_needed, only: :download_page
   before_action :redirect_to_coffee_page_if_needed, only: :download_page
   before_action :check_permissions, only: %i[show stream download_page
                                              hls_playlist download_subtitle_file read
-                                             download_archive latest_media_locations download_product_files audio_durations
+                                             download_archive download_product_files
                                              save_last_content_page]
   before_action :hide_layouts, only: %i[
-    confirm_page membership_inactive_page expired rental_expired_page show download_page download_product_files stream smil hls_playlist download_subtitle_file read
+    confirm_page membership_inactive_page expired rental_expired_page show download_product_files stream smil hls_playlist download_subtitle_file
   ]
   before_action :mark_rental_as_viewed, only: %i[smil hls_playlist]
   after_action :register_that_user_has_downloaded_product, only: %i[download_page show stream read]
@@ -26,7 +27,7 @@ class UrlRedirectsController < ApplicationController
   after_action -> { create_consumption_event!(ConsumptionEvent::EVENT_TYPE_VIEW) }, only: [:download_page]
 
   skip_before_action :check_suspended, only: %i[show stream confirm confirm_page download_page
-                                                download_subtitle_file download_archive download_product_files audio_durations]
+                                                download_subtitle_file download_archive download_product_files]
   before_action :set_noindex_header, only: %i[confirm_page download_page]
 
   rescue_from ActionController::RoutingError do |exception|
@@ -70,13 +71,19 @@ class UrlRedirectsController < ApplicationController
   end
 
   def download_page
-    @hide_layouts = true
-
     @body_class = "download-page responsive responsive-nav"
     @show_user_favicon = true
     @title = @url_redirect.with_product_files.name == "Untitled" ? @url_redirect.referenced_link.name : @url_redirect.with_product_files.name
-    @react_component_props = UrlRedirectPresenter.new(url_redirect: @url_redirect, logged_in_user:).download_page_with_content_props(common_props)
     trigger_files_lifecycle_events
+
+    presenter = UrlRedirectPresenter.new(url_redirect: @url_redirect, logged_in_user:)
+    render inertia: "UrlRedirects/DownloadPage",
+           props: presenter.download_page_with_content_props(common_props).merge(
+             dropbox_api_key: DROPBOX_PICKER_API_KEY,
+             smart_app_banner: { ios_app_id: IOS_APP_ID, app_argument: @url_redirect.download_page_url },
+             audio_durations: InertiaRails.optional { audio_durations_data },
+             latest_media_locations: InertiaRails.optional { latest_media_locations_data }
+           )
   end
 
   def download_product_files
@@ -244,29 +251,6 @@ class UrlRedirectsController < ApplicationController
     render :video_stream
   end
 
-  def latest_media_locations
-    e404 if @url_redirect.purchase.nil? || @url_redirect.installment.present?
-
-    product_files = @url_redirect.alive_product_files.select(:id)
-    media_locations_by_file = MediaLocation.max_consumed_at_by_file(purchase_id: @url_redirect.purchase.id).index_by(&:product_file_id)
-
-    json = product_files.each_with_object({}) do |product_file, hash|
-      hash[product_file.external_id] = media_locations_by_file[product_file.id].as_json
-    end
-
-    render json:
-  end
-
-  def audio_durations
-    return render json: {} if params[:file_ids].blank?
-
-    json = @url_redirect.alive_product_files.where(filegroup: "audio").by_external_ids(params[:file_ids]).each_with_object({}) do |product_file, hash|
-      hash[product_file.external_id] = product_file.content_length
-    end
-
-    render json:
-  end
-
   def media_urls
     return render json: {} if params[:file_ids].blank?
 
@@ -421,5 +405,23 @@ class UrlRedirectsController < ApplicationController
         content_unavailability_reason_code: @content_unavailability_reason_code,
         add_to_library_option:,
       }
+    end
+
+    def audio_durations_data
+      @url_redirect.alive_product_files.where(filegroup: "audio").each_with_object({}) do |product_file, hash|
+        hash[product_file.external_id] = product_file.content_length
+      end
+    end
+
+    def latest_media_locations_data
+      purchase = @url_redirect.purchase
+      return {} if purchase.nil? || @url_redirect.installment.present?
+
+      product_files = @url_redirect.alive_product_files.select(:id)
+      media_locations = MediaLocation.max_consumed_at_by_file(purchase_id: purchase.id).index_by(&:product_file_id)
+
+      product_files.each_with_object({}) do |product_file, hash|
+        hash[product_file.external_id] = media_locations[product_file.id]&.as_json
+      end
     end
 end

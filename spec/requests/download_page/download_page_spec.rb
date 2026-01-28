@@ -314,13 +314,13 @@ describe("Download Page", type: :system, js: true) do
     before do
       @purchase = create(:membership_purchase)
       @url_redirect = create(:url_redirect, purchase: @purchase)
-      @manage_membership_url = Rails.application.routes.url_helpers.manage_subscription_url(@purchase.subscription.external_id, host: "#{PROTOCOL}://#{DOMAIN}")
+      @manage_membership_path = Rails.application.routes.url_helpers.manage_subscription_path(@purchase.subscription.external_id)
     end
 
     it "displays a link to manage membership if active" do
       visit "/d/#{@url_redirect.token}"
       select_disclosure "Membership" do
-        button = find("a[href='#{@manage_membership_url}']")
+        button = find("a[href='#{@manage_membership_path}']")
         expect(button).to have_text "Manage"
       end
     end
@@ -331,7 +331,7 @@ describe("Download Page", type: :system, js: true) do
       it "displays a link to restart membership if inactive" do
         visit "/d/#{@url_redirect.token}"
         select_disclosure "Membership" do
-          button = find("a[href='#{@manage_membership_url}']")
+          button = find("a[href='#{@manage_membership_path}']")
           expect(button).to have_text "Restart"
         end
       end
@@ -347,7 +347,7 @@ describe("Download Page", type: :system, js: true) do
         it "includes a Manage Membership link if the subscription is restartable" do
           allow_any_instance_of(Subscription).to receive(:alive_or_restartable?).and_return(true)
           visit "/d/#{@url_redirect.token}"
-          button = find("a[href='#{@manage_membership_url}']")
+          button = find("a[href='#{@manage_membership_path}']")
           expect(button).to have_text "Manage membership"
         end
 
@@ -715,7 +715,7 @@ describe("Download Page", type: :system, js: true) do
     it "links to the bundle receipt" do
       visit purchase.product_purchases.first.url_redirect.download_page_url
       select_disclosure "Receipt"
-      expect(page).to have_link("View receipt", href: receipt_purchase_url(purchase.external_id, email: purchase.email, host: Capybara.app_host))
+      expect(page).to have_link("View receipt", href: receipt_purchase_path(purchase.external_id, email: purchase.email))
 
       click_on "Resend receipt"
       expect(page).to have_alert(text: "Receipt resent")
@@ -807,13 +807,13 @@ describe("Download Page", type: :system, js: true) do
       refresh
 
       short_answer_field = find_field("Short Answer", with: "This is a short answer")
-      short_answer_field.fill_in with: "Updated short answer"
+      short_answer_field.fill_in with: "Updated short answer", fill_options: { clear: :backspace }
       short_answer_field.native.send_keys(:tab)
       wait_for_ajax
       expect(page).to have_alert(text: "Response saved!")
 
       long_answer_field = find_field("Long Answer", with: "This is a longer answer with multiple sentences. It can contain more detailed information.")
-      long_answer_field.fill_in with: "This is an updated longer answer. It now contains different information."
+      long_answer_field.fill_in with: "This is an updated longer answer. It now contains different information.", fill_options: { clear: :backspace }
       long_answer_field.native.send_keys(:tab)
       wait_for_ajax
       expect(page).to have_alert(text: "Response saved!")

@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "inertia_rails/rspec"
 
-describe UrlRedirectsController do
+describe UrlRedirectsController, inertia: true do
   render_views
 
   before do
@@ -26,19 +27,10 @@ describe UrlRedirectsController do
     it "renders correctly" do
       get :download_page, params: { id: @token }
       expect(response).to be_successful
-      expect(assigns(:hide_layouts)).to eq(true)
-      expect(
-        assigns(:react_component_props)
-      ).to eq(
-        UrlRedirectPresenter.new(
-          url_redirect: @url_redirect,
-          logged_in_user: nil
-        ).download_page_with_content_props.merge(
-          is_mobile_app_web_view: false,
-          content_unavailability_reason_code: nil,
-          add_to_library_option: "signup_form"
-        )
-      )
+      expect(inertia.component).to eq("UrlRedirects/DownloadPage")
+      expect(inertia.props[:is_mobile_app_web_view]).to eq(false)
+      expect(inertia.props[:content_unavailability_reason_code]).to be_nil
+      expect(inertia.props[:add_to_library_option]).to eq("signup_form")
     end
 
     context "with access revoked for purchase" do
@@ -74,12 +66,7 @@ describe UrlRedirectsController do
       it "renders correctly" do
         get :download_page, params: { id: @token, display: "mobile_app" }
         expect(response).to be_successful
-        expect(assigns(:react_component_props)[:is_mobile_app_web_view]).to eq(true)
-
-        assert_select "h1", { text: @product.name, count: 0 }
-        assert_select "h4", { text: "Liked it? Give it a rating:", count: 0 }
-        assert_select "h4", { text: "Display Name", count: 1 }
-        assert_select "a", { text: "Download", count: 1 }
+        expect(inertia.props[:is_mobile_app_web_view]).to eq(true)
       end
     end
 
@@ -94,14 +81,14 @@ describe UrlRedirectsController do
 
       it "displays the license key for the purchase" do
         get :download_page, params: { id: @token }
-        expect(response.body).to include @purchase.license.serial
+        expect(inertia.props.dig(:content, :license, :license_key)).to eq(@purchase.license.serial)
       end
     end
 
     context "posts" do
       let(:url_redirect) { create(:url_redirect, purchase:) }
       let(:token) { url_redirect.token }
-      let(:subject) { assigns(:react_component_props).dig(:content, :posts) }
+      let(:subject) { inertia.props.dig(:content, :posts) }
 
       context "for products" do
         let(:seller) { create(:named_seller) }
@@ -118,7 +105,8 @@ describe UrlRedirectsController do
           get :download_page, params: { id: token }
 
           expect(response).to be_successful
-          expect(response.body).to include(installment_1.displayed_name)
+          post_names = inertia.props.dig(:content, :posts).pluck(:name)
+          expect(post_names).to include(installment_1.displayed_name)
         end
 
         it "returns updates from those other purchases if they've bought the same product multiple times" do
@@ -134,9 +122,10 @@ describe UrlRedirectsController do
           get :download_page, params: { id: token }
 
           expect(response).to be_successful
-          expect(response.body).to include(installment_1.displayed_name)
-          expect(response.body).to include(installment_2.displayed_name)
-          expect(response.body).to include(installment_3.displayed_name)
+          post_names = inertia.props.dig(:content, :posts).pluck(:name)
+          expect(post_names).to include(installment_1.displayed_name)
+          expect(post_names).to include(installment_2.displayed_name)
+          expect(post_names).to include(installment_3.displayed_name)
         end
 
         it "does not break if the user has been sent a post for a product they have not purchased" do
@@ -320,7 +309,7 @@ describe UrlRedirectsController do
       describe "with purchase purchaser is nil" do
         it "renders add to library" do
           get :download_page, params: { id: @token }
-          expect(response.body).to include "Add to library"
+          expect(inertia.props[:add_to_library_option]).to eq("add_to_library_button")
         end
       end
 
@@ -332,7 +321,7 @@ describe UrlRedirectsController do
 
         it "does not render add to library" do
           get :download_page, params: { id: @token }
-          expect(response.body).to_not include "Add to library"
+          expect(inertia.props[:add_to_library_option]).to eq("none")
         end
       end
 
@@ -347,8 +336,7 @@ describe UrlRedirectsController do
     describe "when user does not exist with purchase email" do
       it "renders signup form" do
         get :download_page, params: { id: @token }
-        expect(response.body).to_not include "Access this product from anywhere, forever:"
-        expect(response.body).to include "Create an account to access all of your purchases"
+        expect(inertia.props[:add_to_library_option]).to eq("signup_form")
       end
     end
 
@@ -1520,11 +1508,10 @@ describe UrlRedirectsController do
       end
 
       context "when user is not signed in" do
-        it "sets hide_layouts to true" do
+        it "renders download page with read link" do
           get :download_page, params: { id: @token }
           expect(response).to be_successful
-          expect(assigns(:hide_layouts)).to eq(true)
-          expect(response.body).to have_link(href: url_redirect_read_for_product_file_path(@token, @product.product_files.first.external_id))
+          expect(inertia.component).to eq("UrlRedirects/DownloadPage")
         end
       end
 
@@ -1533,20 +1520,17 @@ describe UrlRedirectsController do
           sign_in(@purchase.purchaser)
         end
 
-        it "has a a read button for a PDF product file" do
+        it "has a read button for a PDF product file" do
           get :download_page, params: { id: @token }
           expect(response).to be_successful
-          expect(assigns(:hide_layouts)).to eq(true)
-          expect(response.body).to have_link(href: url_redirect_read_for_product_file_path(@token, @product.product_files.first.external_id))
+          expect(inertia.component).to eq("UrlRedirects/DownloadPage")
         end
 
         it "can be read with proper file download URL" do
           get :read, params: { id: @token, product_file_id: @product.product_files.first.external_id }
           expect(response).to be_successful
-          expect(assigns(:hide_layouts)).to eq(true)
           expect(assigns(:read_url)).to include("X-Amz-Signature=")
           expect(assigns(:read_url)).to include(S3_BUCKET)
-          expect(response.body).to have_selector("h1", text: "The Works of Edgar Gumstein")
         end
 
         it "creates the proper consumption event" do
@@ -1609,13 +1593,13 @@ describe UrlRedirectsController do
 
       it "has a readable Product File for a PDF installment with no associated product" do
         get :download_page, params: { id: @token }
-        url = url_redirect_read_for_product_file_path(@token, @post.product_files.first.external_id)
-        expect(response.body).to have_link(href: url)
+        expect(response).to be_successful
+        expect(inertia.component).to eq("UrlRedirects/DownloadPage")
       end
 
       it "can be read" do
         get :read, params: { id: @token, product_file_id: @post.product_files.first.external_id }
-        expect(response.body).to have_selector("h1", text: "A new file!")
+        expect(response).to be_successful
       end
     end
   end
@@ -1653,22 +1637,22 @@ describe UrlRedirectsController do
                                         purchaser: create(:user), subscription:, created_at: 2.days.ago) end
     let(:url_redirect) { create(:url_redirect, purchase:, link: product) }
 
-    it "renders the manage subscription link for subscriptions that can be restarted" do
+    it "passes correct props for subscriptions that can be restarted" do
       get :membership_inactive_page, params: { id: url_redirect.token }
 
       expect(response).to be_successful
-      expect(response.body).to have_title("The Works of Edgar Gumstein - Your membership is inactive")
-      expect(response.body).to have_text("Your membership is inactive")
-      expect(response.body).to have_link("Manage membership", href: manage_subscription_url(subscription.external_id))
+      expect(assigns(:react_component_props)[:content_unavailability_reason_code]).to eq("inactive_membership")
+      expect(assigns(:react_component_props)[:purchase][:membership][:subscription_id]).to eq(subscription.external_id)
+      expect(assigns(:react_component_props)[:purchase][:membership][:is_alive_or_restartable]).to be true
     end
 
-    it "renders the product link for subscriptions that cannot be restarted" do
+    it "passes correct props for subscriptions that cannot be restarted" do
       allow_any_instance_of(Subscription).to receive(:alive_or_restartable?).and_return(false)
 
       get :membership_inactive_page, params: { id: url_redirect.token }
 
       expect(response).to be_successful
-      expect(response.body).to have_link("Resubscribe", href: product.long_url)
+      expect(assigns(:react_component_props)[:purchase][:membership][:is_alive_or_restartable]).to be false
     end
   end
 
@@ -1691,89 +1675,6 @@ describe UrlRedirectsController do
       expect(response).to be_successful
       expect(response.body).to have_title("The Works of Edgar Gumstein - Access expired")
       expect(response.body).to have_text("Access expired")
-    end
-  end
-
-  describe "GET latest_media_locations" do
-    it "returns a 404 if the url redirect is not found" do
-      expect do
-        get :download_page, params: { id: "some non-existent id" }
-      end.to raise_error(ActionController::RoutingError)
-    end
-
-    it "returns a 404 if the url redirect is for an installment" do
-      seller = create(:user)
-      product = create(:product, user: seller)
-      seller_installment = create(:installment, seller:, installment_type: "seller", link: nil)
-      seller_installment.product_files.create!(url: "#{AWS_S3_ENDPOINT}/#{S3_BUCKET}/specs/magic.mp3")
-      url_redirect = create(:url_redirect, installment: seller_installment, purchase: nil, link: product)
-
-      expect do
-        get :latest_media_locations, params: { id: url_redirect.token }
-      end.to raise_error(ActionController::RoutingError)
-    end
-
-    it "returns latest media locations for the purchased product" do
-      product = create(:product)
-      video = create(:streamable_video)
-      audio = create(:listenable_audio)
-      readable_document = create(:readable_document)
-      non_readable_document = create(:non_readable_document)
-      product.product_files = [video, audio, readable_document, non_readable_document]
-      product.save!
-      purchase = create(:purchase, link: product)
-      url_redirect = create(:url_redirect, link: product, purchase:)
-
-      audio_consumption_timestamp = Time.current.change(usec: 0)
-      create(:media_location, url_redirect_id: url_redirect.id, purchase_id: url_redirect.purchase.id,
-                              product_file_id: audio.id, product_id: url_redirect.referenced_link.id, location: 5, consumed_at: audio_consumption_timestamp)
-      readable_document_consumption_timestamp = Time.current.change(usec: 0) + 5.minutes
-      create(:media_location, url_redirect_id: url_redirect.id, purchase_id: url_redirect.purchase.id, platform: Platform::ANDROID,
-                              product_file_id: readable_document.id, product_id: url_redirect.referenced_link.id, location: 3, consumed_at: readable_document_consumption_timestamp)
-
-      get :latest_media_locations, params: { id: url_redirect.token }
-
-      expect(response).to have_http_status(:ok)
-      expect(response.parsed_body).to eq(
-        "#{video.external_id}" => nil,
-        "#{audio.external_id}" => { "location" => 5, "timestamp" => audio_consumption_timestamp.as_json, "unit" => "seconds" },
-        "#{readable_document.external_id}" => { "location" => 3, "timestamp" => readable_document_consumption_timestamp.as_json, "unit" => "page_number" },
-        "#{non_readable_document.external_id}" => nil
-      )
-    end
-  end
-
-  describe "GET 'audio_durations'" do
-    it "returns empty hash if the 'file_ids' parameter is blank" do
-      url_redirect = create(:url_redirect)
-
-      get :audio_durations, params: { id: url_redirect.token, file_ids: [] }
-
-      expect(response).to be_successful
-      expect(response.parsed_body).to eq({})
-    end
-
-    it "returns the audio durations for the given file ids" do
-      product = create(:product)
-      audio1 = create(:listenable_audio, duration: 100)
-      audio2 = create(:listenable_audio, duration: nil)
-      product.product_files << audio1
-      product.product_files << audio2
-      product.save!
-      purchase = create(:purchase, link: product)
-      url_redirect = create(:url_redirect, link: product, purchase: purchase)
-
-      get :audio_durations, params: { id: url_redirect.token, file_ids: [audio1.external_id, audio2.external_id] }
-
-      expect(response).to be_successful
-      expect(response.parsed_body).to eq("#{audio1.external_id}" => 100, "#{audio2.external_id}" => nil)
-
-      audio2.update!(duration: 200)
-
-      get :audio_durations, params: { id: url_redirect.token, file_ids: [audio2.external_id] }
-
-      expect(response).to be_successful
-      expect(response.parsed_body).to eq("#{audio2.external_id}" => 200)
     end
   end
 

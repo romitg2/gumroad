@@ -6,7 +6,7 @@ import { register } from "$app/utils/serverComponentUtil";
 import { Button } from "$app/components/Button";
 import { Placeholder, PlaceholderImage } from "$app/components/ui/Placeholder";
 
-import { Layout, LayoutProps } from "./Layout";
+import { Layout, LayoutProps } from "$app/components/DownloadPage/Layout";
 
 import placeholderImage from "$assets/images/placeholders/comic-stars.png";
 
@@ -64,7 +64,7 @@ const MembershipInactive = ({
     {membership ? (
       membership.is_alive_or_restartable ? (
         <Button asChild color="primary">
-          <a href={Routes.manage_subscription_url(membership.subscription_id)}>Manage membership</a>
+          <a href={Routes.manage_subscription_path(membership.subscription_id)}>Manage membership</a>
         </Button>
       ) : product_long_url ? (
         <Button asChild color="primary">
@@ -92,7 +92,7 @@ const InstallmentPlanFailedOrCancelled = ({
       <>
         <p>Please update your payment method to continue accessing the content of {product_name}.</p>
         <Button asChild color="primary">
-          <a href={Routes.manage_subscription_url(installment_plan.subscription_id)}>Update payment method</a>
+          <a href={Routes.manage_subscription_path(installment_plan.subscription_id)}>Update payment method</a>
         </Button>
       </>
     ) : (
