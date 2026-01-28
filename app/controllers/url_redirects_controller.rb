@@ -7,8 +7,6 @@ class UrlRedirectsController < ApplicationController
 
   layout "inertia", only: [:read, :download_page]
 
-  layout "inertia", only: [:read, :download_page]
-
   before_action :fetch_url_redirect, except: %i[
     show stream download_subtitle_file read download_archive download_product_files
   ]
@@ -75,7 +73,7 @@ class UrlRedirectsController < ApplicationController
 
   def download_page
     @body_class = "download-page responsive responsive-nav"
-    @show_user_favicon = true
+    set_favicon_meta_tags(@url_redirect.seller)
     set_meta_tag(title: @url_redirect.with_product_files.name == "Untitled" ? @url_redirect.referenced_link.name : @url_redirect.with_product_files.name)
     trigger_files_lifecycle_events
 
