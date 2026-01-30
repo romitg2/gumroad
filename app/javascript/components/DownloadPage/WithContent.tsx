@@ -214,7 +214,7 @@ const WithContent = ({
           allFiles: contentFiles,
         }),
       ),
-    [pages],
+    [pages, contentFiles],
   );
   const purchaseInfo = { purchaseId: props.purchase?.id ?? null, redirectId: props.redirect_id, token: props.token };
 
