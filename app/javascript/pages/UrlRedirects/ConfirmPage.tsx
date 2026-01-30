@@ -5,7 +5,7 @@ import { cast } from "ts-safe-cast";
 import { StandaloneLayout } from "$app/inertia/layout";
 
 import { Button } from "$app/components/Button";
-import { Layout, LayoutProps } from "$app/components/server-components/DownloadPage/Layout";
+import { Layout, LayoutProps } from "$app/components/DownloadPage/Layout";
 import { Placeholder } from "$app/components/ui/Placeholder";
 
 type ConfirmationInfo = {

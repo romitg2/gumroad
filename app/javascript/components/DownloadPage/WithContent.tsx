@@ -32,7 +32,7 @@ import { useOriginalLocation } from "$app/components/useOriginalLocation";
 import { useRunOnce } from "$app/components/useRunOnce";
 import { WithTooltip } from "$app/components/WithTooltip";
 
-import { Layout, LayoutProps } from "./Layout";
+import { Layout, LayoutProps, PurchaseCustomField } from "./Layout";
 
 const PAGE_ICON_LABEL: Record<string, string> = {
   "file-arrow-down": "Page has various types of files",
@@ -67,12 +67,6 @@ const MediaUrlsContext = React.createContext<
 export const MediaUrlsProvider = MediaUrlsContext.Provider;
 export const useMediaUrls = () => assertDefined(React.useContext(MediaUrlsContext), "MediaUrlsProvider is missing");
 
-export type PurchaseCustomField = {
-  custom_field_id: string;
-} & (
-  | { type: "shortAnswer" | "longAnswer"; value: string }
-  | { type: "fileUpload"; files: { name: string; size: number; extension: string }[] }
-);
 const PurchaseCustomFieldsContext = React.createContext<PurchaseCustomField[]>([]);
 export const PurchaseCustomFieldsProvider = PurchaseCustomFieldsContext.Provider;
 export const usePurchaseCustomFields = () =>

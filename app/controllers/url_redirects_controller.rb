@@ -18,7 +18,7 @@ class UrlRedirectsController < ApplicationController
                                              download_archive download_product_files
                                              save_last_content_page]
   before_action :hide_layouts, only: %i[
-    confirm_page membership_inactive_page expired rental_expired_page show download_page download_product_files stream smil hls_playlist download_subtitle_file read
+    membership_inactive_page expired rental_expired_page show download_product_files stream smil hls_playlist download_subtitle_file
   ]
   before_action :mark_rental_as_viewed, only: %i[smil hls_playlist]
   after_action :register_that_user_has_downloaded_product, only: %i[download_page show stream read]
