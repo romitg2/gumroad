@@ -1105,7 +1105,11 @@ export const PaymentForm = ({
   notice,
   showCustomFields = true,
   borderless = false,
-}: React.HTMLAttributes<HTMLDivElement> & { notice?: string | null; showCustomFields?: boolean; borderless?: boolean }) => {
+}: React.HTMLAttributes<HTMLDivElement> & {
+  notice?: string | null;
+  showCustomFields?: boolean;
+  borderless?: boolean;
+}) => {
   const [state, dispatch] = useState();
   const loggedInUser = useLoggedInUser();
   const isTestPurchase = loggedInUser && state.products.find((product) => product.testPurchase);
