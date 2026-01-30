@@ -2,6 +2,7 @@ import { Head, usePage, usePoll } from "@inertiajs/react";
 import * as React from "react";
 
 import { usePersistentExternalScript } from "$app/hooks/usePersistentExternalScript";
+import { StandaloneLayout } from "$app/inertia/layout";
 import FileUtils from "$app/utils/file";
 
 import { FileItem } from "$app/components/Download/FileList";
@@ -70,7 +71,7 @@ function DownloadPage() {
   }, [hasRichContent, hasContentFiles]);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <>
       <Head>
         <meta
           name="apple-itunes-app"
@@ -78,9 +79,9 @@ function DownloadPage() {
         />
       </Head>
       <WithContent {...props} />
-    </div>
+    </>
   );
 }
 
-DownloadPage.loggedInUserLayout = true;
+DownloadPage.layout = (page: React.ReactNode) => <StandaloneLayout>{page}</StandaloneLayout>;
 export default DownloadPage;
