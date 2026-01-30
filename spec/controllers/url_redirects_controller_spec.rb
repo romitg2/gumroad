@@ -1678,6 +1678,76 @@ describe UrlRedirectsController, inertia: true do
     end
   end
 
+  describe "Inertia optional props data for download_page" do
+    describe "audio_durations_data" do
+      it "returns durations for audio files only, excluding other file types" do
+        product = create(:product)
+        audio = create(:listenable_audio, duration: 100)
+        video = create(:streamable_video)
+        product.product_files << audio
+        product.product_files << video
+        product.save!
+        purchase = create(:purchase, link: product)
+        url_redirect = create(:url_redirect, link: product, purchase: purchase)
+
+        get :download_page, params: { id: url_redirect.token }
+        result = controller.send(:audio_durations_data)
+
+        expect(result).to eq(audio.external_id => 100)
+      end
+    end
+
+    describe "latest_media_locations_data" do
+      it "returns media locations for files that have them, nil for others" do
+        product = create(:product)
+        video = create(:streamable_video)
+        audio = create(:listenable_audio)
+        product.product_files = [video, audio]
+        product.save!
+        purchase = create(:purchase, link: product)
+        url_redirect = create(:url_redirect, link: product, purchase: purchase)
+
+        create(:media_location,
+               url_redirect_id: url_redirect.id,
+               purchase_id: purchase.id,
+               product_file_id: video.id,
+               product_id: product.id,
+               location: 5,
+               consumed_at: Time.current
+        )
+
+        get :download_page, params: { id: url_redirect.token }
+        result = controller.send(:latest_media_locations_data)
+
+        expect(result[video.external_id]).to include(location: 5)
+        expect(result[audio.external_id]).to be_nil
+      end
+
+      it "returns empty hash for installment url_redirects" do
+        seller = create(:user)
+        product = create(:product, user: seller)
+        installment = create(:installment, seller: seller, installment_type: "seller", link: nil)
+        installment.product_files.create!(url: "#{AWS_S3_ENDPOINT}/#{S3_BUCKET}/specs/magic.mp3")
+        url_redirect = create(:url_redirect, installment: installment, purchase: nil, link: product)
+
+        get :download_page, params: { id: url_redirect.token }
+        result = controller.send(:latest_media_locations_data)
+
+        expect(result).to eq({})
+      end
+
+      it "returns empty hash when purchase is nil" do
+        product = create(:product)
+        url_redirect = create(:url_redirect, link: product, purchase: nil)
+
+        get :download_page, params: { id: url_redirect.token }
+        result = controller.send(:latest_media_locations_data)
+
+        expect(result).to eq({})
+      end
+    end
+  end
+
   describe "GET 'media_urls" do
     before do
       @product = create(:product)
