@@ -10,7 +10,6 @@ import CustomersDownloadPopover from "$app/components/server-components/Customer
 import CustomersFilterPopover from "$app/components/server-components/CustomersPage/FilterPopover";
 import Discover from "$app/components/server-components/Discover";
 import DiscoverProductPage from "$app/components/server-components/Discover/ProductPage";
-import DiscoverWishlistPage from "$app/components/server-components/Discover/WishlistPage";
 import DownloadPageWithoutContent from "$app/components/server-components/DownloadPage/WithoutContent";
 import GenerateInvoiceConfirmationPage from "$app/components/server-components/GenerateInvoiceConfirmationPage";
 import GenerateInvoicePage from "$app/components/server-components/GenerateInvoicePage";
@@ -26,10 +25,8 @@ import ProfileCoffeePage from "$app/components/server-components/Profile/CoffeeP
 import ProfileProductPage from "$app/components/server-components/Profile/ProductPage";
 import ProfileWishlistPage from "$app/components/server-components/Profile/WishlistPage";
 import DisputeEvidencePage from "$app/components/server-components/Purchase/DisputeEvidencePage";
-import PurchaseProductPage from "$app/components/server-components/Purchase/ProductPage";
 import SecureRedirectPage from "$app/components/server-components/SecureRedirectPage";
 import SubscribePage from "$app/components/server-components/SubscribePage";
-import SubscribePreview from "$app/components/server-components/SubscribePreview";
 import SubscriptionManager from "$app/components/server-components/SubscriptionManager";
 import SubscriptionManagerMagicLink from "$app/components/server-components/SubscriptionManagerMagicLink";
 import SupportHeader from "$app/components/server-components/support/Header";
@@ -49,7 +46,6 @@ ReactOnRails.register({
   CustomersFilterPopover,
   Discover,
   DiscoverProductPage,
-  DiscoverWishlistPage,
   DisputeEvidencePage,
   DownloadPageWithoutContent,
   GenerateInvoiceConfirmationPage,
@@ -61,7 +57,6 @@ ReactOnRails.register({
   Pill,
   ProductEditPage,
   ProductIframePage,
-  PurchaseProductPage,
   ProductPage,
   Profile,
   ProfileCoffeePage,
@@ -69,7 +64,6 @@ ReactOnRails.register({
   ProfileWishlistPage,
   SecureRedirectPage,
   SubscribePage,
-  SubscribePreview,
   SubscriptionManager,
   SubscriptionManagerMagicLink,
   TaxesCollectionModal,
