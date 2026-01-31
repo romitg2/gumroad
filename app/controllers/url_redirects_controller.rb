@@ -75,13 +75,13 @@ class UrlRedirectsController < ApplicationController
     @body_class = "download-page responsive responsive-nav"
     set_favicon_meta_tags(@url_redirect.seller)
     set_meta_tag(title: @url_redirect.with_product_files.name == "Untitled" ? @url_redirect.referenced_link.name : @url_redirect.with_product_files.name)
+    set_meta_tag(name: "apple-itunes-app", content: "app-id=#{IOS_APP_ID}, app-argument=#{@url_redirect.download_page_url}")
     trigger_files_lifecycle_events
 
     presenter = UrlRedirectPresenter.new(url_redirect: @url_redirect, logged_in_user:)
     render inertia: "UrlRedirects/DownloadPage",
            props: presenter.download_page_with_content_props(common_props).merge(
              dropbox_api_key: DROPBOX_PICKER_API_KEY,
-             smart_app_banner: { ios_app_id: IOS_APP_ID, app_argument: @url_redirect.download_page_url },
              audio_durations: InertiaRails.optional { audio_durations_data },
              latest_media_locations: InertiaRails.optional { latest_media_locations_data }
            )

@@ -1,4 +1,4 @@
-import { Head, usePage, usePoll } from "@inertiajs/react";
+import { usePage, usePoll } from "@inertiajs/react";
 import * as React from "react";
 
 import { usePersistentExternalScript } from "$app/hooks/usePersistentExternalScript";
@@ -19,7 +19,6 @@ type PageProps = LayoutProps & {
   audio_durations?: Record<string, number | null>;
   latest_media_locations?: Record<string, FileItem["latest_media_location"]>;
   dropbox_api_key: string;
-  smart_app_banner: { ios_app_id: string; app_argument: string };
 };
 
 function DownloadPage() {
@@ -70,17 +69,7 @@ function DownloadPage() {
     }
   }, [hasRichContent, hasContentFiles]);
 
-  return (
-    <>
-      <Head>
-        <meta
-          name="apple-itunes-app"
-          content={`app-id=${props.smart_app_banner.ios_app_id}, app-argument=${props.smart_app_banner.app_argument}`}
-        />
-      </Head>
-      <WithContent {...props} />
-    </>
-  );
+  return <WithContent {...props} />;
 }
 
 DownloadPage.layout = (page: React.ReactNode) => <StandaloneLayout>{page}</StandaloneLayout>;
