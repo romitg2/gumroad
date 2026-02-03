@@ -3765,6 +3765,19 @@ describe Purchase, :vcr do
       expect(purchase.purchase_sales_tax_info).to eq(purchase_sales_tax_info)
     end
 
+    it "stores VAT ID on subscription when present in sales tax info" do
+      product = create(:subscription_product)
+      subscription = create(:subscription, link: product, business_vat_id: nil)
+      purchase = build(:free_purchase, link: product, subscription:, is_original_subscription_purchase: true,
+                                       country: "Ireland", business_vat_id: "IE6388047V")
+
+      allow(VatValidationService).to receive_message_chain(:new, :process).and_return(true)
+
+      purchase.send(:create_sales_tax_info!)
+
+      expect(subscription.reload.business_vat_id).to eq "IE6388047V"
+    end
+
     it "handles invalid countries from GEOIP lookup for IP address" do
       purchase = create(:purchase, price_cents: 100_00, chargeable: create(:chargeable))
       purchase.sales_tax_country_code_election = Compliance::Countries::DEU.alpha2
@@ -4186,6 +4199,58 @@ describe Purchase, :vcr do
       it "unsubscribes the buyer without running validations" do
         expect(Rails.logger).to receive(:info).with("Could not update purchase (#{@purchase_of_product_1.id}) with validations turned on. Unsubscribing the buyer without running validations.").and_call_original
         expect { @purchase_of_product_1.unsubscribe_buyer }.to change { @purchase_of_product_1.reload.can_contact }.from(true).to(false)
+      end
+    end
+  end
+
+  describe "#toggle_off_can_contact_if_buyer_has_unsubscribed" do
+    let(:seller) { create(:user) }
+    let(:buyer_email) { "buyer@example.com" }
+    let(:product_1) { create(:product, user: seller) }
+    let(:product_2) { create(:product, user: seller) }
+    let(:first_purchase) { create(:purchase, link: product_1, email: buyer_email, seller:) }
+
+    context "when customer has previously unsubscribed" do
+      before do
+        expect(first_purchase.can_contact).to be(true)
+        first_purchase.unsubscribe_buyer
+        expect(first_purchase.reload.can_contact).to be(false)
+      end
+
+      it "sets can_contact to false on new purchases automatically" do
+        new_purchase = create(:purchase, link: product_2, email: buyer_email, seller:)
+
+        expect(new_purchase.can_contact).to be(false)
+      end
+
+      it "does not add the customer to AudienceMember for the new purchase" do
+        expect(AudienceMember.find_by(email: buyer_email, seller:)).to be_nil
+
+        create(:purchase, link: product_2, email: buyer_email, seller:)
+
+        expect(AudienceMember.find_by(email: buyer_email, seller:)).to be_nil
+      end
+
+      it "prevents the customer from appearing in email blast audience" do
+        installment = create(:installment, seller:, installment_type: "audience")
+        create(:purchase, link: product_2, email: buyer_email, seller:)
+
+        expect(AudienceMember.filter(seller_id: seller.id, params: installment.audience_members_filter_params).where(email: buyer_email)).to be_empty
+      end
+    end
+
+    context "when customer has not previously unsubscribed" do
+      it "allows new purchases to have can_contact: true" do
+        new_purchase = create(:purchase, link: product_2, email: buyer_email, seller:)
+        expect(new_purchase.can_contact).to be(true)
+        expect(AudienceMember.find_by(email: buyer_email, seller:)).to be_present
+      end
+
+      it "allows the customer to appear in email blast audience" do
+        installment = create(:installment, seller:, installment_type: "audience")
+        create(:purchase, link: product_2, email: buyer_email, seller:)
+
+        expect(AudienceMember.filter(seller_id: seller.id, params: installment.audience_members_filter_params).where(email: buyer_email)).to be_present
       end
     end
   end

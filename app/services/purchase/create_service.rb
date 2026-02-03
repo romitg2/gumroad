@@ -28,6 +28,11 @@ class Purchase::CreateService < Purchase::BaseService
     end
 
     begin
+      if should_check_for_restartable_subscription?
+        subscription_result = handle_existing_subscription
+        return subscription_result if subscription_result.present?
+      end
+
       # create gift if necessary
       self.gift = create_gift if is_gift?
 
@@ -242,6 +247,9 @@ class Purchase::CreateService < Purchase::BaseService
       purchase.seller = product.user
       purchase.is_gift_sender_purchase = is_gift? unless params_for_purchase.has_key?(:is_gift_receiver_purchase)
       purchase.offer_code = product.find_offer_code(code: purchase.discount_code.downcase.strip) if purchase.discount_code.present?
+      if purchase.offer_code.present? && product.default_offer_code.present? && purchase.offer_code.id == product.default_offer_code.id
+        purchase.default_offer_code_id = purchase.offer_code.id
+      end
       purchase.business_vat_id = (params_for_purchase[:business_vat_id] && params_for_purchase[:business_vat_id].size > 0 ? params_for_purchase[:business_vat_id] : nil)
       purchase.is_original_subscription_purchase = (product.is_recurring_billing && !params_for_purchase[:is_gift_receiver_purchase]) || purchase.is_installment_payment
       purchase.is_free_trial_purchase = product.free_trial_enabled? && !is_gift?
@@ -372,6 +380,65 @@ class Purchase::CreateService < Purchase::BaseService
         url_params.reject do |parameter_name, _parameter_value|
           RESERVED_URL_PARAMETERS.include?(parameter_name)
         end
+      end
+    end
+
+    def should_check_for_restartable_subscription?
+      product.is_recurring_billing && !is_gift?
+    end
+
+    def handle_existing_subscription
+      user_or_email = buyer || purchase_params[:email]
+      return nil unless user_or_email.present?
+
+      active_subscription = Subscription.active_for_user_and_product(
+        user_or_email: user_or_email,
+        product: product,
+        with_lock: true
+      )
+
+      if active_subscription.present?
+        CustomerLowPriorityMailer.already_subscribed_checkout_attempt(active_subscription.id).deliver_later(queue: "low")
+
+        error_message = if buyer.present?
+          "You already have an active subscription to this membership. Visit your Library to manage it."
+        else
+          Bugsnag.notify(StandardError.new("Existing subscription checkout attempt")) do |report|
+            report.severity = "info"
+            report.add_metadata(:subscription, {
+                                  subscription_id: active_subscription.id,
+                                  product_id: product.id,
+                                  email: purchase_params[:email]
+                                })
+          end
+          "Sorry, something went wrong. Please try again."
+        end
+
+        return nil, error_message
+      end
+
+      # Then check for restartable subscriptions
+      restartable_subscription = Subscription.restartable_for_user_and_product(
+        user_or_email: user_or_email,
+        product: product
+      )
+
+      return nil unless restartable_subscription.present?
+
+      result = Subscription::RestartAtCheckoutService.new(
+        subscription: restartable_subscription,
+        product: product,
+        params: params,
+        buyer: buyer
+      ).perform
+
+      if result[:success]
+        purchase = result[:purchase] || restartable_subscription.original_purchase
+        self.purchase = purchase
+        Rails.logger.info("Subscription #{restartable_subscription.external_id} restarted during checkout for product #{product.id}")
+        return purchase, nil
+      else
+        return nil, result[:error_message]
       end
     end
 end
