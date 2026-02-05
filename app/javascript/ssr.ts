@@ -10,6 +10,7 @@ import CustomersDownloadPopover from "$app/components/server-components/Customer
 import CustomersFilterPopover from "$app/components/server-components/CustomersPage/FilterPopover";
 import Discover from "$app/components/server-components/Discover";
 import DiscoverProductPage from "$app/components/server-components/Discover/ProductPage";
+import DownloadPageWithoutContent from "$app/components/server-components/DownloadPage/WithoutContent";
 import GenerateInvoiceConfirmationPage from "$app/components/server-components/GenerateInvoiceConfirmationPage";
 import GenerateInvoicePage from "$app/components/server-components/GenerateInvoicePage";
 import GumroadBlogIndexPage from "$app/components/server-components/GumroadBlog/IndexPage";
