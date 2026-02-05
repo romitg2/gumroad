@@ -2,7 +2,7 @@ import { usePage, usePoll } from "@inertiajs/react";
 import * as React from "react";
 
 import { usePersistentExternalScript } from "$app/hooks/usePersistentExternalScript";
-import { StandaloneLayout } from "$app/inertia/layout";
+import { LoggedInUserLayout } from "$app/inertia/layout";
 import FileUtils from "$app/utils/file";
 
 import { FileItem } from "$app/components/Download/FileList";
@@ -72,5 +72,5 @@ function DownloadPage() {
   return <WithContent {...props} />;
 }
 
-DownloadPage.layout = (page: React.ReactNode) => <StandaloneLayout>{page}</StandaloneLayout>;
+DownloadPage.layout = (page: React.ReactNode) => <LoggedInUserLayout>{page}</LoggedInUserLayout>;
 export default DownloadPage;
