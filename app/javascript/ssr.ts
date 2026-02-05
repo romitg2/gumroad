@@ -10,7 +10,6 @@ import CustomersDownloadPopover from "$app/components/server-components/Customer
 import CustomersFilterPopover from "$app/components/server-components/CustomersPage/FilterPopover";
 import Discover from "$app/components/server-components/Discover";
 import DiscoverProductPage from "$app/components/server-components/Discover/ProductPage";
-import DownloadPageWithoutContent from "$app/components/server-components/DownloadPage/WithoutContent";
 import GenerateInvoiceConfirmationPage from "$app/components/server-components/GenerateInvoiceConfirmationPage";
 import GenerateInvoicePage from "$app/components/server-components/GenerateInvoicePage";
 import GumroadBlogIndexPage from "$app/components/server-components/GumroadBlog/IndexPage";
@@ -23,7 +22,6 @@ import ProductEditPage from "$app/components/server-components/ProductEditPage";
 import Profile from "$app/components/server-components/Profile";
 import ProfileCoffeePage from "$app/components/server-components/Profile/CoffeePage";
 import ProfileProductPage from "$app/components/server-components/Profile/ProductPage";
-import DisputeEvidencePage from "$app/components/server-components/Purchase/DisputeEvidencePage";
 import SecureRedirectPage from "$app/components/server-components/SecureRedirectPage";
 import SubscribePage from "$app/components/server-components/SubscribePage";
 import SubscriptionManager from "$app/components/server-components/SubscriptionManager";
@@ -44,7 +42,6 @@ ReactOnRails.register({
   CustomersFilterPopover,
   Discover,
   DiscoverProductPage,
-  DisputeEvidencePage,
   DownloadPageWithoutContent,
   GenerateInvoiceConfirmationPage,
   GenerateInvoicePage,
