@@ -1,7 +1,7 @@
 import { usePage, usePoll } from "@inertiajs/react";
 import * as React from "react";
 
-import { usePersistentExternalScript } from "$app/hooks/usePersistentExternalScript";
+import { useDropbox } from "$app/hooks/useDropbox";
 import { LoggedInUserLayout } from "$app/inertia/layout";
 import FileUtils from "$app/utils/file";
 
@@ -9,7 +9,6 @@ import { FileItem } from "$app/components/Download/FileList";
 import { LayoutProps } from "$app/components/DownloadPage/Layout";
 import { ContentProps, WithContent } from "$app/components/DownloadPage/WithContent";
 
-const DROPBOX_SCRIPT_URL = "https://www.dropbox.com/static/api/2/dropins.js";
 const AUDIO_DURATIONS_POLL_INTERVAL_MS = 5_000;
 const LATEST_MEDIA_LOCATIONS_POLL_INTERVAL_MS = 10_000;
 
@@ -24,7 +23,7 @@ type PageProps = LayoutProps & {
 function DownloadPage() {
   const props = usePage<PageProps>().props;
 
-  usePersistentExternalScript(DROPBOX_SCRIPT_URL, { id: "dropboxjs", "data-app-key": props.dropbox_api_key });
+  useDropbox(props.dropbox_api_key);
 
   const contentFiles = React.useMemo(
     () => props.content.content_items.filter((item): item is FileItem => item.type === "file"),
@@ -36,8 +35,7 @@ function DownloadPage() {
     () =>
       contentFiles.some(
         (file) =>
-          FileUtils.isAudioExtension(file.extension) &&
-          (props.audio_durations?.[file.id] ?? file.duration) === null,
+          FileUtils.isAudioExtension(file.extension) && (props.audio_durations?.[file.id] ?? file.duration) === null,
       ),
     [contentFiles, props.audio_durations],
   );

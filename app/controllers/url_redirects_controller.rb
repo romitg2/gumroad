@@ -18,7 +18,7 @@ class UrlRedirectsController < ApplicationController
                                              download_archive download_product_files
                                              save_last_content_page]
   before_action :hide_layouts, only: %i[
-    membership_inactive_page expired rental_expired_page show download_product_files stream smil hls_playlist download_subtitle_file read
+    show download_product_files stream smil hls_playlist download_subtitle_file
   ]
   before_action :mark_rental_as_viewed, only: %i[smil hls_playlist]
   after_action :register_that_user_has_downloaded_product, only: %i[download_page show stream read]
@@ -79,13 +79,14 @@ class UrlRedirectsController < ApplicationController
     set_meta_tag(name: "apple-itunes-app", content: "app-id=#{IOS_APP_ID}, app-argument=#{@url_redirect.download_page_url}")
     trigger_files_lifecycle_events
 
-    presenter = UrlRedirectPresenter.new(url_redirect: @url_redirect, logged_in_user:)
     render inertia: "UrlRedirects/DownloadPage",
-           props: presenter.download_page_with_content_props(common_props).merge(
-             dropbox_api_key: DROPBOX_PICKER_API_KEY,
-             audio_durations: InertiaRails.optional { audio_durations_data },
-             latest_media_locations: InertiaRails.optional { latest_media_locations_data }
-           )
+           props: UrlRedirectPresenter.new(url_redirect: @url_redirect, logged_in_user:)
+             .download_page_with_content_props(common_props)
+             .merge(
+               dropbox_api_key: DROPBOX_PICKER_API_KEY,
+               audio_durations: InertiaRails.optional { audio_durations_data },
+               latest_media_locations: InertiaRails.optional { latest_media_locations_data }
+             )
   end
 
   def download_product_files

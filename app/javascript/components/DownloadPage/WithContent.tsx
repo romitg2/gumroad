@@ -107,36 +107,20 @@ const WithContent = ({
 }) => {
   const url = new URL(useOriginalLocation());
   const addThirdPartyAnalytics = useAddThirdPartyAnalytics();
-  const [contentFiles, setContentFiles] = React.useState(
-    content.content_items.filter((item): item is FileItem => item.type === "file"),
-  );
+  const contentFiles = React.useMemo(() => {
+    const files = content.content_items.filter((item): item is FileItem => item.type === "file");
+    return files.map((file) => {
+      const duration = audio_durations?.[file.id];
+      const mediaLocation = latest_media_locations?.[file.id];
+      return {
+        ...file,
+        duration: duration ?? file.duration,
+        content_length: duration ?? file.content_length,
+        latest_media_location: mediaLocation ?? file.latest_media_location,
+      };
+    });
+  }, [content.content_items, audio_durations, latest_media_locations]);
   const mediaUrlsValue = React.useState<Record<string, string[]>>({});
-
-  React.useEffect(() => {
-    if (!audio_durations || Object.keys(audio_durations).length === 0) return;
-    setContentFiles((files) => {
-      const hasChanges = files.some(
-        (file) => audio_durations[file.id] !== undefined && audio_durations[file.id] !== file.duration,
-      );
-      if (!hasChanges) return files;
-      return files.map((file) => {
-        const duration = audio_durations[file.id];
-        return duration !== null && duration !== undefined ? { ...file, duration, content_length: duration } : file;
-      });
-    });
-  }, [audio_durations]);
-
-  React.useEffect(() => {
-    if (!latest_media_locations || Object.keys(latest_media_locations).length === 0) return;
-    setContentFiles((files) => {
-      const hasChanges = files.some((file) => {
-        const newLocation = latest_media_locations[file.id] ?? null;
-        return JSON.stringify(file.latest_media_location) !== JSON.stringify(newLocation);
-      });
-      if (!hasChanges) return files;
-      return files.map((file) => ({ ...file, latest_media_location: latest_media_locations[file.id] ?? null }));
-    });
-  }, [latest_media_locations]);
 
   useRunOnce(() => {
     if (url.searchParams.get("receipt") === "true" && props.purchase?.email) {
