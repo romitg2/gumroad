@@ -70,5 +70,7 @@ function DownloadPage() {
   return <WithContent {...props} />;
 }
 
-DownloadPage.layout = (page: React.ReactNode) => <LoggedInUserLayout>{page}</LoggedInUserLayout>;
+DownloadPage.layout = (page: React.ReactNode) => (
+  <LoggedInUserLayout className="flex min-h-screen flex-col">{page}</LoggedInUserLayout>
+);
 export default DownloadPage;

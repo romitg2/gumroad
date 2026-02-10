@@ -66,7 +66,13 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function LoggedInUserLayout({ children }: { children: React.ReactNode }) {
+export function LoggedInUserLayout({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   const { flash, logged_in_user, current_seller } = usePage<PageProps>().props;
 
   useFlashMessage(flash);
@@ -76,7 +82,7 @@ export function LoggedInUserLayout({ children }: { children: React.ReactNode }) 
       <CurrentSellerProvider value={parseCurrentSeller(current_seller)}>
         <MetaTags />
         <Alert initial={null} />
-        {children}
+        <div className={className}>{children}</div>
       </CurrentSellerProvider>
     </LoggedInUserProvider>
   );
