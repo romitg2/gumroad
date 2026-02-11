@@ -66,13 +66,7 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function LoggedInUserLayout({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+export function LoggedInUserLayout({ children, className }: { children: React.ReactNode; className?: string }) {
   const { flash, logged_in_user, current_seller } = usePage<PageProps>().props;
 
   useFlashMessage(flash);
