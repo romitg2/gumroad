@@ -898,7 +898,7 @@ const ContentTabContent = ({ selectedVariantId }: { selectedVariantId: string | 
               >
                 <span>Enter the content you want to sell.</span>
                 <span className="flex items-center gap-2">
-                  <Button outline small asChild className="pointer-events-auto whitespace-nowrap text-black">
+                  <Button outline small asChild className="pointer-events-auto whitespace-nowrap text-foreground">
                     <label>
                       <input type="file" className="sr-only" multiple onChange={(e) => uploadFileInput(e.target)} />
                       Upload your files
