@@ -892,15 +892,20 @@ const ContentTabContent = ({ selectedVariantId }: { selectedVariantId: string | 
           <div className="relative h-full flex-1">
             <EditorContent className="rich-text grid h-full" editor={editor} data-gumroad-ignore />
             {isEditorEmpty ? (
-              <div className="pointer-events-none absolute left-0 top-0 -mt-1 flex items-center gap-2 text-muted" aria-hidden="true">
-                Enter the content you want to sell.
-                <Button outline small asChild className="pointer-events-auto text-black">
-                  <label>
-                    <input type="file" className="sr-only" multiple onChange={(e) => uploadFileInput(e.target)} />
-                    Upload your files
-                  </label>
-                </Button>
-                or start typing.
+              <div
+                className="pointer-events-none absolute left-0 top-0 -mt-1 flex flex-col items-start gap-2 text-muted md:flex-row md:items-center"
+                aria-hidden="true"
+              >
+                <span>Enter the content you want to sell.</span>
+                <span className="flex items-center gap-2">
+                  <Button outline small asChild className="pointer-events-auto whitespace-nowrap text-black">
+                    <label>
+                      <input type="file" className="sr-only" multiple onChange={(e) => uploadFileInput(e.target)} />
+                      Upload your files
+                    </label>
+                  </Button>
+                  <span>or start typing.</span>
+                </span>
               </div>
             ) : null}
           </div>
