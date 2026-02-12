@@ -8,15 +8,10 @@ import CommunitiesPage from "$app/components/server-components/CommunitiesPage";
 import CustomersDownloadPopover from "$app/components/server-components/CustomersPage/DownloadPopover";
 import CustomersFilterPopover from "$app/components/server-components/CustomersPage/FilterPopover";
 import Discover from "$app/components/server-components/Discover";
-import DiscoverProductPage from "$app/components/server-components/Discover/ProductPage";
 import Nav from "$app/components/server-components/Nav";
-import ProductPage from "$app/components/server-components/Product";
-import ProductIframePage from "$app/components/server-components/Product/IframePage";
 import ProductEditPage from "$app/components/server-components/ProductEditPage";
 import Profile from "$app/components/server-components/Profile";
-import ProfileProductPage from "$app/components/server-components/Profile/ProductPage";
 import SubscribePage from "$app/components/server-components/SubscribePage";
-import SubscriptionManagerMagicLink from "$app/components/server-components/SubscriptionManagerMagicLink";
 import SupportHeader from "$app/components/server-components/support/Header";
 import TaxesCollectionModal from "$app/components/server-components/TaxesCollectionModal";
 import VideoStreamPlayer from "$app/components/server-components/VideoStreamPlayer";
@@ -31,16 +26,11 @@ ReactOnRails.register({
   CustomersDownloadPopover,
   CustomersFilterPopover,
   Discover,
-  DiscoverProductPage,
   Nav,
   Pill,
   ProductEditPage,
-  ProductIframePage,
-  ProductPage,
   Profile,
-  ProfileProductPage,
   SubscribePage,
-  SubscriptionManagerMagicLink,
   TaxesCollectionModal,
   VideoStreamPlayer,
 });
