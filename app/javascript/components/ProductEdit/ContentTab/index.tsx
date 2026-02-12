@@ -224,12 +224,12 @@ const ContentTabContent = ({ selectedVariantId }: { selectedVariantId: string | 
   ]);
   const editor = useRichTextEditor({
     ariaLabel: "Content editor",
-    placeholder: "Enter the content you want to sell. Upload your files or start typing.",
     initialValue,
     editable: true,
     extensions: contentEditorExtensions,
     onInputNonImageFiles: (files) => uploadFilesRef.current(files),
   });
+  const isEditorEmpty = editor?.isEmpty ?? true;
   const updateContentRef = useRefToLatest(() => {
     if (!editor) return;
 
@@ -889,7 +889,26 @@ const ContentTabContent = ({ selectedVariantId }: { selectedVariantId: string | 
             )
           }
         >
-          <EditorContent className="rich-text grid h-full flex-1" editor={editor} data-gumroad-ignore />
+          <div className="relative h-full flex-1">
+            <EditorContent className="rich-text grid h-full" editor={editor} data-gumroad-ignore />
+            {isEditorEmpty ? (
+              <div
+                className="pointer-events-none absolute inset-0 flex items-start px-8 pt-4 text-muted"
+                aria-hidden="true"
+              >
+                <p className="flex flex-wrap items-center gap-2">
+                  <span>Enter the content you want to sell.</span>
+                  <Button outline small asChild className="pointer-events-auto text-black">
+                    <label>
+                      <input type="file" className="sr-only" multiple onChange={(e) => uploadFileInput(e.target)} />
+                      Upload your files
+                    </label>
+                  </Button>
+                  <span>or start typing.</span>
+                </p>
+              </div>
+            ) : null}
+          </div>
         </PageListLayout>
       </div>
       {confirmingDeletePage !== null ? (
