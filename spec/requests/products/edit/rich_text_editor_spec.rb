@@ -474,6 +474,30 @@ describe("Product Edit Rich Text Editor", type: :system, js: true) do
       end
     end
 
+    it "shows upload button in empty state and allows file upload" do
+      product = create(:product, user: seller)
+      visit edit_link_path(product) + "/content"
+
+      expect(page).to have_text("Enter the content you want to sell.")
+      expect(page).to have_text("or start typing.")
+      expect(page).to have_text("Upload your files")
+
+      attach_file file_fixture("test.pdf") do
+        find("label", text: "Upload your files").click
+      end
+
+      wait_for_file_embed_to_finish_uploading(name: "test")
+      expect(page).to have_embed(name: "test")
+
+      save_change
+
+      product.reload
+      expect(product.rich_contents.first.description).to include(
+        hash_including("type" => RichContent::FILE_EMBED_NODE_TYPE)
+      )
+      expect(product.product_files.alive.pluck(:display_name)).to include("test")
+    end
+
     it "supports embedding tweets" do
       tweet_url = "https://x.com/gumroad/status/1743053631640006693"
       product = create(:product, user: seller)
