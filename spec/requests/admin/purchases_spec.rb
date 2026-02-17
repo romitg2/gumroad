@@ -139,6 +139,55 @@ describe "Admin::PurchasesController Scenario", type: :system, js: true do
     end
   end
 
+  describe "subscription cancellation display" do
+    let(:subscription_product) { create(:subscription_product) }
+    let(:subscription) { create(:subscription, link: subscription_product) }
+    let(:membership_purchase) { create(:membership_purchase, link: subscription_product, subscription: subscription, is_original_subscription_purchase: true) }
+
+    it "shows cancellation timestamp when subscription is cancelled" do
+      cancellation_time = Time.zone.parse("2026-02-14 10:30:00")
+      end_time = Time.zone.parse("2026-02-28 10:30:00")
+
+      subscription.update!(
+        user_requested_cancellation_at: cancellation_time,
+        cancelled_at: end_time,
+        cancelled_by_buyer: true,
+        deactivated_at: end_time
+      )
+
+      visit admin_purchase_path(membership_purchase.id)
+
+      expect(page).to have_content("Cancelled")
+      expect(page).to have_content(/2026-02-14.*by buyer/)
+
+      expect(page).to have_content("Ended")
+      expect(page).to have_content("2026-02-28")
+    end
+
+    it "shows cancelled by seller when subscription is cancelled by seller" do
+      subscription.update!(
+        user_requested_cancellation_at: 2.days.ago,
+        cancelled_at: 1.week.from_now,
+        cancelled_by_buyer: false,
+        deactivated_at: 1.week.from_now
+      )
+
+      visit admin_purchase_path(membership_purchase.id)
+
+      expect(page).to have_content("Cancelled")
+      expect(page).to have_content("by seller")
+    end
+
+    it "does not show cancellation data when subscription is not cancelled" do
+      visit admin_purchase_path(membership_purchase.id)
+
+      expect(page).to have_content("Cancelled")
+      expect(page).to have_content("Ended")
+      expect(page).not_to have_content("by buyer")
+      expect(page).not_to have_content("by seller")
+    end
+  end
+
   describe "discount display" do
     it "displays discount code when offer_code has a code" do
       product = create(:product, price_cents: 1000)
