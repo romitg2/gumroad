@@ -415,7 +415,9 @@ const Info = ({ purchase }: { purchase: Purchase }) => (
           <dt>Ended</dt>
           <dd>
             <BooleanIcon value={!!purchase.subscription.subscription_end_date} />
-            {purchase.subscription.subscription_end_date ? ` (on ${purchase.subscription.subscription_end_date})` : null}
+            {purchase.subscription.subscription_end_date
+              ? ` (on ${purchase.subscription.subscription_end_date})`
+              : null}
           </dd>
 
           <dt>Failed</dt>
