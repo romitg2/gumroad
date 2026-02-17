@@ -101,6 +101,52 @@ describe Admin::PurchasePresenter do
           expect(props[:tip]).to eq(500)
         end
       end
+
+      context "when purchase has a subscription" do
+        let(:subscription_product) { create(:subscription_product, user: seller) }
+        let(:subscription) { create(:subscription, link: subscription_product) }
+        let(:purchase) { create(:purchase, link: subscription_product, seller: seller, subscription: subscription, is_original_subscription_purchase: true) }
+
+        it "returns subscription with nil timestamps when not cancelled" do
+          expect(props[:subscription]).to match(
+            id: subscription.id,
+            external_id: subscription.external_id,
+            user_requested_cancellation_at: nil,
+            cancelled_at: nil,
+            cancelled_by_buyer: false,
+            ended_at: nil,
+            failed_at: nil,
+            subscription_end_date: nil,
+          )
+        end
+
+        context "when subscription is cancelled" do
+          let(:cancellation_time) { 2.days.ago }
+          let(:end_time) { 1.day.from_now }
+
+          before do
+            subscription.update!(
+              user_requested_cancellation_at: cancellation_time,
+              cancelled_at: end_time,
+              cancelled_by_buyer: true,
+              deactivated_at: end_time
+            )
+          end
+
+          it "returns subscription with cancellation timestamps" do
+            expect(props[:subscription]).to match(
+              id: subscription.id,
+              external_id: subscription.external_id,
+              user_requested_cancellation_at: be_within(1.second).of(cancellation_time),
+              cancelled_at: be_within(1.second).of(end_time),
+              cancelled_by_buyer: true,
+              ended_at: nil,
+              failed_at: nil,
+              subscription_end_date: be_within(1.second).of(end_time),
+            )
+          end
+        end
+      end
     end
   end
 end
